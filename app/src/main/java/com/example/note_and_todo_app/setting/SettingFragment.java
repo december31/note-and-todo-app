@@ -1,4 +1,4 @@
-package com.example.note_and_todo_app;
+package com.example.note_and_todo_app.setting;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.note_and_todo_app.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link fragment_note#newInstance} factory method to
+ * Use the {@link SettingFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragment_note extends Fragment {
+public class SettingFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class fragment_note extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public fragment_note() {
+    public SettingFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +36,11 @@ public class fragment_note extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_note.
+     * @return A new instance of fragment fragment_setting.
      */
     // TODO: Rename and change types and number of parameters
-    public static fragment_note newInstance(String param1, String param2) {
-        fragment_note fragment = new fragment_note();
+    public static SettingFragment newInstance(String param1, String param2) {
+        SettingFragment fragment = new SettingFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -59,6 +61,6 @@ public class fragment_note extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_note, container, false);
+        return inflater.inflate(R.layout.fragment_setting, container, false);
     }
 }
