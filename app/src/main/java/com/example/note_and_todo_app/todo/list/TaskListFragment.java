@@ -1,4 +1,4 @@
-package com.example.note_and_todo_app.todo;
+package com.example.note_and_todo_app.todo.list;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import com.example.note_and_todo_app.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TodoCategoryFragment#newInstance} factory method to
+ * Use the {@link TaskListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TodoCategoryFragment extends Fragment {
+public class TaskListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class TodoCategoryFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public TodoCategoryFragment() {
+    public TaskListFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class TodoCategoryFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment fragment_todo_category.
+     * @return A new instance of fragment fragment_todo_list.
      */
     // TODO: Rename and change types and number of parameters
-    public static TodoCategoryFragment newInstance(String param1, String param2) {
-        TodoCategoryFragment fragment = new TodoCategoryFragment();
+    public static TaskListFragment newInstance(String param1, String param2) {
+        TaskListFragment fragment = new TaskListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class TodoCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todo_category, container, false);
+        return inflater.inflate(R.layout.fragment_todo_list, container, false);
     }
 }

@@ -12,7 +12,20 @@ import com.example.note_and_todo_app.R;
 
 public class NoteFragment extends Fragment {
 
-    @Override
+	/**
+	 * Use this factory method to create a new instance of
+	 * this fragment using the provided parameters.
+	 *
+	 * @return A new instance of fragment fragment_todo_category.
+	 */
+	public static NoteFragment newInstance() {
+		NoteFragment fragment = new NoteFragment();
+		Bundle args = new Bundle();
+		fragment.setArguments(args);
+		return fragment;
+	}
+
+	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
