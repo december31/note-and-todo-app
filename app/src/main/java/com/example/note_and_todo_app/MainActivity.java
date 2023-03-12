@@ -12,7 +12,13 @@ import androidx.navigation.NavHostController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import com.example.note_and_todo_app.database.Database;
+import com.example.note_and_todo_app.database.task.TaskCategory;
+import com.example.note_and_todo_app.database.task.TaskDao;
 import com.example.note_and_todo_app.databinding.ActivityMainBinding;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
