@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="todo_category_card">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/rectangle_with_10dp_radius_white_bg_and_shadow</item>
+        <item name="android:padding">6dp</item>
+    </style>
+</resources>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuTask"
+        android:icon="@drawable/ic_menu_task"
+        android:title="@string/tab_task" />
+    <item
+        android:id="@+id/menuNote"
+        android:icon="@drawable/ic_menu_note"
+        android:title="@string/tab_note" />
+
+    <item
+        android:id="@+id/menuSetting"
+        android:icon="@drawable/ic_menu_setting"
+        android:title="@string/tab_setting" />
+</menu>
