@@ -17,7 +17,9 @@ public abstract class Database extends RoomDatabase {
 	private static Database INSTANCE;
 	public static Database getInstance(Context context) {
 		if (INSTANCE == null) {
-			INSTANCE = Room.databaseBuilder(context, Database.class, "note_and_todo_list").build();
+			INSTANCE = Room.databaseBuilder(context, Database.class, "note_and_todo_list")
+					.allowMainThreadQueries()
+					.build();
 		}
 		return INSTANCE;
 	}

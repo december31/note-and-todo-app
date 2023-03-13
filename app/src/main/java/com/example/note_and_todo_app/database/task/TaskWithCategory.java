@@ -5,13 +5,13 @@ import androidx.room.Entity;
 import androidx.room.Relation;
 
 import java.util.List;
-//
-//@Entity(
-//		tableName = "task_with_category",
-//		primaryKeys = {"category_id", "task_id"}
-//)
-//public class TaskWithCategory {
-//	@Embedded public TaskCategory taskCategory;
-//	@Relation(parentColumn = "id", entityColumn = "id")
-//	public List<Task> tasks;
-//}
+
+@Entity(
+		tableName = "task_with_category",
+		primaryKeys = {"id", "category_id"}
+)
+public class TaskWithCategory {
+	@Embedded public TaskCategory taskCategory;
+	@Relation(parentColumn = "id", entityColumn = "id")
+	public List<Task> tasks;
+}

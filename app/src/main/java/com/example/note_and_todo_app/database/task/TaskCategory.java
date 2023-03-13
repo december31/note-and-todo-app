@@ -5,14 +5,15 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
-@Entity
+@Entity(tableName = "task_category")
 public class TaskCategory {
 	@PrimaryKey(autoGenerate = true)
 	private Long id;
 	private String title;
 	@ColumnInfo(name = "create_at")
 	private Long createAt;
-
+	@Ignore
+	private Integer numberOfItem;
 	@Ignore
 	public TaskCategory(Long id, String title, Long createAt) {
 		this.id = id;
@@ -50,5 +51,13 @@ public class TaskCategory {
 
 	public void setCreateAt(Long createAt) {
 		this.createAt = createAt;
+	}
+
+	public Integer getNumberOfItem() {
+		return numberOfItem;
+	}
+
+	public void setNumberOfItem(Integer numberOfItem) {
+		this.numberOfItem = numberOfItem;
 	}
 }

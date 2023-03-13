@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,9 +20,10 @@ import com.example.note_and_todo_app.databinding.ActivityMainBinding;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+	private final String TAG = MainActivity.class.toString();
 	private ActivityMainBinding binding;
 
 	@Override
@@ -33,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 
 		setUpNavigation();
 
+		TaskDao taskDao = Database.getInstance(getApplicationContext()).taskDao();
+		List<TaskCategory> categories = taskDao.getAllCategory();
+		Log.i(TAG, categories.size() + "");
 	}
 
 	private void setUpNavigation() {
