@@ -11,4 +11,7 @@
     <string name="next_7_days">Next 7 Days</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_lists">My Lists</string>
+    <string name="create_a_new_list">Create a new list</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>

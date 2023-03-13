@@ -20,4 +20,10 @@ public interface TaskDao {
 	@Query("select * from task where task.category_id = :id")
 	List<Task> getTaskByCategory(Long id);
 
+	@Query("select * from task_category")
+	List<TaskCategory> getAllCategory();
+
+	@Query("select count(*) from task where task.id = :categoryId")
+	Integer getNumberOfTask(Long categoryId);
+
 }
