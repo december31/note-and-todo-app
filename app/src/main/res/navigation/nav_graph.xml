@@ -40,5 +40,15 @@
             app:destination="@id/noteFragment" />
     </fragment>
 
+        tools:layout="@layout/fragment_main_nav">
+        <action
+            android:id="@+id/action_fragment_main_nav_to_fragment_task_list"
+            app:destination="@id/fragment_task_list" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragment_task_list"
+        android:name="com.example.note_and_todo_app.todo.list.TaskListFragment"
+        tools:layout="@layout/fragment_task_list"/>
 
 </navigation>

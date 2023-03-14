@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 import com.example.note_and_todo_app.R;
+import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.databinding.DialogCreateCategoryBinding;
@@ -101,10 +102,5 @@ public class CreateCategoryDialog extends DialogFragment {
 	private void addNewCategory() {
 		String title = Objects.requireNonNull(binding.editText.getText()).toString();
 		Database.getInstance(getContext()).taskDao().insertCategory(new TaskCategory(title, new Date().getTime()));
-	}
-
-	public interface OnCreateDialogResult {
-		void onConfirm();
-		void onCancel();
 	}
 }

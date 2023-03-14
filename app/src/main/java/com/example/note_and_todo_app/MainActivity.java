@@ -17,6 +17,10 @@ import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskDao;
 import com.example.note_and_todo_app.databinding.ActivityMainBinding;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -34,10 +38,7 @@ public class MainActivity extends AppCompatActivity {
 		hideSystemUI();
 
 		setUpNavigation();
-
-		TaskDao taskDao = Database.getInstance(getApplicationContext()).taskDao();
-		List<TaskCategory> categories = taskDao.getAllCategory();
-		Log.i(TAG, categories.size() + "");
+		configBannerAds();
 	}
 
 	private void setUpNavigation() {
@@ -48,5 +49,11 @@ public class MainActivity extends AppCompatActivity {
 		WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), binding.getRoot());
 		controller.hide(WindowInsetsCompat.Type.systemBars());
 		controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+	}
+
+	private void configBannerAds() {
+		MobileAds.initialize(this);
+		AdRequest request = new AdRequest.Builder().build();
+		binding.adView.loadAd(request);
 	}
 }

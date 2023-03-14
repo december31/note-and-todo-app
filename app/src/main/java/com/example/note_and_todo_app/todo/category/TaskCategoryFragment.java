@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app.todo.category;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,10 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import com.example.note_and_todo_app.R;
+import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.databinding.FragmentTaskCategoryBinding;
+import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,23 +28,23 @@ import org.jetbrains.annotations.NotNull;
 public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapter.OnTaskCategoryItemClickListener {
     private final String TAG = TaskCategoryFragment.class.getSimpleName();
     public TaskCategoryFragment() {
-        viewModel = new TaskCategoryViewModel(getContext());
-        adapter = new TaskCategoryAdapter(this);
     }
     private FragmentTaskCategoryBinding binding;
-    private final TaskCategoryViewModel viewModel;
-    private final TaskCategoryAdapter adapter;
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment fragment_todo_category.
-     */
+    private TaskCategoryViewModel viewModel;
+    private TaskCategoryAdapter adapter;
+
     public static TaskCategoryFragment newInstance() {
         TaskCategoryFragment fragment = new TaskCategoryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(@NonNull @NotNull Context context) {
+        super.onAttach(context);
+        viewModel = new TaskCategoryViewModel(getContext());
+        adapter = new TaskCategoryAdapter(this);
     }
 
     @Override
@@ -61,7 +67,7 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
         viewModel.fetchAllCategories();
     }
 
-    CreateCategoryDialog.OnCreateDialogResult dialogResult = new CreateCategoryDialog.OnCreateDialogResult() {
+    OnCreateDialogResult dialogResult = new OnCreateDialogResult() {
         @Override
         public void onConfirm() {
             viewModel.fetchAllCategories();
@@ -79,6 +85,11 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
             new CreateCategoryDialog(dialogResult).show(getParentFragmentManager(), "create category");
         } else {
             Log.i(TAG, "to do go to task list");
+            Bundle bundle = new Bundle();
+            bundle.putLong(Constants.CATEGORY_ID, data.getId());
+            bundle.putString(Constants.CATEGORY_TITLE, data.getTitle());
+            Navigation.findNavController(
+                    requireView()).navigate(R.id.action_fragment_main_nav_to_fragment_task_list,bundle);
         }
     }
 }

@@ -21,7 +21,6 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 
 	private ArrayList<TaskCategory> items = new ArrayList<>();
 	private OnTaskCategoryItemClickListener listener;
-	private int lastPosition = 1;
 
 	TaskCategoryAdapter(OnTaskCategoryItemClickListener listener) {
 		this.listener = listener;
@@ -40,7 +39,6 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 
 	@Override
 	public void onBindViewHolder(@NonNull @NotNull TaskCategoryViewHolder holder, int position) {
-		if (items.size() == 0) return;
 		TaskCategory item;
 		if (position < items.size()) {
 			item = items.get(position);

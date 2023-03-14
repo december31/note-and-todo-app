@@ -16,17 +16,29 @@ public class Task {
 	private Long createdAt;
 	private String title;
 	private TaskState state;
-
-	public Task() {
-	}
+	private Long dueDate;
 
 	@Ignore
-	public Task(Long id, Long categoryId, Long createdAt, String title, TaskState state) {
+	public Task(Long id, Long categoryId, Long createdAt, String title, TaskState state, Long dueDate) {
 		this.id = id;
 		this.categoryId = categoryId;
 		this.createdAt = createdAt;
 		this.title = title;
 		this.state = state;
+		this.dueDate = dueDate;
+	}
+
+	@Ignore
+	public Task(Long categoryId, Long createdAt, String title, TaskState state, Long dueDate) {
+		this.categoryId = categoryId;
+		this.createdAt = createdAt;
+		this.title = title;
+		this.state = state;
+		this.dueDate = dueDate;
+	}
+
+
+	public Task() {
 	}
 
 	public Long getId() {
@@ -67,5 +79,13 @@ public class Task {
 
 	public void setState(TaskState state) {
 		this.state = state;
+	}
+
+	public Long getDueDate() {
+		return dueDate;
+	}
+
+	public void setDueDate(Long dueDate) {
+		this.dueDate = dueDate;
 	}
 }
