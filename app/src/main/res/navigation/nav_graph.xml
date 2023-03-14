@@ -9,5 +9,36 @@
         android:id="@+id/fragment_main_nav"
         android:name="com.example.note_and_todo_app.MainNavFragment"
         tools:layout="@layout/fragment_main_nav"/>
+    <fragment
+        android:id="@+id/noteDetail"
+        android:name="com.example.note_and_todo_app.note.NoteDetailFragment"
+        android:label="fragment_note_detail"
+        tools:layout="@layout/fragment_note_detail" >
+        <action
+            android:id="@+id/action_noteDetail_to_fragment_note"
+            app:destination="@id/noteFragment" />
+        <argument android:name="noteDetail" />
+    </fragment>
+    <fragment
+        android:id="@+id/noteFragment"
+        android:name="com.example.note_and_todo_app.note.NoteFragment"
+        tools:layout="@layout/fragment_note">
+        <action
+            android:id="@+id/action_fragment_note_to_noteDetail"
+            app:destination="@id/noteDetail" />
+        <action
+            android:id="@+id/action_fragment_note_to_addNoteFragment"
+            app:destination="@id/addNoteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addNoteFragment"
+        android:name="com.example.note_and_todo_app.AddNoteFragment"
+        android:label="fragment_add_note"
+        tools:layout="@layout/fragment_add_note" >
+        <action
+            android:id="@+id/action_addNoteFragment_to_fragment_note"
+            app:destination="@id/noteFragment" />
+    </fragment>
+
 
 </navigation>
