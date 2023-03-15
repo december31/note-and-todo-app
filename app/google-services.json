@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "727370145959",
+    "project_id": "note-and-todo-8980a",
+    "storage_bucket": "note-and-todo-8980a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727370145959:android:91e2db6f2884c747363b82",
+        "android_client_info": {
+          "package_name": "com.harian.noteandtodolist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "727370145959-mo17mdu1c7bnigq3f7en1nss7s2s7u4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzo1xgCtJzOJ0xJOBcNOxYDcGMTOqp9lk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "727370145959-mo17mdu1c7bnigq3f7en1nss7s2s7u4a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

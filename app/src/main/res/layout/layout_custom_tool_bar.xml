@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingVertical="12dp"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:paddingVertical="12dp"
+    android:paddingHorizontal="20dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_left"
+        android:src="@drawable/ic_home"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/title"
+        tools:text="Title"
+        android:textSize="22sp"
+        android:textAllCaps="false"
+        android:textStyle="bold"
         android:paddingHorizontal="20dp"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_toEndOf="@id/ic_left"
+        android:layout_toStartOf="@id/ic_right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ic_left"
-            android:src="@drawable/ic_home"
-            android:layout_alignParentStart="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-        <TextView
-            android:id="@+id/title"
-            tools:text="Title"
-            android:textSize="24sp"
-            android:textAllCaps="true"
-            android:textStyle="bold"
-            android:paddingHorizontal="20dp"
-            android:textColor="@color/black"
-            android:textAlignment="center"
-            android:layout_toEndOf="@id/ic_left"
-            android:layout_toStartOf="@id/ic_right"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/ic_right"
-            android:src="@drawable/ic_options"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </RelativeLayout>
-</layout>
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ic_right"
+        android:src="@drawable/ic_options"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

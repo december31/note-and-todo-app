@@ -10,7 +10,7 @@ import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskDao;
 
-@androidx.room.Database(entities = {Task.class, TaskCategory.class, Note.class}, version = 1)
+@androidx.room.Database(entities = {Task.class, TaskCategory.class, Note.class}, version = 1, exportSchema = false)
 public abstract class Database extends RoomDatabase {
 	public abstract TaskDao taskDao();
 	public abstract NoteDao noteDao();

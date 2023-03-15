@@ -1,71 +1,108 @@
 package com.example.note_and_todo_app.database.task;
 
-import androidx.annotation.NonNull;
 import androidx.room.*;
-
-import java.util.Date;
+import com.example.note_and_todo_app.base.BaseItem;
 
 @Entity(tableName = "task")
-public class Task {
-	@PrimaryKey(autoGenerate = true)
-	private Long id;
+public class Task extends BaseItem {
+    @PrimaryKey(autoGenerate = true)
+    private Long id;
 
-	@ColumnInfo(name = "category_id")
-	private Long categoryId;
-	@ColumnInfo(name = "create_at")
-	private Long createdAt;
-	private String title;
-	private TaskState state;
+    @ColumnInfo(name = "category_id")
+    private Long categoryId;
+    @ColumnInfo(name = "create_at")
+    private Long createdAt;
+    private String title;
+    private TaskState state;
+    private Long dueDate;
 
-	public Task() {
-	}
+    @Ignore
+    public Task(Long id, Long categoryId, Long createdAt, String title, TaskState state, Long dueDate) {
+        this.id = id;
+        this.categoryId = categoryId;
+        this.createdAt = createdAt;
+        this.title = title;
+        this.state = state;
+        this.dueDate = dueDate;
+    }
 
-	@Ignore
-	public Task(Long id, Long categoryId, Long createdAt, String title, TaskState state) {
-		this.id = id;
-		this.categoryId = categoryId;
-		this.createdAt = createdAt;
-		this.title = title;
-		this.state = state;
-	}
+    @Ignore
+    public Task(Long categoryId, Long createdAt, String title, TaskState state, Long dueDate) {
+        this.categoryId = categoryId;
+        this.createdAt = createdAt;
+        this.title = title;
+        this.state = state;
+        this.dueDate = dueDate;
+    }
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public Task() {
+    }
 
-	public Long getCategoryId() {
-		return categoryId;
-	}
+    @Override
+    public Long getId() {
+        return id;
+    }
 
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public Long getCreatedAt() {
-		return createdAt;
-	}
+    public Long getCategoryId() {
+        return categoryId;
+    }
 
-	public void setCreatedAt(Long createdAt) {
-		this.createdAt = createdAt;
-	}
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public Long getCreatedAt() {
+        return createdAt;
+    }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+    public void setCreatedAt(Long createdAt) {
+        this.createdAt = createdAt;
+    }
 
-	public TaskState getState() {
-		return state;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public void setState(TaskState state) {
-		this.state = state;
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public TaskState getState() {
+        return state;
+    }
+
+    public void setState(TaskState state) {
+        this.state = state;
+    }
+
+    public Long getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(Long dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    @Override
+    public int compareTo(BaseItem o) {
+        Task that = (Task) o;
+        if (
+                this.id.equals(that.id) &&
+                this.categoryId.equals(that.categoryId) &&
+                this.createdAt.equals(that.createdAt) &&
+                this.title.equals(that.title) &&
+                this.state.equals(that.state) &&
+                this.dueDate.equals(that.dueDate)
+        ) {
+            return 0;
+        } else if (this.id < that.id) {
+            return -1;
+        }
+        return 1;
+    }
 }

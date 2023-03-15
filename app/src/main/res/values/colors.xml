@@ -10,8 +10,8 @@
     <color name="gray">#e6e6e6</color>
     <color name="dark_gray">#495057</color>
     <color name="blue">#4583ff</color>
-    <color name="faded_blue">#404583ff</color>
     <color name="transparent">#00000000</color>
+    <color name="faded_blue">#404583ff</color>
     <color name="shadow_hack_level_9">#80000000</color>
     <color name="shadow_hack_level_8">#73000000</color>
     <color name="shadow_hack_level_7">#66000000</color>
