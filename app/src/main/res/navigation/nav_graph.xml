@@ -8,7 +8,11 @@
     <fragment
         android:id="@+id/fragment_main_nav"
         android:name="com.example.note_and_todo_app.MainNavFragment"
-        tools:layout="@layout/fragment_main_nav"/>
+        tools:layout="@layout/fragment_main_nav">
+        <action
+            android:id="@+id/action_fragment_main_nav_to_fragment_task_list"
+            app:destination="@id/fragment_task_list" />
+    </fragment>
     <fragment
         android:id="@+id/noteDetail"
         android:name="com.example.note_and_todo_app.note.NoteDetailFragment"
@@ -38,12 +42,6 @@
         <action
             android:id="@+id/action_addNoteFragment_to_fragment_note"
             app:destination="@id/noteFragment" />
-    </fragment>
-
-        tools:layout="@layout/fragment_main_nav">
-        <action
-            android:id="@+id/action_fragment_main_nav_to_fragment_task_list"
-            app:destination="@id/fragment_task_list" />
     </fragment>
 
     <fragment

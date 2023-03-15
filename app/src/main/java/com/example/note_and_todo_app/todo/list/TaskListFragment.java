@@ -79,7 +79,7 @@ public class TaskListFragment extends Fragment {
 
     private void setupListener() {
         binding.newTaskButton.setOnClickListener(v -> {
-            new CreateTaskDialog(dialogResult).show(getParentFragmentManager(), "create task");
+            new CreateTaskDialog(dialogResult, viewModel.categoryId).show(getParentFragmentManager(), "create task");
         });
     }
 
@@ -87,8 +87,13 @@ public class TaskListFragment extends Fragment {
         viewModel.tasksListLiveData.observe(getViewLifecycleOwner(), adapter::updateItems);
         binding.rv.setAdapter(adapter);
         viewModel.fetchItems();
-
         setupToolBar();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.fetchItems();
     }
 
     private void setupToolBar() {

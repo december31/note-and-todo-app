@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app.todo.category;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -9,9 +10,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.note_and_todo_app.R;
+import com.example.note_and_todo_app.base.CustomDiffUtilsCallback;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.databinding.LayoutTaskCategoryItemBinding;
+import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,8 +24,8 @@ import java.util.List;
 
 public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapter.TaskCategoryViewHolder> {
 
-	private ArrayList<TaskCategory> items = new ArrayList<>();
-	private OnTaskCategoryItemClickListener listener;
+	private final ArrayList<TaskCategory> items = new ArrayList<>();
+	private final OnTaskCategoryItemClickListener listener;
 
 	TaskCategoryAdapter(OnTaskCategoryItemClickListener listener) {
 		this.listener = listener;
@@ -47,6 +52,7 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 			item = null;
 		}
 		holder.binding.getRoot().setOnClickListener(v -> listener.onItemClick(item));
+		setAnimation(holder.binding.getRoot(), position);
 	}
 
 	@Override
@@ -56,8 +62,17 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 
 	@SuppressLint("NotifyDataSetChanged")
 	public void updateItem(List<TaskCategory> categories) {
-		this.items = (ArrayList<TaskCategory>) categories;
-		notifyDataSetChanged();
+		DiffUtil.DiffResult result = DiffUtil.calculateDiff(new CustomDiffUtilsCallback<>(items, categories));
+		items.clear();
+		items.addAll(categories);
+		result.dispatchUpdatesTo(this);
+	}
+
+	private void setAnimation(View view, int position) {
+		Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_fall_down);
+		animation.setStartOffset(position * Constants.ANIMATION_OFFSET);
+		animation.setDuration(Constants.ANIMATION_DURATION);
+		view.startAnimation(animation);
 	}
 
 	protected static class TaskCategoryViewHolder extends RecyclerView.ViewHolder {

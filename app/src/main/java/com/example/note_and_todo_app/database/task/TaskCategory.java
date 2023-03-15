@@ -4,9 +4,10 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import com.example.note_and_todo_app.base.BaseItem;
 
 @Entity(tableName = "task_category")
-public class TaskCategory {
+public class TaskCategory extends BaseItem {
 	@PrimaryKey(autoGenerate = true)
 	private Long id;
 	private String title;
@@ -29,6 +30,7 @@ public class TaskCategory {
 
 	public TaskCategory() {}
 
+	@Override
 	public Long getId() {
 		return id;
 	}
@@ -59,5 +61,22 @@ public class TaskCategory {
 
 	public void setNumberOfItem(Integer numberOfItem) {
 		this.numberOfItem = numberOfItem;
+	}
+
+	@Ignore
+	@Override
+	public int compareTo(BaseItem o) {
+		TaskCategory that = (TaskCategory) o;
+		if (
+				this.id.equals(that.id) &&
+				this.title.equals(that.title) &&
+				this.createAt.equals(that.createAt) &&
+				this.numberOfItem.equals(that.numberOfItem)
+		) {
+			return 0;
+		} else if (this.id < that.id) {
+			return -1;
+		}
+		return 1;
 	}
 }

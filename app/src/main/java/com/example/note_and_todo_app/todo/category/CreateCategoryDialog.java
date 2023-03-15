@@ -6,6 +6,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +60,12 @@ public class CreateCategoryDialog extends DialogFragment {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (count == 0) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s.length() == 0) {
 					binding.saveButton.setEnabled(false);
 					if (getContext() != null) {
 						binding.saveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.faded_blue));
@@ -69,11 +76,6 @@ public class CreateCategoryDialog extends DialogFragment {
 						binding.saveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
 					}
 				}
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-
 			}
 		});
 
@@ -86,6 +88,7 @@ public class CreateCategoryDialog extends DialogFragment {
 			dismiss();
 			listener.onCancel();
 		});
+		binding.editText.setOnKeyListener((v, keyCode, event) -> keyCode == KeyEvent.KEYCODE_ENTER);
 	}
 
 	@Override
@@ -100,7 +103,7 @@ public class CreateCategoryDialog extends DialogFragment {
 	}
 
 	private void addNewCategory() {
-		String title = Objects.requireNonNull(binding.editText.getText()).toString();
+		String title = Objects.requireNonNull(binding.editText.getText()).toString().trim();
 		Database.getInstance(getContext()).taskDao().insertCategory(new TaskCategory(title, new Date().getTime()));
 	}
 }

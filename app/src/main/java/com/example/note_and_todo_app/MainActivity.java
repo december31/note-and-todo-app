@@ -1,8 +1,11 @@
 package com.example.note_and_todo_app;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.view.WindowCompat;
@@ -17,6 +20,7 @@ import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskDao;
 import com.example.note_and_todo_app.databinding.ActivityMainBinding;
+import com.example.note_and_todo_app.utils.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
@@ -34,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		binding = ActivityMainBinding.inflate(LayoutInflater.from(this), null, false);
+
+		supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
 		setContentView(binding.getRoot());
 		hideSystemUI();
 
@@ -53,7 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
 	private void configBannerAds() {
 		MobileAds.initialize(this);
+		AdView adView = new AdView(this);
+		adView.setAdSize(new AdSize(displayWidth(), Constants.BANNER_ADS_HEIGHT));
+		adView.setAdUnitId(Constants.BANNER_ADS_ID);
+		binding.adViewContainer.addView(adView);
+
 		AdRequest request = new AdRequest.Builder().build();
-		binding.adView.loadAd(request);
+		adView.loadAd(request);
 	}
+
+	private int displayWidth() {
+		DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
+		return (int) (displayMetrics.widthPixels / displayMetrics.density);
+	}
+
 }

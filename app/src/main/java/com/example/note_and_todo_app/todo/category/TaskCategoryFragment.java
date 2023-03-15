@@ -67,6 +67,12 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
         viewModel.fetchAllCategories();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        viewModel.fetchAllCategories();
+    }
+
     OnCreateDialogResult dialogResult = new OnCreateDialogResult() {
         @Override
         public void onConfirm() {
