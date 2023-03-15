@@ -12,6 +12,6 @@ public class Constants {
     public static final DateTimeFormatter DATE_TIME_FORMATTER_1 = DateTimeFormatter.ofPattern("dd MMMM yyyy hh:mm");
     public static final Long CATEGORY_ID_DEFAULT = -1L;
 
-    public static final Long ANIMATION_DURATION = 700L;
-    public static final Long ANIMATION_OFFSET = 100L;
+    public static final Long ANIMATION_DURATION = 400L;
+    public static final Long ANIMATION_OFFSET = 50L;
 }

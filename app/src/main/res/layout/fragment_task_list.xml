@@ -37,7 +37,7 @@
                 android:layout_marginTop="20dp"
                 tools:listitem="@layout/layout_task_item"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent"/>
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

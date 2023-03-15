@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="54dp"
     android:paddingVertical="12dp"
     android:paddingHorizontal="20dp"
     xmlns:tools="http://schemas.android.com/tools">
@@ -16,7 +16,7 @@
     <TextView
         android:id="@+id/title"
         tools:text="Title"
-        android:textSize="22sp"
+        android:textSize="22dp"
         android:textAllCaps="false"
         android:textStyle="bold"
         android:paddingHorizontal="20dp"

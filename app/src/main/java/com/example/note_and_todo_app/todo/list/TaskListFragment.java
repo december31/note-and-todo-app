@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import androidx.navigation.Navigation;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
+import com.example.note_and_todo_app.database.task.Task;
+import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.FragmentTaskListBinding;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
@@ -24,11 +26,11 @@ import org.jetbrains.annotations.NotNull;
  * Use the {@link TaskListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements TaskListAdapter.OnTaskStatusChangeListener {
     private final String TAG = TaskListFragment.class.getSimpleName();
     private FragmentTaskListBinding binding;
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
-    private final TaskListAdapter adapter = new TaskListAdapter();
+    private final TaskListAdapter adapter = new TaskListAdapter(this);
     private Bundle arguments;
 
     /**
@@ -100,5 +102,11 @@ public class TaskListFragment extends Fragment {
         binding.toolbar.title.setText(arguments != null ? arguments.getString(Constants.CATEGORY_TITLE) : "Tasks");
         binding.toolbar.icLeft.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
         binding.toolbar.icLeft.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_back));
+    }
+
+    @Override
+    public void onStatusChange(Task task, boolean status, int position) {
+        task.setState(status? TaskState.DONE:TaskState.PROCESSING);
+        adapter.updateItems(task, position);
     }
 }

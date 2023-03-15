@@ -16,7 +16,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/tasks_count_container"
-            android:backgroundTint="@color/gray"
+            android:backgroundTint="@color/light_gray"
             android:layout_width="22dp"
             android:layout_height="22dp"
             app:cardCornerRadius="30dp"

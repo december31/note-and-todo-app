@@ -69,7 +69,12 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 	}
 
 	private void setAnimation(View view, int position) {
-		Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_fall_down);
+		Animation animation;
+		if (position % 2 == 0) {
+			animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_slide_from_left);
+		} else {
+			animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_slide_from_right);
+		}
 		animation.setStartOffset(position * Constants.ANIMATION_OFFSET);
 		animation.setDuration(Constants.ANIMATION_DURATION);
 		view.startAnimation(animation);
