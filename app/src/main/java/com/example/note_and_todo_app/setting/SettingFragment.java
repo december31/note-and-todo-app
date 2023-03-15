@@ -7,6 +7,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.jetbrains.annotations.Nullable;
 
 import com.example.note_and_todo_app.R;
 
@@ -44,13 +47,19 @@ public class SettingFragment extends Fragment {
         return fragment;
     }
 
+    private TextView textView6;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
+       
+        
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override

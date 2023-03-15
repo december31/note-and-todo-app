@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="412dp"
+        android:layout_height="50dp"
+        android:paddingLeft="12sp"
+        android:paddingTop="10sp"
+        android:text="Choose a language"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioButton
+        android:id="@+id/radioButton"
+        android:layout_width="404dp"
+        android:layout_height="50dp"
+        android:text="English"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="3dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton1"
+        android:layout_width="404dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="48dp"
+        android:text="China"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="3dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton1"
+        android:layout_width="404dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="220dp"
+        android:text="China"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton2"
+        android:layout_width="404dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="168dp"
+        android:text="Nederlands"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <RadioButton
+        android:id="@+id/radioButton3"
+        android:layout_width="404dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="108dp"
+        android:text="VietNamese"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@+id/textView11"
+        tools:layout_editor_absoluteX="0dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>
