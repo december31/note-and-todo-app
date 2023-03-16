@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.task.Task;
@@ -26,7 +27,7 @@ import org.jetbrains.annotations.NotNull;
  * Use the {@link TaskListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskListFragment extends Fragment implements TaskListAdapter.OnTaskStatusChangeListener {
+public class TaskListFragment extends Fragment implements TaskListAdapter.TaskItemListener {
     private final String TAG = TaskListFragment.class.getSimpleName();
     private FragmentTaskListBinding binding;
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
@@ -107,6 +108,15 @@ public class TaskListFragment extends Fragment implements TaskListAdapter.OnTask
     @Override
     public void onStatusChange(Task task, boolean status, int position) {
         task.setState(status? TaskState.DONE:TaskState.PROCESSING);
-        adapter.updateItems(task, position);
+        viewModel.updateDatabase(task);
+        if (!binding.rv.isComputingLayout() && binding.rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+            adapter.updateItems(task, position);
+        }
+    }
+
+    @Override
+    public void deleteTask(Task task, int position) {
+        viewModel.updateDatabase(task);
+        adapter.deleteItem(position);
     }
 }

@@ -13,16 +13,22 @@ import java.util.List;
 public class TaskListViewModel extends ViewModel {
 
     Long categoryId;
-    @SuppressLint("StaticFieldLeak")
-    private final Context context;
     public MutableLiveData<List<Task>> tasksListLiveData = new MutableLiveData<>();
+    private final TaskDao taskDao;
     public TaskListViewModel(Context context) {
-        this.context = context;
+        taskDao = Database.getInstance(context).taskDao();
     }
 
     public void fetchItems() {
-        TaskDao taskDao = Database.getInstance(context).taskDao();
         List<Task> tasks = taskDao.getTaskByCategory(categoryId);
         tasksListLiveData.postValue(tasks);
+    }
+
+    public void updateDatabase(Task task) {
+        taskDao.update(task);
+    }
+
+    public void deleteTask(Task task) {
+        taskDao.delete(task);
     }
 }
