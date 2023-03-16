@@ -6,6 +6,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -15,17 +16,18 @@ public interface NoteDao {
     LiveData<List<Note>> getAllNote();
 
 
-    @Query("SELECT * FROM note WHERE id IN (:userIds)")
-    List<Note> loadAllByIds(int[] userIds);
+    @Query("SELECT * FROM note WHERE id = :noteId ")
+    Note getNote(Long noteId);
 
-    @Query("SELECT * FROM note WHERE title LIKE :first AND " +
-            "info LIKE :last LIMIT 1")
-    Note findByName(String first, String last);
+    @Query("SELECT * FROM note WHERE title LIKE :title  LIMIT 1")
+    Note findByTitle(String title);
 
     @Insert
     void insertAll(Note... users);
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(Note note);
+    @Insert
+    long insertNote(Note note);
     @Delete
     void delete(Note note);
+    @Update
+    void update(Note note);
 }

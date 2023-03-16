@@ -1,9 +1,14 @@
 package com.example.note_and_todo_app.note;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.navigation.NavDirections;
@@ -15,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.task.TaskCategory;
+import com.example.note_and_todo_app.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,7 +30,7 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> {
 
 
     private List<Note> items  ;
-
+    private int positionNotify = 0;
     protected NoteApdapter(@NonNull DiffUtil.ItemCallback<Note> diffCallback) {
         super(diffCallback);
     }
@@ -32,14 +38,16 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> {
 
     @SuppressLint("NotifyDataSetChanged")
     public void updateItem(List<Note> notes) {
-        this.items = (ArrayList<Note>) notes;
-        notifyDataSetChanged();
+        this.items =  notes;
+        notifyItemChanged(positionNotify);
+       // notifyDataSetChanged();
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate( R.layout.layout_note_item,parent,false);
+        view.findViewById(R.id.checkBox).setVisibility(View.GONE);
         return new ViewHolder(view);
     }
 
@@ -52,15 +60,17 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> {
         holder.title.setText(listData.getTitle());
         holder.info.setText(listData.getInfo());
         holder.date.setText(listData.getDate());
-        holder.cardNote.setOnClickListener(new View.OnClickListener(){
 
+        holder.cardNote.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-               Navigation.findNavController(holder.itemView).navigate(R.id.addNoteFragment);
+                Bundle bundle = new Bundle();
+                bundle.putLong("idEdit",listData.getId());
+               Navigation.findNavController(holder.itemView).navigate(R.id.addNoteFragment,bundle);
             }
         });
-
-
+        setAnimation(holder.itemView,position);
+        positionNotify = position;
     }
 
     @Override
@@ -69,6 +79,13 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> {
             return items.size();
         }
         return  0;
+    }
+    private void setAnimation(View view, int position) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_fall_down);
+        animation.setStartOffset(position * Constants.ANIMATION_OFFSET);
+        animation.setDuration(Constants.ANIMATION_DURATION);
+        view.startAnimation(animation);
+
     }
     static class WordDiff extends DiffUtil.ItemCallback<Note> {
 
