@@ -11,10 +11,12 @@ import java.util.List;
 public class NoteViewModel extends AndroidViewModel {
     private NoteRepository noteRepository;
     private final LiveData<List<Note>> allNote;
+//    private final LiveData<List<Note>> queryId;
     public NoteViewModel(@NonNull Application application) {
         super(application);
         noteRepository = new NoteRepository(application);
         allNote = noteRepository.getAllNote();
+
     }
     public LiveData<List<Note>> getAllNote(){
         return allNote;
@@ -22,4 +24,14 @@ public class NoteViewModel extends AndroidViewModel {
     public  void  insert(Note note){
         noteRepository.insert(note);
     }
+    public  long addNote(Note note){
+        return noteRepository.add(note);
+    }
+    public  void update(Note note){
+        noteRepository.update(note);
+    }
+    public void delete(Note note){
+        noteRepository.delete(note);
+    }
+    public  void find(Note note){noteRepository.find(note);}
 }

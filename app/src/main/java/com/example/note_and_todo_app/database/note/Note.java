@@ -2,6 +2,7 @@ package com.example.note_and_todo_app.database.note;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 
@@ -12,8 +13,17 @@ public class Note {
 	@PrimaryKey(autoGenerate = true)
 	private Long id;
 
-
+	public Note(){
+	}
+	@Ignore
 	public Note(String title, String info, String date) {
+		this.title = title;
+		this.info = info;
+		this.date = date;
+	}
+	@Ignore
+	public Note(Long id, String title, String info, String date) {
+		this.id = id;
 		this.title = title;
 		this.info = info;
 		this.date = date;
