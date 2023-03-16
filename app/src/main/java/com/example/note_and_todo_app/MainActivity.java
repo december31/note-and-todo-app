@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app;
 
+import android.content.Context;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.inputmethod.InputMethodManager;
+
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -69,7 +72,21 @@ public class MainActivity extends AppCompatActivity {
 		AdRequest request = new AdRequest.Builder().build();
 		adView.loadAd(request);
 	}
+	public void closeKeyboard()
+	{
+		View view = this.getCurrentFocus();
 
+		if (view != null) {
+
+			InputMethodManager manager
+					= (InputMethodManager)
+					getSystemService(
+							Context.INPUT_METHOD_SERVICE);
+			manager
+					.hideSoftInputFromWindow(
+							view.getWindowToken(), 0);
+		}
+	}
 	private int displayWidth() {
 		DisplayMetrics displayMetrics = this.getResources().getDisplayMetrics();
 		return (int) (displayMetrics.widthPixels / displayMetrics.density);

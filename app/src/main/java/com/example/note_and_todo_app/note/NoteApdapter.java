@@ -8,17 +8,32 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note_and_todo_app.R;
+import com.example.note_and_todo_app.database.note.Note;
+import com.example.note_and_todo_app.database.task.TaskCategory;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class NoteApdapter extends RecyclerView.Adapter<ViewHolder> {
-    List<Data> data ;
-    public NoteApdapter(List<Data> data) {
+public class NoteApdapter extends ListAdapter<Note,ViewHolder> {
 
-        this.data = data;
+
+    private List<Note> items  ;
+
+    protected NoteApdapter(@NonNull DiffUtil.ItemCallback<Note> diffCallback) {
+        super(diffCallback);
+    }
+
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateItem(List<Note> notes) {
+        this.items = (ArrayList<Note>) notes;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -30,28 +45,43 @@ public class NoteApdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
-        Data listData = data.get(position);
+        Note listData = items.get(position);
+        if(listData == null){
+            return;
+        }
         holder.title.setText(listData.getTitle());
         holder.info.setText(listData.getInfo());
-        holder.date.setText(listData.getDate().toString());
+        holder.date.setText(listData.getDate());
         holder.cardNote.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
-               Navigation.findNavController(holder.itemView).navigate(R.id.noteDetail);
+               Navigation.findNavController(holder.itemView).navigate(R.id.addNoteFragment);
             }
         });
 
 
     }
 
-
     @Override
     public int getItemCount() {
-        return data.size();
+        if(items !=null){
+            return items.size();
+        }
+        return  0;
     }
-    // allows clicks events to be caught
+    static class WordDiff extends DiffUtil.ItemCallback<Note> {
+
+        @Override
+        public boolean areItemsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+            return oldItem == newItem;
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Note oldItem, @NonNull Note newItem) {
+            return oldItem.getTitle().equals(newItem.getTitle());
+        }
+    }
 
 
-    // parent activity will implement this method to respond to click events
 }
