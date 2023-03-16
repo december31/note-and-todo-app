@@ -36,7 +36,7 @@
     </fragment>
     <fragment
         android:id="@+id/addNoteFragment"
-        android:name="com.example.note_and_todo_app.AddNoteFragment"
+        android:name="com.example.note_and_todo_app.note.AddNoteFragment"
         android:label="fragment_add_note"
         tools:layout="@layout/fragment_add_note" >
         <action
