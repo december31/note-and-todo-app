@@ -87,6 +87,7 @@ public class DtNoteFragment extends Fragment {
         String title = textTitle.getText().toString();
         String date = textDate.getText().toString();
         String info = textInfo.getText().toString();
+       
         if(update!= null){
             note = new Note(update.getId(),title,info,date);
         }else {

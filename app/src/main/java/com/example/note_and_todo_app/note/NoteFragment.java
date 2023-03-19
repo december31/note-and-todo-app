@@ -1,9 +1,12 @@
 package com.example.note_and_todo_app.note;
 
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -11,20 +14,19 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
+import androidx.appcompat.widget.SearchView;
+
 
 import com.example.note_and_todo_app.R;
-import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
-import com.example.note_and_todo_app.utils.Constants;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class NoteFragment extends Fragment  {
@@ -32,7 +34,7 @@ public class NoteFragment extends Fragment  {
 	RecyclerView recyclerView;
 	NoteViewModel noteViewModel;
 	List<Note> note;
-
+	SearchView searchView;
 
 	public static NoteFragment newInstance() {
 		NoteFragment fragment = new NoteFragment();
@@ -64,8 +66,25 @@ public class NoteFragment extends Fragment  {
 			}
 		});
 
+		//search view
+		searchView = view.findViewById(R.id.searchNote);
+		//searchView.clearFocus();
+		searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+			@Override
+			public boolean onQueryTextSubmit(String query) {
+				noteApdapter.getFilter().filter(query);
+				return false;
+			}
+
+			@Override
+			public boolean onQueryTextChange(String newText) {
+				noteApdapter.getFilter().filter(newText);
+				return false;
+			}
+		});
 		return view;
     }
+
 
 
 }
