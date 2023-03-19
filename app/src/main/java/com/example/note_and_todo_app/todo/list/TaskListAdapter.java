@@ -13,20 +13,27 @@ import com.example.note_and_todo_app.base.CustomDiffUtilsCallback;
 import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.LayoutTaskItemBinding;
+import com.example.note_and_todo_app.todo.TaskListener;
 import com.example.note_and_todo_app.utils.Constants;
+import com.google.android.gms.tasks.Tasks;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder> {
-
     private final List<Task> items = new ArrayList<>();
-    private final Map<Integer, Boolean> hasAnimated = new HashMap<>();
+    private final Map<Long, Boolean> hasAnimated = new HashMap<>();
+    private TaskListener listener;
 
-    private final TaskItemListener listener;
+    public TaskListAdapter(TaskListener listener) {
+        this.listener = listener;
+    }
 
-    public TaskListAdapter(TaskItemListener listener) {
+    public TaskListAdapter() {
+    }
+
+    public void setListener(TaskListener listener) {
         this.listener = listener;
     }
 
@@ -51,18 +58,32 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     }
 
     public void updateItems(Task task, int position) {
+//        items.remove(position);
+//        if (task.getState()==TaskState.DONE) {
+//            items.add(task);
+//        } else {
+//            items.add(0, task);
+//        }
+//        notifyDataSetChanged();
         items.set(position, task);
         notifyItemChanged(position);
+//        if (task.getState() == TaskState.DONE) {
+//            Collections.swap(items, position, items.size()-1);
+//            notifyItemMoved(position, items.size()-1);
+//            notifyItemChanged(position);
+//            notifyItemChanged(items.size()-1);
+//        } else {
+//            Collections.swap(items, position, 0);
+//            notifyItemMoved(position, 0);
+//            notifyItemChanged(position);
+//            notifyItemChanged(0);
+//        }
     }
 
     public void deleteItem(int position) {
         items.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, items.size());
-    }
-
-    public void swapItem(int from, int to) {
-        notifyItemMoved(from, to);
     }
 
     private void setAnimation(View view, int position, OnAnimationEndListener animationEndListener) {
@@ -116,36 +137,28 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
 
         void bind(Task task, int position) {
             binding.setData(task);
-            binding.dueDate.setText(new SimpleDateFormat("dd/MM hh:mm", Locale.UK).format(new Date(task.getDueDate())));
+            binding.dueDate.setText(new SimpleDateFormat("dd/MM hh:mm", Locale.US).format(new Date(task.getDueDate())));
             binding.deleteButton.setOnClickListener(v -> listener.deleteTask(task, position));
-            binding.checkbox.setOnCheckedChangeListener((v, b) -> {
-                if (Boolean.TRUE.equals(hasAnimated.get(position))) {
-                    listener.onStatusChange(task, b, position);
+            binding.checkbox.setOnClickListener(v -> {
+                if (Boolean.TRUE.equals(hasAnimated.get(task.getId()))) {
+                    listener.onStatusChange(task, position);
                 }
             });
-            if (hasAnimated.get(position) == null) {
+            binding.streak.setVisibility(task.getState() == TaskState.DONE ? View.VISIBLE : View.GONE);
+            if (hasAnimated.get(task.getId()) == null) {
                 setAnimation(binding.getRoot(), position, () -> {
                     if (task.getState() == TaskState.DONE) {
                         binding.streak.setVisibility(View.VISIBLE);
                         setAnimationOnDone(binding.streak);
                     }
-                    hasAnimated.put(position, true);
+                    hasAnimated.put(task.getId(), true);
                 });
             } else {
-                binding.streak.setVisibility(task.getState() == TaskState.DONE ? View.VISIBLE : View.GONE);
                 if (task.getState() == TaskState.DONE) {
                     setAnimationOnDone(binding.streak);
-                } else {
-                    setAnimationOnDoneToProcessing(binding.streak);
                 }
             }
         }
-    }
-
-    public interface TaskItemListener {
-        void onStatusChange(Task task, boolean status, int position);
-
-        void deleteTask(Task task, int position);
     }
 
     public interface OnAnimationEndListener {

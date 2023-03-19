@@ -30,13 +30,16 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
     public TaskCategoryFragment() {
     }
     private FragmentTaskCategoryBinding binding;
-    private TaskCategoryViewModel viewModel;
+    public TaskCategoryViewModel viewModel;
     private TaskCategoryAdapter adapter;
+
+    public static TaskCategoryFragment INSTANCE;
 
     public static TaskCategoryFragment newInstance() {
         TaskCategoryFragment fragment = new TaskCategoryFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
+        INSTANCE = fragment;
         return fragment;
     }
 
@@ -58,6 +61,7 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupView();
+        setupListener();
     }
 
     private void setupView() {
@@ -67,10 +71,18 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
         viewModel.fetchAllCategories();
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        viewModel.fetchAllCategories();
+    private void setupListener() {
+        binding.allTask.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.KEY, Constants.ALL_TASK);
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_main_nav_to_fragment_all_task, bundle);
+        });
+
+        binding.next7Days.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.KEY, Constants.NEXT_7_DAYS);
+            Navigation.findNavController(requireView()).navigate(R.id.action_fragment_main_nav_to_fragment_all_task, bundle);
+        });
     }
 
     OnCreateDialogResult dialogResult = new OnCreateDialogResult() {

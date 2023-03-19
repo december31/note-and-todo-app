@@ -20,12 +20,15 @@ import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapter.TaskCategoryViewHolder> {
 
 	private final ArrayList<TaskCategory> items = new ArrayList<>();
 	private final OnTaskCategoryItemClickListener listener;
+	private final Map<Long, Boolean> hasAnimated = new HashMap<>();
 
 	TaskCategoryAdapter(OnTaskCategoryItemClickListener listener) {
 		this.listener = listener;
@@ -44,15 +47,8 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 
 	@Override
 	public void onBindViewHolder(@NonNull @NotNull TaskCategoryViewHolder holder, int position) {
-		TaskCategory item;
-		if (position < items.size()) {
-			item = items.get(position);
-			holder.binding.setData(items.get(position));
-		} else {
-			item = null;
-		}
-		holder.binding.getRoot().setOnClickListener(v -> listener.onItemClick(item));
-		setAnimation(holder.binding.getRoot(), position);
+		TaskCategory item = position < items.size() ? items.get(position) : null;
+		holder.bind(item, position);
 	}
 
 	@Override
@@ -60,7 +56,6 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 		return items.size() + 1;
 	}
 
-	@SuppressLint("NotifyDataSetChanged")
 	public void updateItem(List<TaskCategory> categories) {
 		DiffUtil.DiffResult result = DiffUtil.calculateDiff(new CustomDiffUtilsCallback<>(items, categories));
 		items.clear();
@@ -80,11 +75,22 @@ public class TaskCategoryAdapter extends RecyclerView.Adapter<TaskCategoryAdapte
 		view.startAnimation(animation);
 	}
 
-	protected static class TaskCategoryViewHolder extends RecyclerView.ViewHolder {
-		public LayoutTaskCategoryItemBinding binding;
+	protected class TaskCategoryViewHolder extends RecyclerView.ViewHolder {
+		private final LayoutTaskCategoryItemBinding binding;
 		public TaskCategoryViewHolder(@NonNull @NotNull LayoutTaskCategoryItemBinding binding) {
 			super(binding.getRoot());
 			this.binding = binding;
+		}
+
+		void bind(TaskCategory item, int position) {
+			binding.setData(item);
+			binding.getRoot().setOnClickListener(v -> listener.onItemClick(item));
+			if (item != null) {
+				if (!Boolean.TRUE.equals(hasAnimated.get(item.getId()))) {
+					setAnimation(binding.getRoot(), position);
+					hasAnimated.put(item.getId(), true);
+				}
+			}
 		}
 	}
 

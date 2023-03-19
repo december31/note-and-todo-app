@@ -1,6 +1,5 @@
 package com.example.note_and_todo_app.todo.list;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -24,8 +23,12 @@ public class TaskListViewModel extends ViewModel {
         tasksListLiveData.postValue(tasks);
     }
 
-    public void updateDatabase(Task task) {
-        taskDao.update(task);
+    public void updateDatabase(Task task, int action) {
+        if (action == Database.ACTION_UPDATE) {
+            taskDao.update(task);
+        } else if(action == Database.ACTION_DELETE) {
+            taskDao.delete(task);
+        }
     }
 
     public void deleteTask(Task task) {
