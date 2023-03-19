@@ -39,6 +39,9 @@ public class NoteRepository {
     void delete(Note note){
         noteDao.delete(note);
     }
-    void find(Note note){noteDao.findByTitle(note.getTitle());}
+
+    void  deleteAll(){
+        noteDao.deleteAll();
+    }
 
 }

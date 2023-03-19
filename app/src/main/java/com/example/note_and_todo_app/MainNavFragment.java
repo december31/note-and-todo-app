@@ -3,16 +3,24 @@ package com.example.note_and_todo_app;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
+
+import com.example.note_and_todo_app.database.note.NoteViewModel;
 import com.example.note_and_todo_app.databinding.FragmentMainNavBinding;
 import com.example.note_and_todo_app.note.NoteFragment;
 import com.example.note_and_todo_app.setting.SettingFragment;
@@ -61,7 +69,7 @@ public class MainNavFragment extends Fragment {
 	@Override
 	public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
+		setupListener();
 		setupBottomNavigation();
 		initiateView();
 	}
@@ -100,7 +108,36 @@ public class MainNavFragment extends Fragment {
 		});
 
 	}
+	void setupListener(){
 
+		NoteViewModel noteViewModel =  new ViewModelProvider((ViewModelStoreOwner) getContext()).get(NoteViewModel.class);
+
+		PopupMenu popupMenu = new PopupMenu(getContext(),mainNavBinding.toolbar.icRight);
+		popupMenu.getMenuInflater().inflate(R.menu.menu_note,popupMenu.getMenu());
+
+		popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+			@Override
+			public boolean onMenuItemClick(MenuItem item) {
+				if(mainNavBinding.viewPager.getCurrentItem() == 1){
+					noteViewModel.deleteAll();
+				}
+
+				return false;
+			}
+		});
+
+			mainNavBinding.toolbar.icRight.setOnClickListener(new View.OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					if(mainNavBinding.viewPager.getCurrentItem() == 1){
+					popupMenu.show();
+					}
+				}
+			});
+
+
+	}
 	private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
 
 		public ScreenSlidePagerAdapter(@NonNull @NotNull FragmentActivity fragmentActivity) {

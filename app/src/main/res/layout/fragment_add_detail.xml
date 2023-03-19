@@ -22,11 +22,11 @@
                 android:id="@+id/menuNote"
                 android:layout_width="27dp"
                 android:layout_height="40dp"
-                android:src="@drawable/ic_options"
+                android:src="@drawable/baseline_delete_24"
                 android:layout_alignParentRight="true"/>
             <ImageView
                 android:id="@+id/doneButton"
-                android:layout_width="27dp"
+                android:layout_width="30dp"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_check"
                 android:layout_alignParentRight="true"/>
@@ -57,9 +57,10 @@
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/typingText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:inputType="textMultiLine"
         android:layout_marginTop="17dp"
+        android:gravity="top"
         android:hint="Bắt đầu soạn thảo"
         android:textColorHint="@color/dark_grey"
         android:background="@null"/>

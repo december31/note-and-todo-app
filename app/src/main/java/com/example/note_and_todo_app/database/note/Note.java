@@ -28,6 +28,14 @@ public class Note {
 		this.info = info;
 		this.date = date;
 	}
+	@Ignore
+	public Note(Long id, String title, String info, String date, Boolean check) {
+		this.id = id;
+		this.title = title;
+		this.info = info;
+		this.date = date;
+		this.check = check;
+	}
 
 	public Long getId() {
 		return id;
@@ -46,6 +54,9 @@ public class Note {
 
 	@ColumnInfo(name = "date")
 	public String date;
+
+	@ColumnInfo(name = "chek")
+	public Boolean check = false;
 
 	public String getTitle() {
 		return title;
@@ -69,5 +80,13 @@ public class Note {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public Boolean getCheck() {
+		return check;
+	}
+
+	public void setCheck(Boolean check) {
+		this.check = check;
 	}
 }
