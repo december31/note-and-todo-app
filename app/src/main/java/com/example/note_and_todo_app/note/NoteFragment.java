@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -45,7 +46,7 @@ public class NoteFragment extends Fragment  {
         // Inflate the layout for this fragment
 		View view = inflater.inflate(R.layout.fragment_note, container, false);
 		recyclerView = view.findViewById(R.id.recyclerViewNote);
-		noteApdapter = new NoteApdapter(new NoteApdapter.WordDiff());
+		noteApdapter = new NoteApdapter(new NoteApdapter.WordDiff(),this.getContext());
 
 		noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,true));

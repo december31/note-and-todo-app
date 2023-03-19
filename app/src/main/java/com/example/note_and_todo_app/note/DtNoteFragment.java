@@ -1,5 +1,9 @@
 package com.example.note_and_todo_app.note;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +31,7 @@ import com.example.note_and_todo_app.database.note.NoteViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 
 public class DtNoteFragment extends Fragment {
     Note update;
@@ -36,6 +41,7 @@ public class DtNoteFragment extends Fragment {
     AppCompatEditText textTitle;
     TextView textDate;
     AppCompatEditText textInfo;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,11 +127,34 @@ public class DtNoteFragment extends Fragment {
         menu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                deleteNote(getContext());
             }
         });
     }
 
+    private void deleteNote(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("Delete Note")
+                .setMessage("Are you sure you want to delete this note?")
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String title = textTitle.getText().toString();
+                        String date = textDate.getText().toString();
+                        String info = textInfo.getText().toString();
+                        if(update!= null){
+                            note = new Note(update.getId(),title,info,date);
+                        }else {
+                            note = new Note(add.getId(),title,info,date);
+                        }
+                        noteViewModel.delete(note);
+                        Navigation.findNavController(getView()).popBackStack();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_menu_delete)
+                .show();
+
+    }
 
     private void setupUi(View view) {
         TextView textDate = (view).findViewById(R.id.dateAddNote);
