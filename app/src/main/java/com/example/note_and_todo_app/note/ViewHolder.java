@@ -30,7 +30,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         this.info = itemView.findViewById(R.id.txtInfo);
         this.date = itemView.findViewById(R.id.txtDate);
         this.cardNote = itemView.findViewById(R.id.cardNote);
-        this.checkBox = itemView.findViewById(R.id.checkBox);
+
     }
 
 

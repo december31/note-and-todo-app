@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -36,12 +38,13 @@ import com.example.note_and_todo_app.utils.Constants;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
-public class NoteApdapter extends ListAdapter<Note,ViewHolder>  {
+public class NoteApdapter extends ListAdapter<Note,ViewHolder> implements Filterable {
 
 
     public List<Note> items  ;
-    private ArrayList<Note> itemDelete;
+    private List<Note> itemOld;
     private NoteViewModel noteViewModel;
     private Context context;
 
@@ -55,7 +58,9 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder>  {
     @SuppressLint("NotifyDataSetChanged")
     public void updateItem(List<Note> notes) {
         this.items =  notes;
-        notifyItemChanged(positionNotify);
+        this.itemOld = notes;
+        //notifyItemChanged(positionNotify);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -75,11 +80,7 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder>  {
         holder.title.setText(listData.getTitle());
         holder.info.setText(listData.getInfo());
         holder.date.setText(listData.getDate());
-        if(!listData.getCheck()){
-            holder.checkBox.setVisibility(View.GONE);
-        }else {
-            holder.checkBox.setVisibility(View.VISIBLE);
-        }
+
 
         holder.cardNote.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -107,6 +108,37 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder>  {
         view.startAnimation(animation);
 
     }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String str = constraint.toString();
+                List<Note> filteredList = new ArrayList<>();
+                if (str.isEmpty()) {
+                    items = itemOld;
+                } else {
+                    for (Note item : itemOld) {
+                        if (item.getTitle().toLowerCase().contains(str.toLowerCase())) {
+                            filteredList.add(item);
+                        }
+                    }
+                    items = filteredList;
+                }
+                FilterResults results = new FilterResults();
+                results.values = items;
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                items = (List<Note>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+
     static class WordDiff extends DiffUtil.ItemCallback<Note> {
 
         @Override
