@@ -1,6 +1,5 @@
 package com.example.note_and_todo_app.todo.list;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +11,30 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.CustomDiffUtilsCallback;
 import com.example.note_and_todo_app.database.task.Task;
+import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.LayoutTaskItemBinding;
+import com.example.note_and_todo_app.todo.TaskListener;
 import com.example.note_and_todo_app.utils.Constants;
+import com.google.android.gms.tasks.Tasks;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskListViewHolder> {
-
     private final List<Task> items = new ArrayList<>();
+    private final Map<Long, Boolean> hasAnimated = new HashMap<>();
+    private TaskListener listener;
+
+    public TaskListAdapter(TaskListener listener) {
+        this.listener = listener;
+    }
 
     public TaskListAdapter() {
+    }
 
+    public void setListener(TaskListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,36 +47,121 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     @Override
     public void onBindViewHolder(@NonNull @NotNull TaskListViewHolder holder, int position) {
         Task item = items.get(position);
-        holder.binding.setData(item);
-        holder.binding.dueDate.setText(new SimpleDateFormat("dd/MM hh:mm", Locale.UK).format(new Date(item.getDueDate())));
-        setAnimation(holder.binding.getRoot(), position);
+        holder.bind(item, position);
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     public void updateItems(List<Task> tasks) {
         DiffUtil.DiffResult result = DiffUtil.calculateDiff(new CustomDiffUtilsCallback<>(items, tasks));
         items.clear();
         items.addAll(tasks);
         result.dispatchUpdatesTo(this);
     }
-    private void setAnimation(View view, int position) {
+
+    public void updateItems(Task task, int position) {
+//        items.remove(position);
+//        if (task.getState()==TaskState.DONE) {
+//            items.add(task);
+//        } else {
+//            items.add(0, task);
+//        }
+//        notifyDataSetChanged();
+        items.set(position, task);
+        notifyItemChanged(position);
+//        if (task.getState() == TaskState.DONE) {
+//            Collections.swap(items, position, items.size()-1);
+//            notifyItemMoved(position, items.size()-1);
+//            notifyItemChanged(position);
+//            notifyItemChanged(items.size()-1);
+//        } else {
+//            Collections.swap(items, position, 0);
+//            notifyItemMoved(position, 0);
+//            notifyItemChanged(position);
+//            notifyItemChanged(0);
+//        }
+    }
+
+    public void deleteItem(int position) {
+        items.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, items.size());
+    }
+
+    private void setAnimation(View view, int position, OnAnimationEndListener animationEndListener) {
         Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.item_animation_slide_from_right);
         animation.setStartOffset(position * Constants.ANIMATION_OFFSET);
         animation.setDuration(Constants.ANIMATION_DURATION);
         view.startAnimation(animation);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                animationEndListener.onAnimationEnd();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
+
+    private void setAnimationOnDone(View view) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.animation_wipe_from_left);
+        animation.setDuration(Constants.ANIMATION_DURATION);
+        view.startAnimation(animation);
+    }
+
+    private void setAnimationOnDoneToProcessing(View view) {
+        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.animation_unwipe_to_right);
+        animation.setDuration(Constants.ANIMATION_DURATION);
+        view.startAnimation(animation);
+    }
+
     @Override
     public int getItemCount() {
         return items.size();
     }
 
-    public static class TaskListViewHolder extends RecyclerView.ViewHolder {
+    public class TaskListViewHolder extends RecyclerView.ViewHolder {
 
-        LayoutTaskItemBinding binding;
+        private final LayoutTaskItemBinding binding;
 
         public TaskListViewHolder(@NonNull @NotNull LayoutTaskItemBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
+
+        void bind(Task task, int position) {
+            binding.setData(task);
+            binding.dueDate.setText(new SimpleDateFormat("dd/MM hh:mm", Locale.US).format(new Date(task.getDueDate())));
+            binding.deleteButton.setOnClickListener(v -> listener.deleteTask(task, position));
+            binding.checkbox.setOnClickListener(v -> {
+                if (Boolean.TRUE.equals(hasAnimated.get(task.getId()))) {
+                    listener.onStatusChange(task, position);
+                }
+            });
+            binding.streak.setVisibility(task.getState() == TaskState.DONE ? View.VISIBLE : View.GONE);
+            if (hasAnimated.get(task.getId()) == null) {
+                setAnimation(binding.getRoot(), position, () -> {
+                    if (task.getState() == TaskState.DONE) {
+                        binding.streak.setVisibility(View.VISIBLE);
+                        setAnimationOnDone(binding.streak);
+                    }
+                    hasAnimated.put(task.getId(), true);
+                });
+            } else {
+                if (task.getState() == TaskState.DONE) {
+                    setAnimationOnDone(binding.streak);
+                }
+            }
+        }
+    }
+
+    public interface OnAnimationEndListener {
+        void onAnimationEnd();
     }
 }

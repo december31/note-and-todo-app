@@ -20,8 +20,11 @@ public interface TaskDao {
 	@Query("select * from task where task.category_id = :id")
 	List<Task> getTaskByCategory(Long id);
 
-	@Query("select * from task_category")
+	@Query("select * from task_category order by id asc")
 	List<TaskCategory> getAllCategory();
+
+	@Query("select exists(select * from task_category where id = :categoryId)")
+	Boolean isCategoryExists(Long categoryId);
 
 	@Query("select count(*) from task where task.category_id = :categoryId")
 	Integer getNumberOfTask(Long categoryId);

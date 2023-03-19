@@ -3,25 +3,21 @@ package com.example.note_and_todo_app.todo.list;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.room.Dao;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
@@ -32,32 +28,36 @@ import com.example.note_and_todo_app.databinding.DialogCreateTaskBinding;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoField;
-import java.util.Date;
-import java.util.Objects;
+import java.util.Calendar;
 
 public class CreateTaskDialog extends DialogFragment {
     private static final String TAG = CreateTaskDialog.class.getSimpleName();
-    private static final MutableLiveData<LocalDateTime> dueDateLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Calendar> dueDateLiveData = new MutableLiveData<>();
     private DialogCreateTaskBinding binding;
     OnCreateDialogResult listener;
     private TimePickerDialog timePickerDialog;
     private DatePickerDialog datePickerDialog;
     private final Long categoryId;
+    private final Calendar initDate;
 
-    CreateTaskDialog(OnCreateDialogResult listener, Long categoryId) {
+    public CreateTaskDialog(OnCreateDialogResult listener, Long categoryId) {
         this.categoryId = categoryId;
+        this.listener = listener;
+        initDate = Calendar.getInstance();
+        initDate.add(Calendar.DAY_OF_MONTH, 1);
+    }
+
+    public CreateTaskDialog(OnCreateDialogResult listener, Calendar initDate) {
+        this.initDate = initDate;
+        this.categoryId = Constants.DEFAULT_CATEGORY_ID;
         this.listener = listener;
     }
 
-    CreateTaskDialog(OnCreateDialogResult listener) {
-        this.categoryId = Constants.CATEGORY_ID_DEFAULT;
+    public CreateTaskDialog(OnCreateDialogResult listener) {
+        this.categoryId = Constants.DEFAULT_CATEGORY_ID;
         this.listener = listener;
+        initDate = Calendar.getInstance();
+        initDate.add(Calendar.DAY_OF_MONTH, 1);
     }
 
     @Nullable
@@ -71,14 +71,20 @@ public class CreateTaskDialog extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         Dialog dialog = getDialog();
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
+        if (dialog != null) {
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
+        setupView();
         setupListener();
     }
 
+    private void setupView() {
+        binding.dueDate.setText(Constants.SIMPLE_DATE_FORMAT_1.format(initDate.getTime()));
+    }
+
     private void setupListener() {
-        dueDateLiveData.observe(getViewLifecycleOwner(), localDateTime -> {
-            binding.dueDate.setText(localDateTime.format(Constants.DATE_TIME_FORMATTER_1));
+        dueDateLiveData.observe(getViewLifecycleOwner(), calendar -> {
+            binding.dueDate.setText(Constants.SIMPLE_DATE_FORMAT_1.format(calendar.getTime()));
         });
 
         binding.editText.addTextChangedListener(new TextWatcher() {
@@ -107,23 +113,20 @@ public class CreateTaskDialog extends DialogFragment {
         });
 
         binding.dueDateContainer.setOnClickListener(v -> {
-            LocalDate date = LocalDate.now();
-            date = date.plusDays(1);
-
             timePickerDialog = new TimePickerDialog(
                     getContext(),
                     timeSetListener,
-                    date.atStartOfDay().getHour(),
-                    date.atStartOfDay().getMinute(),
+                    initDate.get(Calendar.HOUR_OF_DAY),
+                    initDate.get(Calendar.MINUTE),
                     true
             );
 
             datePickerDialog = new DatePickerDialog(
                     getContext(),
                     dateSetListener,
-                    date.get(ChronoField.YEAR),
-                    date.get(ChronoField.MONTH_OF_YEAR),
-                    date.get(ChronoField.DAY_OF_MONTH));
+                    initDate.get(Calendar.YEAR),
+                    initDate.get(Calendar.MONTH),
+                    initDate.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.show();
         });
 
@@ -136,19 +139,26 @@ public class CreateTaskDialog extends DialogFragment {
             dismiss();
             listener.onCancel();
         });
+        binding.editText.setOnKeyListener((v, keyCode, event) -> keyCode == KeyEvent.KEYCODE_ENTER);
     }
 
     private final TimePickerDialog.OnTimeSetListener timeSetListener = (view, hourOfDay, minute) -> {
         Log.i(TAG, hourOfDay + ":" + minute);
-        LocalDateTime time = dueDateLiveData.getValue();
-        if (time != null) {
-            dueDateLiveData.postValue(LocalDateTime.of(time.toLocalDate(), LocalTime.of(hourOfDay, minute)));
+        Calendar calendar = dueDateLiveData.getValue();
+        if (calendar != null) {
+            calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            calendar.set(Calendar.MINUTE, minute);
+            dueDateLiveData.postValue(calendar);
         }
     };
 
     private final DatePickerDialog.OnDateSetListener dateSetListener = (view, year, month, dayOfMonth) -> {
         Log.i(TAG, year + " - " + month + " - " + dayOfMonth);
-        dueDateLiveData.postValue(LocalDateTime.of(year, month, dayOfMonth, 0, 0, 0));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        dueDateLiveData.postValue(calendar);
         timePickerDialog.show();
     };
 
@@ -166,13 +176,13 @@ public class CreateTaskDialog extends DialogFragment {
     private void addNewTask() {
         TaskDao taskDao = Database.getInstance(getContext()).taskDao();
         if (binding.editText.getText() == null) return;
-        LocalDateTime dueDate = dueDateLiveData.getValue() == null ? LocalDateTime.now().plusDays(1): dueDateLiveData.getValue();
+        Calendar dueDate = dueDateLiveData.getValue() == null ? initDate : dueDateLiveData.getValue();
         Task task = new Task(
                 categoryId,
-                LocalDateTime.now().atZone(ZoneOffset.UTC).toInstant().toEpochMilli(),
+                Calendar.getInstance().getTimeInMillis(),
                 binding.editText.getText().toString(),
                 TaskState.PROCESSING,
-                dueDate.atZone(ZoneOffset.UTC).toInstant().toEpochMilli()
+                dueDate.getTimeInMillis()
         );
         taskDao.insert(task);
     }

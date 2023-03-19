@@ -23,6 +23,7 @@ import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.databinding.DialogCreateCategoryBinding;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -104,6 +105,6 @@ public class CreateCategoryDialog extends DialogFragment {
 
 	private void addNewCategory() {
 		String title = Objects.requireNonNull(binding.editText.getText()).toString().trim();
-		Database.getInstance(getContext()).taskDao().insertCategory(new TaskCategory(title, new Date().getTime()));
+		Database.getInstance(getContext()).taskDao().insertCategory(new TaskCategory(title, Calendar.getInstance().getTimeInMillis()));
 	}
 }

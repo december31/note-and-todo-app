@@ -13,9 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
+import com.example.note_and_todo_app.database.Database;
+import com.example.note_and_todo_app.database.task.Task;
+import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.FragmentTaskListBinding;
+import com.example.note_and_todo_app.todo.TaskListener;
+import com.example.note_and_todo_app.todo.all.TasksWithTitle;
+import com.example.note_and_todo_app.todo.category.TaskCategoryFragment;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,12 +31,14 @@ import org.jetbrains.annotations.NotNull;
  * Use the {@link TaskListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskListFragment extends Fragment {
+public class TaskListFragment extends Fragment implements TaskListener {
     private final String TAG = TaskListFragment.class.getSimpleName();
     private FragmentTaskListBinding binding;
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
-    private final TaskListAdapter adapter = new TaskListAdapter();
+    private final TaskListAdapter adapter = new TaskListAdapter(this);
     private Bundle arguments;
+
+    public static TaskListFragment INSTANCE;
 
     /**
      * Use this factory method to create a new instance of
@@ -46,6 +55,7 @@ public class TaskListFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        INSTANCE = this;
         super.onCreate(savedInstanceState);
     }
 
@@ -63,6 +73,7 @@ public class TaskListFragment extends Fragment {
         viewModel.categoryId = arguments != null ? arguments.getLong(Constants.CATEGORY_ID) : 0;
         setupView();
         setupListener();
+        setupToolBar();
     }
 
     OnCreateDialogResult dialogResult = new OnCreateDialogResult() {
@@ -84,10 +95,16 @@ public class TaskListFragment extends Fragment {
     }
 
     private void setupView() {
-        viewModel.tasksListLiveData.observe(getViewLifecycleOwner(), adapter::updateItems);
+        viewModel.tasksListLiveData.observe(getViewLifecycleOwner(), tasks ->{
+            if (tasks.size() > 0) {
+                adapter.updateItems(tasks);
+                binding.setIsTaskEmpty(false);
+            } else {
+                binding.setIsTaskEmpty(true);
+            }
+        });
         binding.rv.setAdapter(adapter);
         viewModel.fetchItems();
-        setupToolBar();
     }
 
     @Override
@@ -98,7 +115,31 @@ public class TaskListFragment extends Fragment {
 
     private void setupToolBar() {
         binding.toolbar.title.setText(arguments != null ? arguments.getString(Constants.CATEGORY_TITLE) : "Tasks");
-        binding.toolbar.icLeft.setOnClickListener(v -> Navigation.findNavController(requireView()).popBackStack());
+        binding.toolbar.icLeft.setOnClickListener(v -> {
+            TaskCategoryFragment.INSTANCE.viewModel.fetchAllCategories();
+            Navigation.findNavController(requireView()).popBackStack();
+        });
         binding.toolbar.icLeft.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_back));
+    }
+
+    @Override
+    public void onStatusChange(Task task, int position) {
+        task.setState(task.getState() != TaskState.DONE ? TaskState.DONE : TaskState.PROCESSING);
+        viewModel.updateDatabase(task, Database.ACTION_UPDATE);
+        if (!binding.rv.isComputingLayout() && binding.rv.getScrollState() == RecyclerView.SCROLL_STATE_IDLE) {
+            adapter.updateItems(task, position);
+        }
+    }
+
+    @Override
+    public void deleteTask(Task task, int position) {
+        viewModel.updateDatabase(task, Database.ACTION_DELETE);
+        viewModel.fetchItems();
+        adapter.deleteItem(position);
+    }
+
+    @Override
+    public void createNewTasks(TasksWithTitle tasksWithTitle) {
+
     }
 }

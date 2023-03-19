@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
+    android:layout_height="54dp"
     android:paddingVertical="12dp"
     android:paddingHorizontal="20dp"
     xmlns:tools="http://schemas.android.com/tools">
@@ -15,17 +15,17 @@
 
     <TextView
         android:id="@+id/title"
-        tools:text="Title"
-        android:textSize="22sp"
-        android:textAllCaps="false"
-        android:textStyle="bold"
-        android:paddingHorizontal="20dp"
-        android:textColor="@color/black"
-        android:textAlignment="center"
-        android:layout_toEndOf="@id/ic_left"
-        android:layout_toStartOf="@id/ic_right"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_toStartOf="@id/ic_right"
+        android:layout_toEndOf="@id/ic_left"
+        android:paddingHorizontal="20dp"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        tools:text="Title" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ic_right"
