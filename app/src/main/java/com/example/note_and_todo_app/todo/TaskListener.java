@@ -11,4 +11,5 @@ public interface TaskListener {
 
     void createNewTasks(TasksWithTitle tasksWithTitle);
 
+    void showDetails(Task task);
 }

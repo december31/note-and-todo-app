@@ -26,32 +26,13 @@ import com.example.note_and_todo_app.todo.category.TaskCategoryFragment;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TaskListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class TaskListFragment extends Fragment implements TaskListener {
-    private final String TAG = TaskListFragment.class.getSimpleName();
     private FragmentTaskListBinding binding;
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
     private final TaskListAdapter adapter = new TaskListAdapter(this);
     private Bundle arguments;
 
     public static TaskListFragment INSTANCE;
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment fragment_todo_list.
-     */
-    public static TaskListFragment newInstance(String param1, String param2) {
-        TaskListFragment fragment = new TaskListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,9 +69,7 @@ public class TaskListFragment extends Fragment implements TaskListener {
     };
 
     private void setupListener() {
-        binding.newTaskButton.setOnClickListener(v -> {
-            new CreateTaskDialog(dialogResult, viewModel.categoryId).show(getParentFragmentManager(), "create task");
-        });
+        binding.newTaskButton.setOnClickListener(v -> new CreateTaskDialog(dialogResult, viewModel.categoryId).show(getParentFragmentManager(), "create task"));
     }
 
     private void setupView() {
@@ -139,5 +118,10 @@ public class TaskListFragment extends Fragment implements TaskListener {
     @Override
     public void createNewTasks(TasksWithTitle tasksWithTitle) {
 
+    }
+
+    @Override
+    public void showDetails(Task task) {
+        new CreateTaskDialog(dialogResult, task).show(getParentFragmentManager(), "edit task");
     }
 }

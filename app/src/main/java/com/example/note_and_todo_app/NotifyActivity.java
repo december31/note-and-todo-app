@@ -11,24 +11,16 @@ import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.lifecycle.MutableLiveData;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.Task;
-import com.example.note_and_todo_app.database.task.TaskDao;
 import com.example.note_and_todo_app.database.task.TaskRepository;
-import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.ActivityNotifyBinding;
 import com.example.note_and_todo_app.todo.TaskListener;
 import com.example.note_and_todo_app.todo.all.AllTaskAdapter;
 import com.example.note_and_todo_app.todo.all.TasksWithTitle;
 import com.example.note_and_todo_app.todo.list.CreateTaskDialog;
-import com.example.note_and_todo_app.todo.list.TaskListAdapter;
-import com.example.note_and_todo_app.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.List;
 
 public class NotifyActivity extends AppCompatActivity implements TaskListener {
@@ -126,5 +118,10 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
         } else {
             new CreateTaskDialog(dialogResult, tasksWithTitle.getCalendar()).show(getSupportFragmentManager(), "create task");
         }
+    }
+
+    @Override
+    public void showDetails(Task task) {
+        new CreateTaskDialog(dialogResult, task).show(getSupportFragmentManager(), "edit task");
     }
 }

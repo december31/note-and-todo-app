@@ -24,6 +24,7 @@ import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.FragmentTaskCategoryBinding;
 import com.example.note_and_todo_app.todo.TaskListener;
 import com.example.note_and_todo_app.todo.all.TasksWithTitle;
+import com.example.note_and_todo_app.todo.list.CreateTaskDialog;
 import com.example.note_and_todo_app.todo.list.TaskListAdapter;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
@@ -170,5 +171,10 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
     @Override
     public void createNewTasks(TasksWithTitle tasksWithTitle) {
 
+    }
+
+    @Override
+    public void showDetails(Task task) {
+        new CreateTaskDialog(dialogResult, task).show(getParentFragmentManager(), "edit task");
     }
 }

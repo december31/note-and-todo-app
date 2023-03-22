@@ -1,6 +1,7 @@
 package com.example.note_and_todo_app.todo.list;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.CustomDiffUtilsCallback;
+import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.task.Task;
+import com.example.note_and_todo_app.database.task.TaskRepository;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.LayoutTaskItemBinding;
 import com.example.note_and_todo_app.todo.TaskListener;
@@ -110,13 +113,16 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
             super(binding.getRoot());
             this.binding = binding;
         }
-
         void bind(Task task, int position) {
             Calendar today = Calendar.getInstance();
 
             binding.setData(task);
             binding.setToday(today.getTimeInMillis());
             binding.setDueDateString(Constants.SIMPLE_DATE_FORMAT_2.format(new Date(task.getDueDate())));
+
+            binding.getRoot().setOnClickListener(v -> {
+                listener.showDetails(task);
+            });
 
             binding.deleteButton.setOnClickListener(v -> listener.deleteTask(task, position));
             binding.checkbox.setOnClickListener(v -> {

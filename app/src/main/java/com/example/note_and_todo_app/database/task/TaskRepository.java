@@ -221,4 +221,22 @@ public class TaskRepository {
         });
         return tasksLiveData;
     }
+
+    public void insert(Task... tasks) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.insert(tasks);
+        });
+    }
+
+    public void insert(TaskCategory... categories) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.insertCategory(categories);
+        });
+    }
+
+    public void update(Task... tasks) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.update(tasks);
+        });
+    }
 }
