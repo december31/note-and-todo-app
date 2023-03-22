@@ -1,21 +1,30 @@
 package com.example.note_and_todo_app.note;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -29,11 +38,11 @@ import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Objects;
 
-public class DtNoteFragment extends Fragment {
+public class NoteDetailFragment extends Fragment {
     Note update;
     Note add;
     Note note;
@@ -41,7 +50,11 @@ public class DtNoteFragment extends Fragment {
     AppCompatEditText textTitle;
     TextView textDate;
     AppCompatEditText textInfo;
-
+    private String selectedImagePath;
+    private static final int RESULT_OK = 0;
+    private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
+    private static final int REQUEST_CODE_SELECT_IMAGE = 2;
+    ImageView imageNote;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -69,13 +82,75 @@ public class DtNoteFragment extends Fragment {
             }
         });
 
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                view.findViewById(R.id.backAddNote).performClick();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
+
+        // The callback can be enabled or disabled here or in handleOnBackPressed()
+        view.findViewById(R.id.btnImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(NoteDetailFragment.this.getActivity(),
+                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_STORAGE_PERMISSION);
+                }else {
+                    selectImage();
+                }
+            }
+        });
         return view;
+    }
+
+    private void selectImage() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        if(intent.resolveActivity(getActivity().getPackageManager())!=null){
+            startActivityForResult(intent,REQUEST_CODE_SELECT_IMAGE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0){
+            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                selectImage();
+            }else {
+                Toast.makeText(getContext(),"Permission Denied",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode== REQUEST_CODE_SELECT_IMAGE && requestCode == RESULT_OK){
+            if (data !=null){
+                Uri selectImgUri = data.getData();
+                if(selectImgUri != null){
+                    try {
+                        InputStream inputStream = getActivity().getContentResolver().openInputStream(selectImgUri);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        imageNote.setImageBitmap(bitmap);
+                        imageNote.setVisibility(View.VISIBLE);
+
+                        selectedImagePath = getPathFromUri(selectImgUri);
+                    }catch (Exception exception){
+                        Toast.makeText(getContext(),exception.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        };
     }
 
     private  void   initUi(View view){
         textTitle = view.findViewById(R.id.titleNoteAdd);
         textDate = view.findViewById(R.id.dateAddNote);
         textInfo = view.findViewById(R.id.typingText);
+        imageNote = view.findViewById(R.id.imageNote);
     }
     private  void setData(){
         textTitle.setText(update.getTitle());
@@ -102,9 +177,6 @@ public class DtNoteFragment extends Fragment {
 
     }
 
-    private boolean inputCheck(String info){
-        return !(info.isEmpty());
-    }
     @Override
     public void onResume() {
         super.onResume();
@@ -175,6 +247,20 @@ public class DtNoteFragment extends Fragment {
 
             }
         });
+    }
+    private String getPathFromUri(Uri contentUri){
+        String filePath;
+        Cursor cursor = getActivity().getContentResolver().query(contentUri,null,null,null,null);
+        if(cursor == null){
+            filePath = contentUri.getPath();
+        }else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex("_data");
+            filePath = cursor.getString(index);
+            cursor.close();
+        }
+        return  filePath;
+
     }
 
 }

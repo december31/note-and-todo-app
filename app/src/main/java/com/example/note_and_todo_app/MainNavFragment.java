@@ -1,6 +1,9 @@
 package com.example.note_and_todo_app;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -17,14 +20,17 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
 import com.example.note_and_todo_app.databinding.FragmentMainNavBinding;
 import com.example.note_and_todo_app.note.NoteFragment;
 import com.example.note_and_todo_app.setting.SettingFragment;
 import com.example.note_and_todo_app.todo.category.TaskCategoryFragment;
+import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.material.navigation.NavigationBarView;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,6 +41,7 @@ public class MainNavFragment extends Fragment {
 	private SettingFragment mSettingFragment;
 
 	FragmentMainNavBinding mainNavBinding;
+	private  NoteViewModel noteViewModel;
 
 	MutableLiveData<String> titleAppName = new MutableLiveData<>();
 
@@ -110,7 +117,7 @@ public class MainNavFragment extends Fragment {
 	}
 	void setupListener(){
 
-		NoteViewModel noteViewModel =  new ViewModelProvider((ViewModelStoreOwner) getContext()).get(NoteViewModel.class);
+		noteViewModel =  new ViewModelProvider((ViewModelStoreOwner) getContext()).get(NoteViewModel.class);
 
 		PopupMenu popupMenu = new PopupMenu(getContext(),mainNavBinding.toolbar.icRight);
 		popupMenu.getMenuInflater().inflate(R.menu.menu_note,popupMenu.getMenu());
@@ -119,7 +126,7 @@ public class MainNavFragment extends Fragment {
 			@Override
 			public boolean onMenuItemClick(MenuItem item) {
 				if(mainNavBinding.viewPager.getCurrentItem() == 1){
-					noteViewModel.deleteAll();
+					deleteNote(getContext());
 				}
 
 				return false;
@@ -127,7 +134,6 @@ public class MainNavFragment extends Fragment {
 		});
 
 			mainNavBinding.toolbar.icRight.setOnClickListener(new View.OnClickListener() {
-
 				@Override
 				public void onClick(View v) {
 					if(mainNavBinding.viewPager.getCurrentItem() == 1){
@@ -136,8 +142,36 @@ public class MainNavFragment extends Fragment {
 				}
 			});
 
+	}
+	private void deleteNote(Context context) {
+		new AlertDialog.Builder(context)
+				.setTitle("Delete Note")
+				.setMessage("Are you sure you want to delete this note?")
+				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						noteViewModel.deleteAll();
+					}
+				})
+				.setNegativeButton(android.R.string.no, null)
+				.setIcon(android.R.drawable.ic_menu_delete)
+				.show();
 
 	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		View  decorView = getActivity().getWindow().getDecorView();
+		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+				| View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView.setSystemUiVisibility(uiOptions);
+	}
+
+	@Override
+	public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+		super.onMultiWindowModeChanged(isInMultiWindowMode);
+
+	}
+
 	private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
 
 		public ScreenSlidePagerAdapter(@NonNull @NotNull FragmentActivity fragmentActivity) {
