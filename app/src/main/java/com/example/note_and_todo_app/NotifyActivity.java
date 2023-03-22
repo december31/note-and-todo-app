@@ -70,9 +70,9 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
 
     public void updateDatabase(Task task, int action) {
         if (action == Database.ACTION_UPDATE) {
-            repository.updateTask(task);
+            repository.update(task);
         } else if (action == Database.ACTION_DELETE) {
-            repository.deleteTask(task);
+            repository.delete(task);
         }
     }
 
@@ -97,6 +97,11 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
 
         @Override
         public void onCancel() {
+
+        }
+
+        @Override
+        public void onDelete() {
 
         }
     };

@@ -41,18 +41,6 @@ public class TaskRepository {
         return tasksLiveData;
     }
 
-    public void updateTask(Task task) {
-        Database.databaseWriteExecutor.execute(() -> {
-            taskDao.update(task);
-        });
-    }
-
-    public void deleteTask(Task task) {
-        Database.databaseWriteExecutor.execute(() -> {
-            taskDao.delete(task);
-        });
-    }
-
     public MutableLiveData<List<TaskCategory>> fetchCategories() {
         Database.databaseWriteExecutor.execute(() -> {
             List<TaskCategory> categories = taskDao.getAllCategory();
@@ -238,6 +226,29 @@ public class TaskRepository {
         Database.databaseWriteExecutor.execute(() -> {
             taskDao.update(tasks);
         });
+    }
+
+    public void update(TaskCategory... categories) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.update(categories);
+        });
+    }
+
+    public void delete(Task... tasks) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.delete(tasks);
+        });
+    }
+
+    public void delete(TaskCategory... categories) {
+        Database.databaseWriteExecutor.execute(() -> {
+            taskDao.delete(categories);
+        });
+    }
+
+    public void deleteSync(TaskCategory category) {
+        taskDao.deleteAllInCategory(category.getId());
+        taskDao.delete(category);
     }
 
     public Boolean isHavingTaskWithState(TaskState state) {

@@ -138,6 +138,10 @@ public class TaskCategoryFragment extends Fragment implements TaskCategoryAdapte
         public void onCancel() {
 
         }
+
+        @Override
+        public void onDelete() {
+        }
     };
 
     @Override

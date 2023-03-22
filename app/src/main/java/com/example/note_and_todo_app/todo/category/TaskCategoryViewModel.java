@@ -35,9 +35,9 @@ public class TaskCategoryViewModel extends ViewModel {
 
 	public void updateDatabase(Task task, int action) {
 		if (action == Database.ACTION_UPDATE) {
-			repository.updateTask(task);
+			repository.update(task);
 		} else if (action == Database.ACTION_DELETE) {
-			repository.deleteTask(task);
+			repository.delete(task);
 		}
 	}
 }

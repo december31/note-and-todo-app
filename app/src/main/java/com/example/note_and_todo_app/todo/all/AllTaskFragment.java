@@ -79,6 +79,11 @@ public class AllTaskFragment extends Fragment implements TaskListener {
         public void onCancel() {
 
         }
+
+        @Override
+        public void onDelete() {
+
+        }
     };
 
     @Override

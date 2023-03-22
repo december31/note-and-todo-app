@@ -18,10 +18,12 @@ import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.Task;
+import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.FragmentTaskListBinding;
 import com.example.note_and_todo_app.todo.TaskListener;
 import com.example.note_and_todo_app.todo.all.TasksWithTitle;
+import com.example.note_and_todo_app.todo.category.CreateCategoryDialog;
 import com.example.note_and_todo_app.todo.category.TaskCategoryFragment;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
@@ -31,7 +33,6 @@ public class TaskListFragment extends Fragment implements TaskListener {
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
     private final TaskListAdapter adapter = new TaskListAdapter(this);
     private Bundle arguments;
-
     public static TaskListFragment INSTANCE;
 
     @Override
@@ -51,7 +52,8 @@ public class TaskListFragment extends Fragment implements TaskListener {
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         arguments = getArguments();
-        viewModel.categoryId = arguments != null ? arguments.getLong(Constants.CATEGORY_ID) : 0;
+        Long id = arguments != null ? arguments.getLong(Constants.CATEGORY_ID) : 0;
+        viewModel.category = Database.getInstance(getContext()).taskDao().getTaskCategoryById(id);
         setupView();
         setupListener();
         setupToolBar();
@@ -66,10 +68,15 @@ public class TaskListFragment extends Fragment implements TaskListener {
         @Override
         public void onCancel() {
         }
+
+        @Override
+        public void onDelete() {
+
+        }
     };
 
     private void setupListener() {
-        binding.newTaskButton.setOnClickListener(v -> new CreateTaskDialog(dialogResult, viewModel.categoryId).show(getParentFragmentManager(), "create task"));
+        binding.newTaskButton.setOnClickListener(v -> new CreateTaskDialog(dialogResult, viewModel.category.getId()).show(getParentFragmentManager(), "create task"));
     }
 
     private void setupView() {
@@ -97,7 +104,31 @@ public class TaskListFragment extends Fragment implements TaskListener {
             TaskCategoryFragment.INSTANCE.viewModel.fetchAllCategories();
             Navigation.findNavController(requireView()).popBackStack();
         });
-        binding.toolbar.icLeft.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_back));
+        binding.toolbar.icLeft.setImageResource(R.drawable.ic_back);
+        binding.toolbar.icRight.setImageResource(R.drawable.ic_pencil);
+        binding.toolbar.icRight.setOnClickListener(v -> {
+            new CreateCategoryDialog(new OnCreateDialogResult() {
+                @Override
+                public void onConfirm() {
+                    binding.toolbar.title.setText(
+                            Database.getInstance(getContext())
+                                    .taskDao()
+                                    .getTaskCategoryById(viewModel.category.getId())
+                                    .getTitle());
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+
+                @Override
+                public void onDelete() {
+                    TaskCategoryFragment.INSTANCE.viewModel.fetchAllCategories();
+                    Navigation.findNavController(requireView()).popBackStack();
+                }
+            }, viewModel.category).show(getParentFragmentManager(), null);
+        });
     }
 
     @Override

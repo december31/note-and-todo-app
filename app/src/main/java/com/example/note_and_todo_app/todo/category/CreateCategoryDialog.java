@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app.todo.category;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,25 +17,34 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.Navigation;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskRepository;
 import com.example.note_and_todo_app.databinding.DialogCreateCategoryBinding;
+import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class CreateCategoryDialog extends DialogFragment {
 	private final String TAG = CreateCategoryDialog.class.getSimpleName();
 	private DialogCreateCategoryBinding binding;
 	private final TaskRepository repository = TaskRepository.getInstance(getContext());
-	OnCreateDialogResult listener;
+	private final OnCreateDialogResult listener;
+	private final TaskCategory category;
 	public CreateCategoryDialog(OnCreateDialogResult listener) {
 		this.listener = listener;
+		category = null;
+	}
+	public CreateCategoryDialog(OnCreateDialogResult listener, TaskCategory category) {
+		this.listener = listener;
+		this.category = category;
 	}
 
 	@Nullable
@@ -54,6 +64,18 @@ public class CreateCategoryDialog extends DialogFragment {
 	}
 
 	private void setupListener() {
+		if (category != null) {
+			binding.editText.setText(category.getTitle());
+			binding.saveButton.setEnabled(true);
+			if (category.getId().equals(Constants.DEFAULT_CATEGORY_ID)) {
+				binding.setIsUpdate(false);
+			} else {
+				binding.setIsUpdate(true);
+			}
+			if (getContext() != null) {
+				binding.saveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+			}
+		}
 		binding.editText.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -82,13 +104,33 @@ public class CreateCategoryDialog extends DialogFragment {
 		});
 
 		binding.saveButton.setOnClickListener(v -> {
-			addNewCategory();
+			if (category != null) {
+				updateCategory();
+			} else {
+				addNewCategory();
+			}
 			dismiss();
 			listener.onConfirm();
 		});
 		binding.cancelButton.setOnClickListener(v -> {
 			dismiss();
 			listener.onCancel();
+		});
+		binding.deleteButton.setOnClickListener(v -> {
+			//noinspection deprecation
+			new AlertDialog.Builder(getContext())
+					.setTitle("Delete Category")
+					.setMessage("Are you sure you want to delete this category?")
+					.setPositiveButton(android.R.string.yes, (dialog, which) -> {
+						if (category != null) {
+							repository.deleteSync(category);
+						}
+						listener.onDelete();
+					})
+					.setNegativeButton(android.R.string.no, null)
+					.setIcon(android.R.drawable.ic_menu_delete)
+					.show();
+			dismiss();
 		});
 		binding.editText.setOnKeyListener((v, keyCode, event) -> keyCode == KeyEvent.KEYCODE_ENTER);
 	}
@@ -107,5 +149,12 @@ public class CreateCategoryDialog extends DialogFragment {
 	private void addNewCategory() {
 		String title = Objects.requireNonNull(binding.editText.getText()).toString().trim();
 		repository.insert(new TaskCategory(title, Calendar.getInstance().getTimeInMillis()));
+	}
+
+	private void updateCategory() {
+		if (category != null) {
+			category.setTitle(Objects.requireNonNull(binding.editText.getText()).toString().trim());
+			repository.update(category);
+		}
 	}
 }
