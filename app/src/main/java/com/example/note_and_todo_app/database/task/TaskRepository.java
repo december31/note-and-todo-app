@@ -239,4 +239,8 @@ public class TaskRepository {
             taskDao.update(tasks);
         });
     }
+
+    public Boolean isHavingTaskWithState(TaskState state) {
+        return taskDao.isHavingTaskWithState(state);
+    }
 }

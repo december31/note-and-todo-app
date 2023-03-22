@@ -7,11 +7,14 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.util.Log;
 import com.example.note_and_todo_app.NotifyActivity;
+import com.example.note_and_todo_app.database.task.TaskRepository;
+import com.example.note_and_todo_app.database.task.TaskState;
 
 public class ScreenStateReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON) && !isCallActive(context)) {
+        TaskRepository repository = TaskRepository.getInstance(context);
+        if (intent.getAction().equals(Intent.ACTION_SCREEN_ON) && !isCallActive(context) && repository.isHavingTaskWithState(TaskState.PROCESSING)) {
             Intent startActivityIntent = new Intent(context, NotifyActivity.class);
             startActivityIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(startActivityIntent);

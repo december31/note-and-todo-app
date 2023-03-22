@@ -34,4 +34,6 @@ public interface TaskDao {
 	@Query("select * from task where title like :title||'%'")
 	List<Task> getTaskByTitle(String title);
 
+	@Query("select exists(select * from task where state = :state)")
+	Boolean isHavingTaskWithState(TaskState state);
 }
