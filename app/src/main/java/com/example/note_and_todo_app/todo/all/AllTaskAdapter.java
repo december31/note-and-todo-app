@@ -14,6 +14,7 @@ import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.LayoutCategoryListItemBinding;
 import com.example.note_and_todo_app.todo.TaskListener;
+import com.example.note_and_todo_app.todo.list.CreateTaskDialog;
 import com.example.note_and_todo_app.todo.list.TaskListAdapter;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
@@ -104,6 +105,11 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.AllTaskV
                 @Override
                 public void createNewTasks(TasksWithTitle tasksWithTitle) {
 
+                }
+
+                @Override
+                public void showDetails(Task task) {
+                    listener.showDetails(task);
                 }
             };
             adapter.setListener(onTaskStateChangedListener);

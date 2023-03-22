@@ -10,6 +10,8 @@ public interface TaskDao {
 	List<Task> getAll();
 	@Update
 	void update(Task... tasks);
+	@Update
+	void update(TaskCategory... categories);
 	@Delete
 	void delete(Task... tasks);
 	@Insert

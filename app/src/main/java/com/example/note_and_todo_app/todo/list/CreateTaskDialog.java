@@ -23,15 +23,19 @@ import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskDao;
+import com.example.note_and_todo_app.database.task.TaskRepository;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.DialogCreateTaskBinding;
 import com.example.note_and_todo_app.utils.Constants;
+import kotlinx.coroutines.internal.ThreadSafeHeap;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class CreateTaskDialog extends DialogFragment {
     private static final String TAG = CreateTaskDialog.class.getSimpleName();
+    private final TaskRepository repository = TaskRepository.getInstance(getContext());
     private final MutableLiveData<Calendar> dueDateLiveData = new MutableLiveData<>();
     private DialogCreateTaskBinding binding;
     OnCreateDialogResult listener;
@@ -39,18 +43,29 @@ public class CreateTaskDialog extends DialogFragment {
     private DatePickerDialog datePickerDialog;
     private final Long categoryId;
     private final Calendar initDate;
+    private final Task task;
 
     public CreateTaskDialog(OnCreateDialogResult listener, Long categoryId) {
         this.categoryId = categoryId;
         this.listener = listener;
         initDate = Calendar.getInstance();
         initDate.add(Calendar.DAY_OF_MONTH, 1);
+        task = null;
+    }
+
+    public CreateTaskDialog(OnCreateDialogResult listener, Task task) {
+        this.listener = listener;
+        this.initDate = Calendar.getInstance();
+        initDate.setTimeInMillis(task.getDueDate());
+        this.categoryId = task.getCategoryId();
+        this.task = task;
     }
 
     public CreateTaskDialog(OnCreateDialogResult listener, Calendar initDate) {
         this.initDate = initDate;
         this.categoryId = Constants.DEFAULT_CATEGORY_ID;
         this.listener = listener;
+        task = null;
     }
 
     public CreateTaskDialog(OnCreateDialogResult listener) {
@@ -58,6 +73,7 @@ public class CreateTaskDialog extends DialogFragment {
         this.listener = listener;
         initDate = Calendar.getInstance();
         initDate.add(Calendar.DAY_OF_MONTH, 1);
+        task = null;
     }
 
     @Nullable
@@ -79,6 +95,13 @@ public class CreateTaskDialog extends DialogFragment {
     }
 
     private void setupView() {
+        if (task != null) {
+            binding.editText.setText(task.getTitle());
+            binding.saveButton.setEnabled(true);
+            if (getContext() != null) {
+                binding.saveButton.setTextColor(ContextCompat.getColor(getContext(), R.color.blue));
+            }
+        }
         binding.dueDate.setText(Constants.SIMPLE_DATE_FORMAT_1.format(initDate.getTime()));
     }
 
@@ -131,7 +154,11 @@ public class CreateTaskDialog extends DialogFragment {
         });
 
         binding.saveButton.setOnClickListener(v -> {
-            addNewTask();
+            if (task != null) {
+                updateTask();
+            } else {
+                addNewTask();
+            }
             dismiss();
             listener.onConfirm();
         });
@@ -174,16 +201,21 @@ public class CreateTaskDialog extends DialogFragment {
     }
 
     private void addNewTask() {
-        TaskDao taskDao = Database.getInstance(getContext()).taskDao();
         if (binding.editText.getText() == null) return;
         Calendar dueDate = dueDateLiveData.getValue() == null ? initDate : dueDateLiveData.getValue();
-        Task task = new Task(
+        repository.insert(new Task(
                 categoryId,
                 Calendar.getInstance().getTimeInMillis(),
                 binding.editText.getText().toString(),
                 TaskState.PROCESSING,
                 dueDate.getTimeInMillis()
-        );
-        taskDao.insert(task);
+        ));
+    }
+
+    private void updateTask() {
+        task.setTitle(Objects.requireNonNull(binding.editText.getText()).toString());
+        Calendar dueDate = dueDateLiveData.getValue() == null ? initDate : dueDateLiveData.getValue();
+        task.setDueDate(dueDate.getTimeInMillis());
+        repository.update(task);
     }
 }

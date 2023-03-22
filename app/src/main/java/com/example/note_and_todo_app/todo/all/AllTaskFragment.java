@@ -100,4 +100,9 @@ public class AllTaskFragment extends Fragment implements TaskListener {
             new CreateTaskDialog(dialogResult, tasksWithTitle.getCalendar()).show(getParentFragmentManager(), "create task");
         }
     }
+
+    @Override
+    public void showDetails(Task task) {
+        new CreateTaskDialog(dialogResult, task).show(getParentFragmentManager(), "edit task");
+    }
 }

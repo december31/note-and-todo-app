@@ -20,6 +20,7 @@ import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.base.OnCreateDialogResult;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
+import com.example.note_and_todo_app.database.task.TaskRepository;
 import com.example.note_and_todo_app.databinding.DialogCreateCategoryBinding;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,7 +31,7 @@ import java.util.Objects;
 public class CreateCategoryDialog extends DialogFragment {
 	private final String TAG = CreateCategoryDialog.class.getSimpleName();
 	private DialogCreateCategoryBinding binding;
-
+	private final TaskRepository repository = TaskRepository.getInstance(getContext());
 	OnCreateDialogResult listener;
 	public CreateCategoryDialog(OnCreateDialogResult listener) {
 		this.listener = listener;
@@ -105,6 +106,6 @@ public class CreateCategoryDialog extends DialogFragment {
 
 	private void addNewCategory() {
 		String title = Objects.requireNonNull(binding.editText.getText()).toString().trim();
-		Database.getInstance(getContext()).taskDao().insertCategory(new TaskCategory(title, Calendar.getInstance().getTimeInMillis()));
+		repository.insert(new TaskCategory(title, Calendar.getInstance().getTimeInMillis()));
 	}
 }
