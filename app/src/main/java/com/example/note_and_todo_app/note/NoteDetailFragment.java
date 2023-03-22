@@ -65,7 +65,7 @@ public class NoteDetailFragment extends Fragment {
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         initUi(view);
         setupUi(view);
-        Long idEdit = getArguments().getLong("idEdit");
+        Long idEdit = getArguments() != null ? getArguments().getLong("idEdit") : 0;
         update = Database.getInstance(this.getContext()).noteDao().getNote(idEdit);
         if( update != null ){
             setData();
@@ -156,7 +156,6 @@ public class NoteDetailFragment extends Fragment {
         textTitle.setText(update.getTitle());
         textDate.setText(update.getDate());
         textInfo.setText(update.getInfo());
-
     }
     private  void updateData(){
         String title = textTitle.getText().toString();

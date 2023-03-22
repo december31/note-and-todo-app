@@ -1,5 +1,7 @@
 package com.example.note_and_todo_app.todo.all;
 
+import android.graphics.Color;
+import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.task.Task;
 
 import java.util.Calendar;
@@ -8,8 +10,10 @@ import java.util.List;
 public class TasksWithTitle {
     private String title;
     private List<Task> tasks;
-    boolean canShowRV = false;
-    Calendar calendar = null;
+    private boolean canShowRV = false;
+    private Calendar calendar = null;
+    private int titleTextColorRes = R.color.black;
+
     public TasksWithTitle(String title, List<Task> tasks) {
         this.title = title;
         this.tasks = tasks;
@@ -20,6 +24,7 @@ public class TasksWithTitle {
         this.tasks = tasks;
         this.canShowRV = canShowRV;
     }
+
     public TasksWithTitle(String title, List<Task> tasks, boolean canShowRV, Calendar calendar) {
         this.title = title;
         this.tasks = tasks;
@@ -45,5 +50,29 @@ public class TasksWithTitle {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public boolean isCanShowRV() {
+        return canShowRV;
+    }
+
+    public void setCanShowRV(boolean canShowRV) {
+        this.canShowRV = canShowRV;
+    }
+
+    public Calendar getCalendar() {
+        return calendar;
+    }
+
+    public void setCalendar(Calendar calendar) {
+        this.calendar = calendar;
+    }
+
+    public int getTitleTextColor() {
+        return titleTextColorRes;
+    }
+
+    public void setTitleTextColor(int titleTextColorRes) {
+        this.titleTextColorRes = titleTextColorRes;
     }
 }

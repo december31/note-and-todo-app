@@ -29,4 +29,7 @@ public interface TaskDao {
 	@Query("select count(*) from task where task.category_id = :categoryId")
 	Integer getNumberOfTask(Long categoryId);
 
+	@Query("select * from task where title like :title||'%'")
+	List<Task> getTaskByTitle(String title);
+
 }

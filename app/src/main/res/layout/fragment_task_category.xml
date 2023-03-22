@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="isSearching"
+            type="Boolean"/>
+    </data>
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -9,7 +15,7 @@
         tools:context=".todo.category.TaskCategoryFragment">
 
         <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchNote"
+            android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:paddingHorizontal="1dp"
@@ -19,6 +25,7 @@
             app:defaultQueryHint="Tìm kiếm ghi chú" />
 
         <androidx.appcompat.widget.LinearLayoutCompat
+            android:visibility="@{isSearching ? View.GONE : View.VISIBLE}"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
@@ -69,15 +76,25 @@
             android:textColor="@color/black"
             android:textStyle="bold"
             android:letterSpacing="0.05"
+            android:visibility="@{isSearching ? View.GONE : View.VISIBLE}"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/my_list_rv"
+            android:id="@+id/rv"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             app:spanCount="2"
+            android:visibility="@{isSearching ? View.GONE : View.VISIBLE}"
             tools:listitem="@layout/layout_task_category_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_list_rv"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:visibility="@{!isSearching ? View.GONE : View.VISIBLE}"
+            tools:listitem="@layout/layout_task_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

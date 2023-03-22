@@ -45,6 +45,7 @@ public class AllTaskFragment extends Fragment implements TaskListener {
 
     private void setupView() {
         type = arguments.getString(Constants.KEY);
+        viewModel.fetchItems(type);
         viewModel.allTaskLiveData.observe(getViewLifecycleOwner(), tasks -> {
             if (tasks.size() > 0) {
                 adapter.updateItems(tasks);
@@ -59,7 +60,6 @@ public class AllTaskFragment extends Fragment implements TaskListener {
         binding.toolbar.icLeft.setImageResource(R.drawable.ic_back);
         binding.newTaskButton.setVisibility(View.GONE);
         binding.rv.setAdapter(adapter);
-        viewModel.fetchItems(type);
     }
 
     private void setupListener() {
@@ -89,14 +89,15 @@ public class AllTaskFragment extends Fragment implements TaskListener {
     @Override
     public void deleteTask(Task task, int position) {
         viewModel.updateDatabase(task, Database.ACTION_DELETE);
+        viewModel.fetchItems(type);
     }
 
     @Override
     public void createNewTasks(TasksWithTitle tasksWithTitle) {
-        if (tasksWithTitle.calendar == null) {
+        if (tasksWithTitle.getCalendar() == null) {
             new CreateTaskDialog(dialogResult).show(getParentFragmentManager(), "create task");
         } else {
-            new CreateTaskDialog(dialogResult, tasksWithTitle.calendar).show(getParentFragmentManager(), "create task");
+            new CreateTaskDialog(dialogResult, tasksWithTitle.getCalendar()).show(getParentFragmentManager(), "create task");
         }
     }
 }

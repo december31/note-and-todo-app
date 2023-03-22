@@ -24,4 +24,6 @@
     <color name="shadow_hack_level_3">#33000000</color>
     <color name="shadow_hack_level_2">#26000000</color>
     <color name="shadow_hack_level_1">#0d000000</color>
+    <color name="red">#BB0000</color>
+    <color name="red_80">#CCBB0000</color>
 </resources>

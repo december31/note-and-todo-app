@@ -24,7 +24,7 @@ import com.example.note_and_todo_app.database.note.NoteViewModel;
 import org.jetbrains.annotations.NotNull;
 
 public class BaseToolBar extends LinearLayoutCompat {
-	private String TAG = this.toString();
+	private final String TAG = this.toString();
 	public BaseToolBar(@NonNull @NotNull Context context) {
 		super(context);
 		init();

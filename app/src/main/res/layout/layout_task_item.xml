@@ -8,10 +8,15 @@
         <import type="com.example.note_and_todo_app.database.task.TaskState" />
         <import type="androidx.core.content.ContextCompat"/>
         <import type="android.view.View"/>
-
+        <variable
+            name="today"
+            type="Long" />
         <variable
             name="data"
             type="com.example.note_and_todo_app.database.task.Task" />
+        <variable
+            name="dueDateString"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,12 +61,28 @@
             <TextView
                 android:id="@+id/due_date"
                 tools:text="@tools:sample/date/ddmmyy"
-                android:textSize="12sp"
-                android:visibility="@{data.state==TaskState.DONE?View.GONE:View.VISIBLE}"
-                android:paddingVertical="0dp"
+                android:textSize="10dp"
+                android:paddingVertical="2dp"
+                android:text="@{dueDateString}"
+                android:visibility="@{data.state==TaskState.DONE || data.dueDate &lt; today ?View.GONE:View.VISIBLE}"
                 android:background="@drawable/bg_transparent_rounded"
+                android:textColor="@color/dark_gray"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp" />
+                android:layout_height="18dp"
+                tools:ignore="SpUsage" />
+
+            <TextView
+                android:id="@+id/due_date_missed"
+                tools:text="@tools:sample/date/ddmmyy"
+                android:textSize="10dp"
+                android:paddingVertical="2dp"
+                android:text="@{dueDateString}"
+                android:visibility="@{data.state==TaskState.DONE || data.dueDate &gt; today ?View.GONE:View.VISIBLE}"
+                android:background="@drawable/bg_red_rounded"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                tools:ignore="SmallSp,SpUsage" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ImageView

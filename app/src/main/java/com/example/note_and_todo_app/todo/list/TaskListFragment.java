@@ -79,12 +79,11 @@ public class TaskListFragment extends Fragment implements TaskListener {
     OnCreateDialogResult dialogResult = new OnCreateDialogResult() {
         @Override
         public void onConfirm() {
-            viewModel.fetchItems();
+            viewModel.fetchItemsByCategory();
         }
 
         @Override
         public void onCancel() {
-
         }
     };
 
@@ -95,7 +94,8 @@ public class TaskListFragment extends Fragment implements TaskListener {
     }
 
     private void setupView() {
-        viewModel.tasksListLiveData.observe(getViewLifecycleOwner(), tasks ->{
+        viewModel.fetchItemsByCategory();
+        viewModel.tasksListLiveData.observe(getViewLifecycleOwner(), tasks -> {
             if (tasks.size() > 0) {
                 adapter.updateItems(tasks);
                 binding.setIsTaskEmpty(false);
@@ -104,13 +104,12 @@ public class TaskListFragment extends Fragment implements TaskListener {
             }
         });
         binding.rv.setAdapter(adapter);
-        viewModel.fetchItems();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.fetchItems();
+        viewModel.fetchItemsByCategory();
     }
 
     private void setupToolBar() {
@@ -134,7 +133,6 @@ public class TaskListFragment extends Fragment implements TaskListener {
     @Override
     public void deleteTask(Task task, int position) {
         viewModel.updateDatabase(task, Database.ACTION_DELETE);
-        viewModel.fetchItems();
         adapter.deleteItem(position);
     }
 
