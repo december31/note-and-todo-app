@@ -3,34 +3,28 @@ package com.example.note_and_todo_app;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.widget.Toast;
-
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
-import androidx.navigation.Navigation;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
-import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
 import com.example.note_and_todo_app.databinding.FragmentMainNavBinding;
 import com.example.note_and_todo_app.note.NoteFragment;
 import com.example.note_and_todo_app.setting.SettingFragment;
 import com.example.note_and_todo_app.todo.category.TaskCategoryFragment;
-import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.material.navigation.NavigationBarView;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,7 +35,7 @@ public class MainNavFragment extends Fragment {
 	private SettingFragment mSettingFragment;
 
 	FragmentMainNavBinding mainNavBinding;
-	private  NoteViewModel noteViewModel;
+	private NoteViewModel noteViewModel;
 
 	MutableLiveData<String> titleAppName = new MutableLiveData<>();
 
@@ -116,51 +110,63 @@ public class MainNavFragment extends Fragment {
 
 	}
 	void setupListener(){
-
-		noteViewModel =  new ViewModelProvider((ViewModelStoreOwner) getContext()).get(NoteViewModel.class);
-
-		PopupMenu popupMenu = new PopupMenu(getContext(),mainNavBinding.toolbar.icRight);
+		TaskCategoryFragment.isSearching.observe(getViewLifecycleOwner(), b -> {
+			if (b) {
+				mainNavBinding.toolbar.icLeft.setImageResource(R.drawable.ic_back);
+			} else {
+				mainNavBinding.toolbar.icLeft.setImageResource(R.drawable.ic_home);
+			}
+		});
+		noteViewModel =  new ViewModelProvider((ViewModelStoreOwner) requireContext()).get(NoteViewModel.class);
+		PopupMenu popupMenu = new PopupMenu(requireContext(),mainNavBinding.toolbar.icRight);
 		popupMenu.getMenuInflater().inflate(R.menu.menu_note,popupMenu.getMenu());
 
-		popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-			@Override
-			public boolean onMenuItemClick(MenuItem item) {
-				if(mainNavBinding.viewPager.getCurrentItem() == 1){
-					deleteNote(getContext());
-				}
-
-				return false;
+		mainNavBinding.toolbar.icLeft.setOnClickListener(v -> {
+			if (Boolean.TRUE.equals(TaskCategoryFragment.isSearching.getValue())) {
+				TaskCategoryFragment.isSearching.postValue(false);
 			}
 		});
 
-			mainNavBinding.toolbar.icRight.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if(mainNavBinding.viewPager.getCurrentItem() == 1){
-					popupMenu.show();
-					}
+		OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+			@Override
+			public void handleOnBackPressed() {
+				mainNavBinding.toolbar.icLeft.performClick();
+			}
+		};
+		requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
+
+
+		popupMenu.setOnMenuItemClickListener(item -> {
+			if(mainNavBinding.viewPager.getCurrentItem() == 1){
+				deleteNote(getContext());
+			}
+
+			return false;
+		});
+
+			mainNavBinding.toolbar.icRight.setOnClickListener(v -> {
+				if(mainNavBinding.viewPager.getCurrentItem() == 1){
+				popupMenu.show();
 				}
 			});
 
 	}
+	@SuppressWarnings("deprecation")
 	private void deleteNote(Context context) {
 		new AlertDialog.Builder(context)
 				.setTitle("Delete Note")
 				.setMessage("Are you sure you want to delete this note?")
-				.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						noteViewModel.deleteAll();
-					}
-				})
+				.setPositiveButton(android.R.string.yes, (dialog, which) -> noteViewModel.deleteAll())
 				.setNegativeButton(android.R.string.no, null)
 				.setIcon(android.R.drawable.ic_menu_delete)
 				.show();
 
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onResume() {
 		super.onResume();
-		View  decorView = getActivity().getWindow().getDecorView();
+		View  decorView = requireActivity().getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
 				| View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);

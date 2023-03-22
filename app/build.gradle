@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'deploygate'
 apply plugin: 'com.android.application'
 apply plugin: 'androidx.navigation.safeargs'
 

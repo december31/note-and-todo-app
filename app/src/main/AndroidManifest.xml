@@ -23,6 +23,7 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:noHistory="true"
+            android:excludeFromRecents="true"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

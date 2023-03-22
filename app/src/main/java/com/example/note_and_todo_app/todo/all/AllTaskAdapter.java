@@ -1,12 +1,15 @@
 package com.example.note_and_todo_app.todo.all;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskState;
 import com.example.note_and_todo_app.databinding.LayoutCategoryListItemBinding;
@@ -23,7 +26,7 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.AllTaskV
     private List<TasksWithTitle> items = new ArrayList<>();
     private final TaskListener listener;
 
-    AllTaskAdapter(TaskListener listener) {
+    public AllTaskAdapter(TaskListener listener) {
         this.listener = listener;
     }
 
@@ -60,22 +63,28 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.AllTaskV
         }
 
         void bind(TasksWithTitle item, int position) {
+            if (item.getTitleTextColor() != Constants.DEFAULT_COLOR_RES) {
+                binding.title.setTextColor(
+                        ContextCompat.getColor(binding.getRoot().getContext(), item.getTitleTextColor())
+                );
+            } else {
+                binding.title.setTextColor(
+                        ContextCompat.getColor(binding.getRoot().getContext(), Constants.DEFAULT_COLOR_RES)
+                );
+            }
             binding.title.setText(item.getTitle());
 
-            binding.setIsShowRV(item.canShowRV);
+            binding.setIsShowRV(item.isCanShowRV());
             binding.setNumberOfTasks(item.getTasks().size());
-            binding.setIsShowTasksCount(!item.canShowRV && item.getTasks().size() > 0);
+            binding.setIsShowTasksCount(!item.isCanShowRV() && !item.getTasks().isEmpty());
 
             binding.title.setOnClickListener(v -> {
-                item.canShowRV = item.getTasks().size() > 0 && !item.canShowRV;
+                item.setCanShowRV(!item.getTasks().isEmpty() && !item.isCanShowRV());
                 items.set(position, item);
                 notifyItemChanged(position);
             });
 
-            binding.newTaskButton.setOnClickListener(v -> {
-                Log.i(AllTaskAdapter.class.getSimpleName(), Constants.SIMPLE_DATE_FORMAT_1.format(item.calendar.getTime()));
-                listener.createNewTasks(item);
-            });
+            binding.newTaskButton.setOnClickListener(v -> listener.createNewTasks(item));
 
             TaskListAdapter adapter = new TaskListAdapter();
             TaskListener onTaskStateChangedListener = new TaskListener() {
@@ -100,8 +109,6 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.AllTaskV
             adapter.setListener(onTaskStateChangedListener);
             binding.rv.setAdapter(adapter);
             adapter.updateItems(item.getTasks());
-
         }
-
     }
 }

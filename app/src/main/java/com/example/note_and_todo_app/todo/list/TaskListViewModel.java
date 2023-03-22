@@ -6,32 +6,28 @@ import androidx.lifecycle.ViewModel;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.Task;
 import com.example.note_and_todo_app.database.task.TaskDao;
+import com.example.note_and_todo_app.database.task.TaskRepository;
 
 import java.util.List;
 
 public class TaskListViewModel extends ViewModel {
 
+    private final TaskRepository repository;
     Long categoryId;
     public MutableLiveData<List<Task>> tasksListLiveData = new MutableLiveData<>();
-    private final TaskDao taskDao;
     public TaskListViewModel(Context context) {
-        taskDao = Database.getInstance(context).taskDao();
+        repository = TaskRepository.getInstance(context);
     }
 
-    public void fetchItems() {
-        List<Task> tasks = taskDao.getTaskByCategory(categoryId);
-        tasksListLiveData.postValue(tasks);
+    public void fetchItemsByCategory() {
+        tasksListLiveData = repository.fetchTaskByCategory(categoryId);
     }
 
     public void updateDatabase(Task task, int action) {
         if (action == Database.ACTION_UPDATE) {
-            taskDao.update(task);
+            repository.updateTask(task);
         } else if(action == Database.ACTION_DELETE) {
-            taskDao.delete(task);
+            repository.deleteTask(task);
         }
-    }
-
-    public void deleteTask(Task task) {
-        taskDao.delete(task);
     }
 }

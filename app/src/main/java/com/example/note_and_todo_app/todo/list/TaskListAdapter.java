@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app.todo.list;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     private final List<Task> items = new ArrayList<>();
     private final Map<Long, Boolean> hasAnimated = new HashMap<>();
     private TaskListener listener;
-
     public TaskListAdapter(TaskListener listener) {
         this.listener = listener;
     }
@@ -58,26 +58,8 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
     }
 
     public void updateItems(Task task, int position) {
-//        items.remove(position);
-//        if (task.getState()==TaskState.DONE) {
-//            items.add(task);
-//        } else {
-//            items.add(0, task);
-//        }
-//        notifyDataSetChanged();
         items.set(position, task);
         notifyItemChanged(position);
-//        if (task.getState() == TaskState.DONE) {
-//            Collections.swap(items, position, items.size()-1);
-//            notifyItemMoved(position, items.size()-1);
-//            notifyItemChanged(position);
-//            notifyItemChanged(items.size()-1);
-//        } else {
-//            Collections.swap(items, position, 0);
-//            notifyItemMoved(position, 0);
-//            notifyItemChanged(position);
-//            notifyItemChanged(0);
-//        }
     }
 
     public void deleteItem(int position) {
@@ -115,12 +97,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
         view.startAnimation(animation);
     }
 
-    private void setAnimationOnDoneToProcessing(View view) {
-        Animation animation = AnimationUtils.loadAnimation(view.getContext(), R.anim.animation_unwipe_to_right);
-        animation.setDuration(Constants.ANIMATION_DURATION);
-        view.startAnimation(animation);
-    }
-
     @Override
     public int getItemCount() {
         return items.size();
@@ -136,15 +112,18 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
         }
 
         void bind(Task task, int position) {
+            Calendar today = Calendar.getInstance();
+
             binding.setData(task);
-            binding.dueDate.setText(new SimpleDateFormat("dd/MM hh:mm", Locale.US).format(new Date(task.getDueDate())));
+            binding.setToday(today.getTimeInMillis());
+            binding.setDueDateString(Constants.SIMPLE_DATE_FORMAT_2.format(new Date(task.getDueDate())));
+
             binding.deleteButton.setOnClickListener(v -> listener.deleteTask(task, position));
             binding.checkbox.setOnClickListener(v -> {
                 if (Boolean.TRUE.equals(hasAnimated.get(task.getId()))) {
                     listener.onStatusChange(task, position);
                 }
             });
-            binding.streak.setVisibility(task.getState() == TaskState.DONE ? View.VISIBLE : View.GONE);
             if (hasAnimated.get(task.getId()) == null) {
                 setAnimation(binding.getRoot(), position, () -> {
                     if (task.getState() == TaskState.DONE) {
@@ -154,6 +133,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskLi
                     hasAnimated.put(task.getId(), true);
                 });
             } else {
+                binding.streak.setVisibility(task.getState() == TaskState.DONE ? View.VISIBLE : View.GONE);
                 if (task.getState() == TaskState.DONE) {
                     setAnimationOnDone(binding.streak);
                 }

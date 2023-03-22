@@ -16,7 +16,7 @@
     <string name="save">Save</string>
     <string name="due_date">Due date</string>
     <string name="task_list_is_empty">Task list is empty!</string>
-    <string name="let_create_new_task">Let create new task</string>
+    <string name="create_a_new_task">create a new task</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="notification_title">Note and Todo list is running</string>
     <string name="notification_message">tap here to stop</string>
