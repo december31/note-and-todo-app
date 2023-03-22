@@ -24,7 +24,7 @@ public class Constants {
     public static final String ALL_TASK = "all_task";
     public static final String NEXT_7_DAYS = "next_7_days";
     public static final String KEY = "key";
-    public static final Long DEFAULT_CATEGORY_ID = 0L;
+    public static final Long DEFAULT_CATEGORY_ID = -1L;
 
     public static final LayoutTransition DEFAULT_TRANSITION = new LayoutTransition();
 

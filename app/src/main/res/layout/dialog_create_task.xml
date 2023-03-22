@@ -15,7 +15,7 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/edit_text"
                 tools:text="@tools:sample/lorem/random"
-                android:hint="@string/create_a_new_list"
+                android:hint="@string/category_name"
                 android:inputType="textMultiLine"
                 android:lines="4"
                 android:textStyle="bold"
