@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     private final String TAG = MainActivity.class.toString();
     private ActivityMainBinding binding;
     private Intent intentService;
-    private Handler mainThread;
-
     @Override
     @SuppressWarnings("deprecation")
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
             supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
-
-        binding.getRoot().setOnClickListener(v -> {
-            closeKeyboard();
-        });
 
         setContentView(binding.getRoot());
         hideSystemUI();
@@ -79,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestDrawOverlay() {
-        if (!Settings.canDrawOverlays(getApplicationContext())) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !Settings.canDrawOverlays(getApplicationContext())) {
             AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
             alertDialog.setTitle(getString(R.string.permission_required));
@@ -87,9 +81,9 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setIcon(R.drawable.ic_check_blue);
 
             alertDialog.setButton(Dialog.BUTTON_POSITIVE, "OK", (dialog, which) -> {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                    intent.setData(Uri.parse("package:" + getPackageName()));
-                    startActivity(intent);
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                intent.setData(Uri.parse("package:" + getPackageName()));
+                startActivity(intent);
             });
 
             alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
@@ -139,10 +133,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             View v = getCurrentFocus();
-            if ( v instanceof EditText) {
+            if (v instanceof EditText) {
                 Rect outRect = new Rect();
                 v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -150,5 +144,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        hideSystemUI();
     }
 }
