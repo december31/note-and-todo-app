@@ -163,7 +163,7 @@ public class MainNavFragment extends Fragment {
 				.show();
 
 	}
-	@SuppressWarnings("deprecation")
+
 	@Override
 	public void onResume() {
 		super.onResume();
