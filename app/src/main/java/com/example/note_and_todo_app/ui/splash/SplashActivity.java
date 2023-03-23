@@ -103,5 +103,8 @@ public class SplashActivity extends AppCompatActivity {
         Navigation.findNavController(binding.navHost).navigate(R.id.action_fragment_nav_splash_to_activity_main);
     }
 
-
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(binding.navHost).navigateUp();
+    }
 }
