@@ -6,6 +6,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,8 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     TextView info;
     TextView date;
     CardView cardNote;
-    CheckBox checkBox;
+
+    ImageView imageView;
 
     public ViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -30,7 +32,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
         this.info = itemView.findViewById(R.id.txtInfo);
         this.date = itemView.findViewById(R.id.txtDate);
         this.cardNote = itemView.findViewById(R.id.cardNote);
-
+        this.imageView = itemView.findViewById(R.id.imageRecycler);
     }
 
 

@@ -24,6 +24,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +40,12 @@ import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.Objects;
 
 public class NoteDetailFragment extends Fragment {
     Note update;
@@ -50,11 +55,12 @@ public class NoteDetailFragment extends Fragment {
     AppCompatEditText textTitle;
     TextView textDate;
     AppCompatEditText textInfo;
-    private String selectedImagePath;
-    private static final int RESULT_OK = 0;
+    static String selectedImagePath;
     private static final int REQUEST_CODE_STORAGE_PERMISSION = 1;
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     ImageView imageNote;
+    ImageView deleteImageNote;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -65,22 +71,21 @@ public class NoteDetailFragment extends Fragment {
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
         initUi(view);
         setupUi(view);
-        Long idEdit = getArguments() != null ? getArguments().getLong("idEdit") : 0;
+        assert getArguments() != null;
+        Long idEdit = getArguments().getLong("idEdit");
         update = Database.getInstance(this.getContext()).noteDao().getNote(idEdit);
-        if( update != null ){
-            setData();
+        selectedImagePath = "";
+        if (update != null) {
+            try {
+                setData();
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
         }
+
         Long idAdd = getArguments().getLong("idAdd");
         add = Database.getInstance(this.getContext()).noteDao().getNote(idAdd);
         //
-
-        view.findViewById(R.id.backAddNote).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateData();
-                Navigation.findNavController(view).popBackStack();
-            }
-        });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
@@ -91,35 +96,45 @@ public class NoteDetailFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
 
         // The callback can be enabled or disabled here or in handleOnBackPressed()
-        view.findViewById(R.id.btnImage).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.btnImage).setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+            } else {
+                selectImage();
+            }
+        });
+        view.findViewById(R.id.backAddNote).setOnClickListener(v -> {
+            updateData();
+            Navigation.findNavController(view).popBackStack();
+        });
+        deleteImageNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(NoteDetailFragment.this.getActivity(),
-                            new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_STORAGE_PERMISSION);
-                }else {
-                    selectImage();
-                }
+                selectedImagePath = "";
+                imageNote.setVisibility(View.GONE);
+                deleteImageNote.setVisibility(View.GONE);
             }
         });
         return view;
     }
 
+
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if(intent.resolveActivity(getActivity().getPackageManager())!=null){
-            startActivityForResult(intent,REQUEST_CODE_SELECT_IMAGE);
+        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.length > 0) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 selectImage();
-            }else {
-                Toast.makeText(getContext(),"Permission Denied",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Permission Denied", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -127,49 +142,64 @@ public class NoteDetailFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode== REQUEST_CODE_SELECT_IMAGE && requestCode == RESULT_OK){
-            if (data !=null){
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE ) {
+            if (data != null) {
                 Uri selectImgUri = data.getData();
-                if(selectImgUri != null){
+                if (selectImgUri != null) {
                     try {
-                        InputStream inputStream = getActivity().getContentResolver().openInputStream(selectImgUri);
+                        InputStream inputStream = requireActivity().getContentResolver().openInputStream(selectImgUri);
                         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         imageNote.setImageBitmap(bitmap);
                         imageNote.setVisibility(View.VISIBLE);
 
                         selectedImagePath = getPathFromUri(selectImgUri);
-                    }catch (Exception exception){
-                        Toast.makeText(getContext(),exception.toString(),Toast.LENGTH_SHORT).show();
+                        deleteImageNote.setVisibility(View.VISIBLE);
+                    } catch (Exception exception) {
+                        Toast.makeText(getContext(), exception.toString(), Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-        };
+        }
+        ;
     }
 
-    private  void   initUi(View view){
+    private void initUi(View view) {
         textTitle = view.findViewById(R.id.titleNoteAdd);
         textDate = view.findViewById(R.id.dateAddNote);
         textInfo = view.findViewById(R.id.typingText);
         imageNote = view.findViewById(R.id.imageNote);
+        deleteImageNote = view.findViewById(R.id.deleteImageNote);
     }
-    private  void setData(){
+
+    private void setData() throws FileNotFoundException {
         textTitle.setText(update.getTitle());
         textDate.setText(update.getDate());
         textInfo.setText(update.getInfo());
-    }
-    private  void updateData(){
-        String title = textTitle.getText().toString();
-        String date = textDate.getText().toString();
-        String info = textInfo.getText().toString();
-       
-        if(update!= null){
-            note = new Note(update.getId(),title,info,date);
+        selectedImagePath = update.getImagePath();
+        imageNote.setImageBitmap(BitmapFactory.decodeFile(update.getImagePath()));
+        if(Objects.equals(selectedImagePath, "")){
+            imageNote.setVisibility(View.GONE);
+            deleteImageNote.setVisibility(View.GONE);
         }else {
-            note = new Note(add.getId(),title,info,date);
+            imageNote.setVisibility(View.VISIBLE);
+            deleteImageNote.setVisibility(View.VISIBLE);
         }
-        if(info.isEmpty() && title.isEmpty()){
+
+    }
+
+    private void updateData() {
+        String title = String.valueOf(textTitle.getText());
+        String date = textDate.getText().toString();
+        String info = String.valueOf(textInfo.getText());
+
+        if (update != null) {
+            note = new Note(update.getId(), title, info, date,selectedImagePath);
+        } else {
+            note = new Note(add.getId(), title, info, date,selectedImagePath);
+        }
+        if (info.isEmpty() && title.isEmpty()) {
             noteViewModel.delete(note);
-        }else{
+        } else {
             noteViewModel.update(note);
         }
 
@@ -186,79 +216,68 @@ public class NoteDetailFragment extends Fragment {
         btnCheck.setVisibility(View.GONE);
         focusChange(editText,menu,btnCheck);
         focusChange(title,menu,btnCheck);
-        btnCheck.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                menu.setVisibility(View.VISIBLE);
-                btnCheck.setVisibility(View.GONE);
-                ((MainActivity)requireActivity()).closeKeyboard();
-                editText.clearFocus();
+        btnCheck.setOnClickListener(v -> {
+            menu.setVisibility(View.VISIBLE);
+            btnCheck.setVisibility(View.GONE);
+            ((MainActivity)requireActivity()).closeKeyboard();
+            editText.clearFocus();
 
-            }
         });
-        menu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteNote(getContext());
+        menu.setOnClickListener(v -> deleteNote(getContext()));
+
+    }
+    private  void focusChange(EditText editText,ImageView menu,ImageView btnCheck){
+        editText.setOnFocusChangeListener((v, hasFocus) -> {
+            if(hasFocus){
+                menu.setVisibility(View.GONE);
+                btnCheck.setVisibility(View.VISIBLE);
             }
+
         });
     }
-
     private void deleteNote(Context context) {
         new AlertDialog.Builder(context)
                 .setTitle("Delete Note")
                 .setMessage("Are you sure you want to delete this note?")
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        String title = textTitle.getText().toString();
-                        String date = textDate.getText().toString();
-                        String info = textInfo.getText().toString();
-                        if(update!= null){
-                            note = new Note(update.getId(),title,info,date);
-                        }else {
-                            note = new Note(add.getId(),title,info,date);
-                        }
-                        noteViewModel.delete(note);
-                        Navigation.findNavController(getView()).popBackStack();
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    String title = String.valueOf(textTitle.getText());
+                    String date = textDate.getText().toString();
+                    String info = String.valueOf(textInfo.getText());
+                    if (update != null) {
+                        note = new Note(update.getId(), title, info, date);
+                    } else {
+                        note = new Note(add.getId(), title, info, date);
                     }
+                    noteViewModel.delete(note);
+                    Navigation.findNavController(requireView()).popBackStack();
                 })
                 .setNegativeButton(android.R.string.no, null)
                 .setIcon(android.R.drawable.ic_menu_delete)
                 .show();
 
     }
-
     private void setupUi(View view) {
         TextView textDate = (view).findViewById(R.id.dateAddNote);
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.US);
         String dateTime = simpleDateFormat.format(calendar.getTime());
         textDate.setText(dateTime);
     }
-    private  void focusChange(EditText editText,ImageView menu,ImageView btnCheck){
-        editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    menu.setVisibility(View.GONE);
-                    btnCheck.setVisibility(View.VISIBLE);
-                }
 
-            }
-        });
-    }
-    private String getPathFromUri(Uri contentUri){
+
+
+    private String getPathFromUri(Uri contentUri) {
         String filePath;
-        Cursor cursor = getActivity().getContentResolver().query(contentUri,null,null,null,null);
-        if(cursor == null){
+        Cursor cursor = requireActivity().getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
             filePath = contentUri.getPath();
-        }else {
+        } else {
             cursor.moveToFirst();
             int index = cursor.getColumnIndex("_data");
             filePath = cursor.getString(index);
             cursor.close();
         }
-        return  filePath;
+        return filePath;
 
     }
 

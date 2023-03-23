@@ -16,10 +16,11 @@ public class Note {
 	public Note(){
 	}
 	@Ignore
-	public Note(String title, String info, String date) {
+	public Note(String title, String info, String date,String imagePath) {
 		this.title = title;
 		this.info = info;
 		this.date = date;
+		this.imagePath = imagePath;
 	}
 	@Ignore
 	public Note(Long id, String title, String info, String date) {
@@ -29,12 +30,12 @@ public class Note {
 		this.date = date;
 	}
 	@Ignore
-	public Note(Long id, String title, String info, String date, Boolean check) {
+	public Note(Long id, String title, String info, String date, String imagePath) {
 		this.id = id;
 		this.title = title;
 		this.info = info;
 		this.date = date;
-		this.check = check;
+		this.imagePath = imagePath;
 	}
 
 	public Long getId() {
@@ -55,8 +56,9 @@ public class Note {
 	@ColumnInfo(name = "date")
 	public String date;
 
-	@ColumnInfo(name = "chek")
-	public Boolean check = false;
+
+	@ColumnInfo(name = "image_path")
+	public String imagePath;
 
 	public String getTitle() {
 		return title;
@@ -82,11 +84,11 @@ public class Note {
 		this.date = date;
 	}
 
-	public Boolean getCheck() {
-		return check;
+	public String getImagePath() {
+		return imagePath;
 	}
 
-	public void setCheck(Boolean check) {
-		this.check = check;
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }
