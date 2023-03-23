@@ -34,7 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         binding = ActivitySplashBinding.inflate(LayoutInflater.from(this), null, false);
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.O) {
             supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-            this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
         setContentView(binding.getRoot());
         hideSystemUI();
@@ -76,6 +75,7 @@ public class SplashActivity extends AppCompatActivity {
                         // Called when ad is dismissed.
                         // Set the ad reference to null so you don't show the ad a second time.
                         mInterstitialAd = null;
+                        finish();
                     }
 
                     @Override
