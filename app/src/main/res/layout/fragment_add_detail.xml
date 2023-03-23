@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="17dp"
-    tools:context=".note.NoteDetailFragment">
+    tools:context=".ui.note.NoteDetailFragment">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

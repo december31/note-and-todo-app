@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:padding="20dp"
         android:orientation="vertical"
-        tools:context=".todo.category.TaskCategoryFragment">
+        tools:context=".ui.task.category.TaskCategoryFragment">
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_bar"

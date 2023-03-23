@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragment_nav_splash"
+    android:id="@+id/splash_nav_graph">
+
+    <fragment
+        android:id="@+id/fragment_nav_splash"
+        android:name="com.example.note_and_todo_app.ui.splash.SplashNavFragment"
+        tools:layout="@layout/fragment_nav_splash">
+        <action
+            android:id="@+id/action_fragment_nav_splash_to_activity_main"
+            app:destination="@id/activity_main" />
+    </fragment>
+
+    <activity
+        android:id="@+id/activity_main"
+        android:name="com.example.note_and_todo_app.ui.main.MainActivity"
+        tools:layout="@layout/activity_main"/>
+
+</navigation>

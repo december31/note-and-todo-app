@@ -5,7 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.MutableLiveData;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.Database;
-import com.example.note_and_todo_app.todo.all.TasksWithTitle;
+import com.example.note_and_todo_app.ui.task.all.TasksWithTitle;
 import com.example.note_and_todo_app.utils.Constants;
 import com.example.note_and_todo_app.utils.Utils;
 

@@ -5,8 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
-import com.example.note_and_todo_app.MainActivity;
+import com.example.note_and_todo_app.ui.main.MainActivity;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.receivers.ScreenStateReceiver;
 
