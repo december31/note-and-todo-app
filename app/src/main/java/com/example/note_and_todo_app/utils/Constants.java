@@ -1,8 +1,6 @@
 package com.example.note_and_todo_app.utils;
 
 import android.animation.LayoutTransition;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 
 import java.text.SimpleDateFormat;

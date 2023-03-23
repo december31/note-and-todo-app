@@ -25,4 +25,5 @@
     <string name="request_draw_overlay">We need draw over other app to show your today task as soon as you open your device</string>
     <string name="permission_required">Permission required</string>
     <string name="delete">Delete</string>
+    <string name="loading_ads">Loading Ads ...</string>
 </resources>

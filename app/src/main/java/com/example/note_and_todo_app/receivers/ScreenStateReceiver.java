@@ -3,10 +3,8 @@ package com.example.note_and_todo_app.receivers;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.AudioManager;
-import android.util.Log;
-import com.example.note_and_todo_app.NotifyActivity;
+import com.example.note_and_todo_app.ui.main.NotifyActivity;
 import com.example.note_and_todo_app.database.task.TaskRepository;
 import com.example.note_and_todo_app.database.task.TaskState;
 
