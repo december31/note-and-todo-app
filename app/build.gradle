@@ -20,6 +20,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildTypes {
+        debug {
+            buildConfigField "String", "INTER_SPLASH_ADS_ID", "\"ca-app-pub-3940256099942544/1033173712\""
+            buildConfigField "String", "BANNER_ADS_ID", "\"ca-app-pub-3940256099942544/6300978111\""
+        }
+        release {
+            buildConfigField "String", "INTER_SPLASH_ADS_ID", "\"ca-app-pub-7254966087160240/8475541143\""
+            buildConfigField "String", "BANNER_ADS_ID", "\"ca-app-pub-7254966087160240/1003756569\""
+        }
+    }
+
     buildFeatures {
         viewBinding = true
         dataBinding = true
