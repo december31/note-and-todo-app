@@ -61,7 +61,7 @@ public class NoteFragment extends Fragment {
         view.findViewById(R.id.actionNote).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Note noteBundle = new Note("", "", "");
+                Note noteBundle = new Note("", "", "","");
                 bundle.putLong("idAdd", noteViewModel.addNote(noteBundle));
                 Navigation.findNavController(view).navigate(R.id.addNoteFragment, bundle);
             }

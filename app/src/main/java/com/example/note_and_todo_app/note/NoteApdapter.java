@@ -2,6 +2,7 @@ package com.example.note_and_todo_app.note;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -80,7 +81,12 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> implements Filter
         holder.title.setText(listData.getTitle());
         holder.info.setText(listData.getInfo());
         holder.date.setText(listData.getDate());
-
+        if(listData.getImagePath() != null){
+            holder.imageView.setImageBitmap(BitmapFactory.decodeFile(listData.getImagePath()));
+            holder.imageView.setVisibility(View.VISIBLE);
+        }else {
+            holder.imageView.setVisibility(View.GONE);
+        }
 
         holder.cardNote.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -131,6 +137,7 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> implements Filter
                 return results;
             }
 
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
                 items = (List<Note>) results.values;
