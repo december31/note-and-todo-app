@@ -156,7 +156,7 @@ public class MainNavFragment extends Fragment {
 	private void deleteNote(Context context) {
 		new AlertDialog.Builder(context)
 				.setTitle("Delete Note")
-				.setMessage("Are you sure you want to delete this note?")
+				.setMessage("Are you sure you want to delete all note?")
 				.setPositiveButton(android.R.string.yes, (dialog, which) -> noteViewModel.deleteAll())
 				.setNegativeButton(android.R.string.no, null)
 				.setIcon(android.R.drawable.ic_menu_delete)
