@@ -26,4 +26,14 @@
     <string name="permission_required">Permission required</string>
     <string name="delete">Delete</string>
     <string name="loading_ads">Loading Ads ...</string>
+    <string name="general">General</string>
+    <string name="language">Language</string>
+    <string name="show_done_task">Show done tasks</string>
+    <string name="notify_when_open_device">Notify when open device</string>
+    <string name="about_application">About application</string>
+    <string name="privacy_and_policy">Privacy And Policy</string>
+    <string name="term_of_use">Term of use</string>
+    <string name="share_app">Share App</string>
+    <string name="rate_app">Rate App</string>
+    <string name="english">English</string>
 </resources>

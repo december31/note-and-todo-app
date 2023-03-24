@@ -9,8 +9,6 @@ import java.util.*;
 public class Constants {
     public static final String CATEGORY_ID = "category_id";
     public static final String CATEGORY_TITLE = "category_title";
-
-    public static final String BANNER_ADS_ID = "ca-app-pub-3940256099942544/6300978111";
     public static final Integer BANNER_ADS_HEIGHT = 50;
 
     public static final SimpleDateFormat SIMPLE_DATE_FORMAT_1 = new SimpleDateFormat("dd MMMM yyyy hh:mm", Locale.US);

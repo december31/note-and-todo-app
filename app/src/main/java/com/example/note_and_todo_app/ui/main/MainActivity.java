@@ -20,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
+import com.example.note_and_todo_app.BuildConfig;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.task.TaskCategory;
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
         MobileAds.initialize(this);
         AdView adView = new AdView(this);
         adView.setAdSize(new AdSize(displayWidth(), Constants.BANNER_ADS_HEIGHT));
-        adView.setAdUnitId(Constants.BANNER_ADS_ID);
+        adView.setAdUnitId(BuildConfig.BANNER_ADS_ID);
         binding.adViewContainer.addView(adView);
 
         AdRequest request = new AdRequest.Builder().build();

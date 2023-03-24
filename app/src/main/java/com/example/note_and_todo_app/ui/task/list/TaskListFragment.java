@@ -2,6 +2,7 @@ package com.example.note_and_todo_app.ui.task.list;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
@@ -75,6 +77,14 @@ public class TaskListFragment extends Fragment implements TaskListener {
 
     private void setupListener() {
         binding.newTaskButton.setOnClickListener(v -> new CreateTaskDialog(dialogResult, viewModel.category.getId()).show(getParentFragmentManager(), "create task"));
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                binding.toolbar.icLeft.performClick();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
+
     }
 
     private void setupView() {
