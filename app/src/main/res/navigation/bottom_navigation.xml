@@ -15,4 +15,5 @@
         android:name="com.example.note_and_todo_app.setting.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragmentlanguage" />
+
 </navigation>
