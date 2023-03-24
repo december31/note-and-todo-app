@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#ffffff"
     android:layout_height="match_parent">
 
+    <!--button view for english language-->
+
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/changetext"
         android:layout_width="412dp"
         android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:paddingLeft="12sp"
         android:paddingTop="10sp"
         android:text="Choose a language"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioButton
-        android:id="@+id/radioButton"
-        android:layout_width="404dp"
-        android:layout_height="50dp"
+    <Button
+        android:id="@+id/btnHindi"
+        android:layout_width="127dp"
+        android:layout_height="61dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#ffffff"
+        android:text="Hindi"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changetext" />
+
+    <Button
+        android:id="@+id/btnEnglish"
+        android:layout_width="133dp"
+        android:layout_height="66dp"
+        android:layout_margin="16dp"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="#ffffff"
         android:text="English"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:layout_editor_absoluteX="3dp" />
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.539"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnHindi" />
 
-    <RadioButton
-        android:id="@+id/radioButton1"
-        android:layout_width="404dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="48dp"
-        android:text="China"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:layout_editor_absoluteX="3dp" />
+    <Button
+        android:id="@+id/languageback"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="460dp"
+        android:backgroundTint="#ffffff"
+        android:text="Back"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnEnglish" />
 
-    <RadioButton
-        android:id="@+id/radioButton1"
-        android:layout_width="404dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="220dp"
-        android:text="China"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:layout_editor_absoluteX="0dp" />
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="404dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="168dp"
-        android:text="Nederlands"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:layout_editor_absoluteX="0dp" />
-
-    <RadioButton
-        android:id="@+id/radioButton3"
-        android:layout_width="404dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="108dp"
-        android:text="VietNamese"
-        android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@+id/textView11"
-        tools:layout_editor_absoluteX="0dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

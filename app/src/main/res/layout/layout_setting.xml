@@ -2,10 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.setting.SettingFragment">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -13,7 +11,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        android:background="#ffffff"
+        android:background="#cccccc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -28,8 +26,8 @@
 
                 <ImageView
                     android:id="@+id/imageView4"
-                    android:layout_width="386dp"
-                    android:layout_height="138dp"
+                    android:layout_width="404dp"
+                    android:layout_height="173dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -58,7 +56,7 @@
                 android:textStyle="bold" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="#ffffff"
+               android:background="#ffffff"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -76,18 +74,17 @@
                     app:srcCompat="@drawable/language" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@id/textView6"
                     android:layout_width="256dp"
                     android:layout_height="33dp"
                     android:layout_marginTop="4dp"
                     android:text="Language"
-                    android:textColor="#000000"
+                    android:textColor="#3F51B5"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="#ffffff"
@@ -108,12 +105,11 @@
                     app:srcCompat="@drawable/share" />
 
                 <TextView
-                    android:id="@+id/textView8"
                     android:layout_width="256dp"
                     android:layout_height="33dp"
                     android:layout_marginTop="4dp"
                     android:text="Share App"
-                    android:textColor="#000000"
+                    android:textColor="#3F51B5"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,12 +135,11 @@
                     app:srcCompat="@drawable/rate" />
 
                 <TextView
-                    android:id="@+id/textView9"
                     android:layout_width="256dp"
                     android:layout_height="33dp"
                     android:layout_marginTop="4dp"
                     android:text="Rate App"
-                    android:textColor="#000000"
+                    android:textColor="#3F51B5"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -182,34 +177,34 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:background="#ffffff"
-                android:layout_marginTop="30dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-                >
+            >
 
-                <ImageView
-                    android:id="@+id/textView2"
-                    android:layout_width="80dp"
-                    android:layout_height="42dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/policy" />
+            <ImageView
+                android:id="@+id/textView2"
+                android:layout_width="80dp"
+                android:layout_height="42dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/premium" />
 
-                <TextView
-                    android:layout_width="256dp"
-                    android:layout_height="33dp"
-                    android:layout_marginTop="4dp"
-                    android:text="Privacy and Policy"
-                    android:textColor="#000000"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="256dp"
+                android:layout_height="33dp"
+                android:layout_marginTop="4dp"
+                android:text="Privacy and Policy"
+                android:textColor="#000000"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:background="#ffffff"
@@ -227,10 +222,10 @@
                     android:layout_height="42dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/complete" />
+                    app:srcCompat="@drawable/premium" />
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/textView11"
                     android:layout_width="197dp"
                     android:layout_height="32dp"
                     android:layout_marginTop="8dp"
@@ -249,7 +244,7 @@
                     android:text=""
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-
+                    app:layout_constraintStart_toEndOf="@+id/textView11"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -270,7 +265,7 @@
                     android:layout_height="42dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/moment" />
+                    app:srcCompat="@drawable/premium" />
 
                 <TextView
                     android:layout_width="256dp"
@@ -287,6 +282,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
