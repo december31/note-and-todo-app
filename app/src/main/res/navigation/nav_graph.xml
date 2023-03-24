@@ -39,6 +39,29 @@
         android:name="com.example.note_and_todo_app.ui.task.list.TaskListFragment"
         tools:layout="@layout/fragment_task_list"/>
 
+   <fragment
+       android:id="@+id/fragment_task_language"
+       android:name="com.example.note_and_todo_app.setting.LanguageFragment"
+       tools:layout="@layout/fragment_language"
+       />
+
+    <fragment
+        android:id="@+id/fragment_task_share"
+        android:name="com.example.note_and_todo_app.setting.ShareFragment"
+        tools:menu="@layout/shareapp"
+        />
+
+    <fragment
+        android:id="@+id/fragment_task_privacy"
+        android:name="com.example.note_and_todo_app.setting.PrivacyFragment"
+        tools:layout="@layout/layout_privacy"
+        />
+
+    <fragment
+        android:id="@+id/fragment_task_moment"
+        android:name="com.example.note_and_todo_app.setting.MomentFragment"
+        tools:layout="@layout/openmoment"
+        />
     <fragment
         android:id="@+id/fragment_all_task"
         android:name="com.example.note_and_todo_app.ui.task.all.AllTaskFragment"
