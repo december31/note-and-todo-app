@@ -66,14 +66,9 @@ public class SplashActivity extends AppCompatActivity {
                 mInterstitialAd = interstitialAd;
                 mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                     @Override
-                    public void onAdClicked() {
-                        // Called when a click is recorded for an ad.
-                    }
-
-                    @Override
                     public void onAdDismissedFullScreenContent() {
                         // Called when ad is dismissed.
-                        // Set the ad reference to null so you don't show the ad a second time.
+                        // Set the ad reference to null, so you don't show the ad a second time.
                         mInterstitialAd = null;
                         finish();
                     }
@@ -82,16 +77,6 @@ public class SplashActivity extends AppCompatActivity {
                     public void onAdFailedToShowFullScreenContent(@NotNull AdError adError) {
                         // Called when ad fails to show.
                         mInterstitialAd = null;
-                    }
-
-                    @Override
-                    public void onAdImpression() {
-                        // Called when an impression is recorded for an ad.
-                    }
-
-                    @Override
-                    public void onAdShowedFullScreenContent() {
-                        // Called when ad is shown.
                     }
                 });
                 mInterstitialAd.show(SplashActivity.this);
@@ -103,8 +88,4 @@ public class SplashActivity extends AppCompatActivity {
         Navigation.findNavController(binding.navHost).navigate(R.id.action_fragment_nav_splash_to_activity_main);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        return Navigation.findNavController(binding.navHost).navigateUp();
-    }
 }

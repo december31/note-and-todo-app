@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.navigation.Navigation;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.ui.base.OnCreateDialogResult;
@@ -67,6 +69,13 @@ public class AllTaskFragment extends Fragment implements TaskListener {
             TaskCategoryFragment.INSTANCE.viewModel.fetchAllCategories();
             Navigation.findNavController(binding.getRoot()).popBackStack();
         });
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                binding.toolbar.icLeft.performClick();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
     }
 
     OnCreateDialogResult dialogResult = new OnCreateDialogResult() {
