@@ -11,8 +11,19 @@
     <string name="next_7_days">Next 7 Days</string>
     <string name="all_tasks">All Tasks</string>
     <string name="my_lists">My Lists</string>
-    <string name="create_a_new_list">Create a new list</string>
+    <string name="category_name">Category Name</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
     <string name="due_date">Due date</string>
+    <string name="task_list_is_empty">Task list is empty!</string>
+    <string name="create_a_new_task">create a new task</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="notification_title">Note and Todo list is running</string>
+    <string name="notification_message">tap here to stop</string>
+    <string name="close">Close</string>
+    <string name="today_task">Today Task</string>
+    <string name="request_draw_overlay">We need draw over other app to show your today task as soon as you open your device</string>
+    <string name="permission_required">Permission required</string>
+    <string name="delete">Delete</string>
+    <string name="loading_ads">Loading Ads ...</string>
 </resources>

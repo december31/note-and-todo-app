@@ -6,13 +6,21 @@
     <data>
 
         <import type="com.example.note_and_todo_app.database.task.TaskState" />
-
+        <import type="androidx.core.content.ContextCompat"/>
+        <import type="android.view.View"/>
+        <variable
+            name="today"
+            type="Long" />
         <variable
             name="data"
             type="com.example.note_and_todo_app.database.task.Task" />
+        <variable
+            name="dueDateString"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -44,7 +52,7 @@
                 android:ellipsize="end"
                 android:lines="1"
                 android:paddingEnd="12dp"
-                android:textColor="@color/black"
+                android:textColor="@{data.state==TaskState.DONE?@color/medium_gray:@color/black}"
                 android:maxWidth="160dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -53,11 +61,28 @@
             <TextView
                 android:id="@+id/due_date"
                 tools:text="@tools:sample/date/ddmmyy"
-                android:textSize="12sp"
-                android:paddingVertical="0dp"
+                android:textSize="10dp"
+                android:paddingVertical="2dp"
+                android:text="@{dueDateString}"
+                android:visibility="@{data.state==TaskState.DONE || data.dueDate &lt; today ?View.GONE:View.VISIBLE}"
                 android:background="@drawable/bg_transparent_rounded"
+                android:textColor="@color/dark_gray"
                 android:layout_width="wrap_content"
-                android:layout_height="18dp" />
+                android:layout_height="18dp"
+                tools:ignore="SpUsage" />
+
+            <TextView
+                android:id="@+id/due_date_missed"
+                tools:text="@tools:sample/date/ddmmyy"
+                android:textSize="10dp"
+                android:paddingVertical="2dp"
+                android:text="@{dueDateString}"
+                android:visibility="@{data.state==TaskState.DONE || data.dueDate &gt; today ?View.GONE:View.VISIBLE}"
+                android:background="@drawable/bg_red_rounded"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                tools:ignore="SmallSp,SpUsage" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <ImageView
@@ -66,9 +91,23 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="8dp"
+            android:visibility="@{data.state == TaskState.DONE ? View.VISIBLE : View.GONE}"
             android:src="@drawable/ic_delete"
             android:layout_width="18dp"
             android:layout_height="18dp" />
 
+        <View
+            android:id="@+id/streak"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
+            android:layout_marginHorizontal="35dp"
+            android:background="@color/dark_gray"
+            android:layout_width="0dp"
+            android:layout_height="1dp"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+<!--@{data.state==TaskState.DONE?View.VISIBLE:View.GONE, default=gone"-->

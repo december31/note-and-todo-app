@@ -1,7 +1,7 @@
 package com.example.note_and_todo_app.database.task;
 
 import androidx.room.*;
-import com.example.note_and_todo_app.base.BaseItem;
+import com.example.note_and_todo_app.ui.base.BaseItem;
 
 @Entity(tableName = "task")
 public class Task extends BaseItem {

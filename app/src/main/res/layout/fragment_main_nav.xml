@@ -4,11 +4,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.note_and_todo_app.base.BaseToolBar
+        <com.example.note_and_todo_app.ui.base.BaseToolBar
             android:id="@+id/toolbar"
             app:layout_constraintTop_toTopOf="parent"
             android:layout_width="match_parent"
-            android:layout_height="50dp"/>
+            android:layout_height="wrap_content"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/view_pager"

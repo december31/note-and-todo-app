@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
-import com.example.note_and_todo_app.base.BaseItem;
+import com.example.note_and_todo_app.ui.base.BaseItem;
 
 @Entity(tableName = "task_category")
 public class TaskCategory extends BaseItem {
