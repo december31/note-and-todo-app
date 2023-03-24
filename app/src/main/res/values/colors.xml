@@ -35,11 +35,6 @@
     <color name="colorAccent">#03DAC5</color>
 
 
-    <color name ="dialog_color_1">#FDD736</color>
-    <color name="dialog_color_2">#3B5796</color>
 
-    <color name="colorPrimary">#0F9D58</color>
-    <color name="colorPrimaryDark">#16E37F</color>
-    <color name="colorAccent">#03DAC5</color>
 
 </resources>

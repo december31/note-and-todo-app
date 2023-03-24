@@ -1,4 +1,4 @@
-package com.example.note_and_todo_app.setting;
+package com.example.note_and_todo_app.ui.setting;
 
 import android.content.Context;
 import android.content.res.Resources;
