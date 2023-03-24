@@ -16,10 +16,11 @@ public class Note {
 	public Note(){
 	}
 	@Ignore
-	public Note(String title, String info, String date) {
+	public Note(String title, String info, String date,String imagePath) {
 		this.title = title;
 		this.info = info;
 		this.date = date;
+		this.imagePath = imagePath;
 	}
 	@Ignore
 	public Note(Long id, String title, String info, String date) {
@@ -27,6 +28,14 @@ public class Note {
 		this.title = title;
 		this.info = info;
 		this.date = date;
+	}
+	@Ignore
+	public Note(Long id, String title, String info, String date, String imagePath) {
+		this.id = id;
+		this.title = title;
+		this.info = info;
+		this.date = date;
+		this.imagePath = imagePath;
 	}
 
 	public Long getId() {
@@ -46,6 +55,10 @@ public class Note {
 
 	@ColumnInfo(name = "date")
 	public String date;
+
+
+	@ColumnInfo(name = "image_path")
+	public String imagePath;
 
 	public String getTitle() {
 		return title;
@@ -69,5 +82,13 @@ public class Note {
 
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getImagePath() {
+		return imagePath;
+	}
+
+	public void setImagePath(String imagePath) {
+		this.imagePath = imagePath;
 	}
 }

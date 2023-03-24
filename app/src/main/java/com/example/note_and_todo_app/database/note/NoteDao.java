@@ -22,6 +22,9 @@ public interface NoteDao {
     @Query("SELECT * FROM note WHERE title LIKE :title  LIMIT 1")
     Note findByTitle(String title);
 
+    @Query("DELETE  FROM note")
+    void deleteAll();
+
     @Insert
     void insertAll(Note... users);
     @Insert

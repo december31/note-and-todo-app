@@ -7,36 +7,26 @@
 
     <fragment
         android:id="@+id/fragment_main_nav"
-        android:name="com.example.note_and_todo_app.MainNavFragment"
+        android:name="com.example.note_and_todo_app.ui.main.MainNavFragment"
         tools:layout="@layout/fragment_main_nav">
         <action
             android:id="@+id/action_fragment_main_nav_to_fragment_task_list"
             app:destination="@id/fragment_task_list" />
-    </fragment>
-    <fragment
-        android:id="@+id/noteDetail"
-        android:name="com.example.note_and_todo_app.note.NoteDetailFragment"
-        android:label="fragment_note_detail"
-        tools:layout="@layout/fragment_note_detail" >
         <action
-            android:id="@+id/action_noteDetail_to_fragment_note"
-            app:destination="@id/noteFragment" />
-        <argument android:name="noteDetail" />
+            android:id="@+id/action_fragment_main_nav_to_fragment_all_task"
+            app:destination="@id/fragment_all_task" />
     </fragment>
     <fragment
         android:id="@+id/noteFragment"
-        android:name="com.example.note_and_todo_app.note.NoteFragment"
+        android:name="com.example.note_and_todo_app.ui.note.NoteFragment"
         tools:layout="@layout/fragment_note">
-        <action
-            android:id="@+id/action_fragment_note_to_noteDetail"
-            app:destination="@id/noteDetail" />
         <action
             android:id="@+id/action_fragment_note_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
     </fragment>
     <fragment
         android:id="@+id/addNoteFragment"
-        android:name="com.example.note_and_todo_app.note.DtNoteFragment"
+        android:name="com.example.note_and_todo_app.ui.note.NoteDetailFragment"
         android:label="fragment_add_note"
         tools:layout="@layout/fragment_add_detail" >
         <action
@@ -46,7 +36,7 @@
 
     <fragment
         android:id="@+id/fragment_task_list"
-        android:name="com.example.note_and_todo_app.todo.list.TaskListFragment"
+        android:name="com.example.note_and_todo_app.ui.task.list.TaskListFragment"
         tools:layout="@layout/fragment_task_list"/>
 
    <fragment
@@ -72,4 +62,9 @@
         android:name="com.example.note_and_todo_app.setting.MomentFragment"
         tools:layout="@layout/openmoment"
         />
+    <fragment
+        android:id="@+id/fragment_all_task"
+        android:name="com.example.note_and_todo_app.ui.task.all.AllTaskFragment"
+        tools:layout="@layout/fragment_task_list">
+    </fragment>
 </navigation>

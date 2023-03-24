@@ -1,5 +1,6 @@
 package com.example.note_and_todo_app.database.task;
 
+import android.util.Log;
 import androidx.room.*;
 
 import java.util.List;
@@ -10,8 +11,14 @@ public interface TaskDao {
 	List<Task> getAll();
 	@Update
 	void update(Task... tasks);
+	@Update
+	void update(TaskCategory... categories);
 	@Delete
 	void delete(Task... tasks);
+	@Delete
+	void delete(TaskCategory... categories);
+	@Query("delete from task where category_id = :categoryId")
+	void deleteAllInCategory(Long categoryId);
 	@Insert
 	void insert(Task... tasks);
 	@Insert
@@ -20,10 +27,21 @@ public interface TaskDao {
 	@Query("select * from task where task.category_id = :id")
 	List<Task> getTaskByCategory(Long id);
 
-	@Query("select * from task_category")
+	@Query("select * from task_category where id = :id limit 1")
+	TaskCategory getTaskCategoryById(Long id);
+
+	@Query("select * from task_category order by id asc")
 	List<TaskCategory> getAllCategory();
+
+	@Query("select exists(select * from task_category where id = :categoryId)")
+	Boolean isCategoryExists(Long categoryId);
 
 	@Query("select count(*) from task where task.category_id = :categoryId")
 	Integer getNumberOfTask(Long categoryId);
 
+	@Query("select * from task where title like :title||'%'")
+	List<Task> getTaskByTitle(String title);
+
+	@Query("select exists(select * from task where state = :state)")
+	Boolean isHavingTaskWithState(TaskState state);
 }
