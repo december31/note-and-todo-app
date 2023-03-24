@@ -1,4 +1,4 @@
-package com.example.note_and_todo_app.ui.setting;
+package com.example.note_and_todo_app.setting;
 
 import static android.system.Os.remove;
 import static androidx.databinding.DataBindingUtil.setContentView;
