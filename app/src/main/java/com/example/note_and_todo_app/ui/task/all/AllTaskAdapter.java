@@ -63,10 +63,12 @@ public class AllTaskAdapter extends RecyclerView.Adapter<AllTaskAdapter.AllTaskV
                 binding.title.setTextColor(
                         ContextCompat.getColor(binding.getRoot().getContext(), item.getTitleTextColor())
                 );
+                binding.setIsMissed(true);
             } else {
                 binding.title.setTextColor(
                         ContextCompat.getColor(binding.getRoot().getContext(), Constants.DEFAULT_COLOR_RES)
                 );
+                binding.setIsMissed(false);
             }
             binding.title.setText(item.getTitle());
 
