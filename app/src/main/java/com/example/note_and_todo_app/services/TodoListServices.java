@@ -13,7 +13,7 @@ import com.example.note_and_todo_app.receivers.ScreenStateReceiver;
 public class TodoListServices extends Service {
 
     public static String CHANNEL = "notificationChanel";
-    ScreenStateReceiver receiver;
+    private ScreenStateReceiver receiver;
 
     @Override
     public void onCreate() {
@@ -74,7 +74,7 @@ public class TodoListServices extends Service {
 
     private void createNotificationChanel() {
         NotificationChannel serviceChanel = new NotificationChannel(
-                CHANNEL, "Foreground Service Chanel", NotificationManager.IMPORTANCE_NONE
+                CHANNEL, "Foreground Service Chanel", NotificationManager.IMPORTANCE_LOW
         );
         NotificationManager manager = getSystemService(NotificationManager.class);
         manager.createNotificationChannel(serviceChanel);

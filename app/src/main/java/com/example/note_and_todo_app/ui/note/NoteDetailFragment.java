@@ -61,8 +61,6 @@ public class NoteDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
         View view = inflater.inflate(R.layout.fragment_add_detail, container, false);
 
         noteViewModel = new ViewModelProvider(this).get(NoteViewModel.class);
@@ -71,6 +69,7 @@ public class NoteDetailFragment extends Fragment {
         assert getArguments() != null;
         Long idEdit = getArguments().getLong("idEdit");
         update = Database.getInstance(this.getContext()).noteDao().getNote(idEdit);
+
         selectedImagePath = "";
         if (update != null) {
             try {
@@ -84,7 +83,7 @@ public class NoteDetailFragment extends Fragment {
         add = Database.getInstance(this.getContext()).noteDao().getNote(idAdd);
         //
 
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 view.findViewById(R.id.backAddNote).performClick();
@@ -92,7 +91,7 @@ public class NoteDetailFragment extends Fragment {
         };
         requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
 
-        // The callback can be enabled or disabled here or in handleOnBackPressed()
+        //Quyền truy cập vào store và lấy ảnh
         view.findViewById(R.id.btnImage).setOnClickListener(v -> {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(requireActivity(),
@@ -139,7 +138,7 @@ public class NoteDetailFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE ) {
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE) {
             if (data != null) {
                 Uri selectImgUri = data.getData();
                 if (selectImgUri != null) {
@@ -174,10 +173,10 @@ public class NoteDetailFragment extends Fragment {
         textInfo.setText(update.getInfo());
         selectedImagePath = update.getImagePath();
         imageNote.setImageBitmap(BitmapFactory.decodeFile(update.getImagePath()));
-        if(Objects.equals(selectedImagePath, "")){
+        if (Objects.equals(selectedImagePath, "")) {
             imageNote.setVisibility(View.GONE);
             deleteImageNote.setVisibility(View.GONE);
-        }else {
+        } else {
             imageNote.setVisibility(View.VISIBLE);
             deleteImageNote.setVisibility(View.VISIBLE);
         }
@@ -188,17 +187,20 @@ public class NoteDetailFragment extends Fragment {
         String title = String.valueOf(textTitle.getText());
         String date = textDate.getText().toString();
         String info = String.valueOf(textInfo.getText());
-
+        if(title.isEmpty() && !info.isEmpty()){
+            title = "...";
+        }
         if (update != null) {
-            note = new Note(update.getId(), title, info, date,selectedImagePath);
+            note = new Note(update.getId(), title, info, date, selectedImagePath);
         } else {
-            note = new Note(add.getId(), title, info, date,selectedImagePath);
+            note = new Note(add.getId(), title, info, date, selectedImagePath);
         }
-        if (info.isEmpty() && title.isEmpty()) {
+        if (info.isEmpty() && title.isEmpty() && selectedImagePath.isEmpty()) {
             noteViewModel.delete(note);
-        } else {
-            noteViewModel.update(note);
+            return;
         }
+        noteViewModel.update(note);
+
 
 
     }
@@ -211,27 +213,29 @@ public class NoteDetailFragment extends Fragment {
         EditText editText = getView().findViewById(R.id.typingText);
         EditText title = getView().findViewById(R.id.titleNoteAdd);
         btnCheck.setVisibility(View.GONE);
-        focusChange(editText,menu,btnCheck);
-        focusChange(title,menu,btnCheck);
+        focusChange(editText, menu, btnCheck);
+        focusChange(title, menu, btnCheck);
         btnCheck.setOnClickListener(v -> {
             menu.setVisibility(View.VISIBLE);
             btnCheck.setVisibility(View.GONE);
-            ((MainActivity)requireActivity()).closeKeyboard();
+            ((MainActivity) requireActivity()).closeKeyboard();
             editText.clearFocus();
 
         });
         menu.setOnClickListener(v -> deleteNote(getContext()));
 
     }
-    private  void focusChange(EditText editText,ImageView menu,ImageView btnCheck){
+
+    private void focusChange(EditText editText, ImageView menu, ImageView btnCheck) {
         editText.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus){
+            if (hasFocus) {
                 menu.setVisibility(View.GONE);
                 btnCheck.setVisibility(View.VISIBLE);
             }
 
         });
     }
+
     private void deleteNote(Context context) {
         new AlertDialog.Builder(context)
                 .setTitle("Delete Note")
@@ -253,6 +257,7 @@ public class NoteDetailFragment extends Fragment {
                 .show();
 
     }
+
     private void setupUi(View view) {
         TextView textDate = (view).findViewById(R.id.dateAddNote);
         Calendar calendar = Calendar.getInstance();
@@ -260,7 +265,6 @@ public class NoteDetailFragment extends Fragment {
         String dateTime = simpleDateFormat.format(calendar.getTime());
         textDate.setText(dateTime);
     }
-
 
 
     private String getPathFromUri(Uri contentUri) {

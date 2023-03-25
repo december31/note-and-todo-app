@@ -156,21 +156,12 @@ public class MainNavFragment extends Fragment {
 	private void deleteNote(Context context) {
 		new AlertDialog.Builder(context)
 				.setTitle("Delete Note")
-				.setMessage("Are you sure you want to delete this note?")
+				.setMessage("Are you sure you want to delete all note?")
 				.setPositiveButton(android.R.string.yes, (dialog, which) -> noteViewModel.deleteAll())
 				.setNegativeButton(android.R.string.no, null)
 				.setIcon(android.R.drawable.ic_menu_delete)
 				.show();
 
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		View  decorView = requireActivity().getWindow().getDecorView();
-		int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-				| View.SYSTEM_UI_FLAG_FULLSCREEN;
-		decorView.setSystemUiVisibility(uiOptions);
 	}
 
 	@Override

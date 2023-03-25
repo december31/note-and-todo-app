@@ -48,14 +48,7 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
 
     private void setupData() {
         fetchItems();
-        tasksListLiveData.observe(this, tasks ->{
-            if (tasks.size() == 0) {
-                binding.noTaskContainer.setVisibility(View.VISIBLE);
-            } else {
-                binding.noTaskContainer.setVisibility(View.GONE);
-                adapter.updateItems(tasks);
-            }
-        });
+        tasksListLiveData.observe(this, adapter::updateItems);
         binding.rv.setAdapter(adapter);
     }
 
@@ -97,12 +90,10 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
 
         @Override
         public void onCancel() {
-
         }
 
         @Override
         public void onDelete() {
-
         }
     };
 
