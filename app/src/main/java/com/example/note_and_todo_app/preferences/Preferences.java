@@ -7,7 +7,6 @@ import androidx.preference.PreferenceManager;
 public class Preferences {
     private final String prefNewUser = "new_user_pref";
     private final String prefLanguage = "language_pref";
-    private final String prefShowDoneTask = "show_done_task_pref";
     private final String prefShowNotification = "show_notification_pref";
 
     private final SharedPreferences mPref;

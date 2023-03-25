@@ -147,7 +147,7 @@ public class MainNavFragment extends Fragment {
 
 			mainNavBinding.toolbar.icRight.setOnClickListener(v -> {
 				if(mainNavBinding.viewPager.getCurrentItem() == 1){
-				popupMenu.show();
+				    popupMenu.show();
 				}
 			});
 

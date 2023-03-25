@@ -37,4 +37,5 @@
     <string name="rate_app">Rate App</string>
     <string name="english">English</string>
     <string name="report_bugs">Help us Report bugs</string>
+    <string name="task_name">Task name</string>
 </resources>
