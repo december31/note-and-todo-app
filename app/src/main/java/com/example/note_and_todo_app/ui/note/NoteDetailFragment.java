@@ -92,14 +92,7 @@ public class NoteDetailFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback((LifecycleOwner) requireContext(), callback);
 
         //Quyền truy cập vào store và lấy ảnh
-        view.findViewById(R.id.btnImage).setOnClickListener(v -> {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(),
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
-            } else {
-                selectImage();
-            }
-        });
+
         view.findViewById(R.id.backAddNote).setOnClickListener(v -> {
             updateData();
             Navigation.findNavController(view).popBackStack();
@@ -208,10 +201,11 @@ public class NoteDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ImageView menu = getView().findViewById(R.id.menuNote);
-        ImageView btnCheck = getView().findViewById(R.id.doneButton);
-        EditText editText = getView().findViewById(R.id.typingText);
-        EditText title = getView().findViewById(R.id.titleNoteAdd);
+        ImageView menu = requireView().findViewById(R.id.menuNote);
+        ImageView btnCheck = requireView().findViewById(R.id.doneButton);
+        EditText editText = requireView().findViewById(R.id.typingText);
+        EditText title = requireView().findViewById(R.id.titleNoteAdd);
+        ImageView image = requireView().findViewById(R.id.btnImage);
         btnCheck.setVisibility(View.GONE);
         focusChange(editText, menu, btnCheck);
         focusChange(title, menu, btnCheck);
@@ -223,7 +217,15 @@ public class NoteDetailFragment extends Fragment {
 
         });
         menu.setOnClickListener(v -> deleteNote(getContext()));
-
+        image.setOnClickListener(v -> {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE_PERMISSION);
+            } else {
+                selectImage();
+            }
+            menu.setVisibility(View.VISIBLE);
+        });
     }
 
     private void focusChange(EditText editText, ImageView menu, ImageView btnCheck) {
