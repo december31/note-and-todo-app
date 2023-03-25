@@ -11,6 +11,7 @@
             android:id="@+id/rv"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:layout_margin="20dp"
+            tools:listitem="@layout/layout_setting_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 

@@ -1,12 +1,17 @@
 package com.example.note_and_todo_app.ui.setting;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.databinding.LayoutSettingItemBinding;
+import com.example.note_and_todo_app.preferences.Preferences;
+import com.example.note_and_todo_app.ui.main.MainActivity;
+import kotlin.Unit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -30,7 +35,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull SettingViewHolder holder, int position) {
-        holder.bind(items.get(position));
+        holder.bind(items.get(position), position);
     }
 
     @Override
@@ -44,6 +49,11 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
         notifyDataSetChanged();
     }
 
+    void updateData(SettingItem item, int position) {
+        this.items.set(position, item);
+        notifyItemChanged(position);
+    }
+
     protected class SettingViewHolder extends RecyclerView.ViewHolder {
 
         private final LayoutSettingItemBinding binding;
@@ -53,14 +63,23 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
             this.binding = binding;
         }
 
-        void bind(SettingItem item) {
+        void bind(SettingItem item, int position) {
             binding.setData(item);
             binding.title.setText(item.getTitleRes());
             if (item.getType() == SettingItem.Type.LANGUAGE) {
                 binding.textRight.setText(R.string.english);
+            } else if (item.getType() == SettingItem.Type.CATEGORY) {
+                binding.title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+                binding.title.setTypeface(null, Typeface.BOLD);
+            } else {
+                binding.title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 16);
+                binding.title.setTypeface(null, Typeface.NORMAL);
             }
             if (item.isHasSwitch()) {
-                binding.check.setOnCheckedChangeListener((v, b) -> listener.onStateChanged(item, b));
+                binding.check.setChecked(item.isChecked());
+                binding.check.setOnClickListener(v -> {
+                    listener.onStateChanged(item, binding.check.isChecked(), position);
+                });
             } else {
                 binding.getRoot().setOnClickListener(v -> listener.onClick(item));
             }
@@ -70,6 +89,6 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
     interface SettingListener {
         void onClick(SettingItem item);
 
-        void onStateChanged(SettingItem item, boolean checked);
+        void onStateChanged(SettingItem item, boolean checked, int position);
     }
 }
