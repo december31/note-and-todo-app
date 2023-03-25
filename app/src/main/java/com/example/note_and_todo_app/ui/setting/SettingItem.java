@@ -5,10 +5,18 @@ public class SettingItem {
     private Type type;
     private boolean hasSwitch;
 
+    private boolean checked = true;
+
     public SettingItem(int titleRes, Type type, boolean hasSwitch) {
         this.titleRes = titleRes;
         this.type = type;
         this.hasSwitch = hasSwitch;
+    }
+    public SettingItem(int titleRes, Type type, boolean hasSwitch, boolean checked) {
+        this.titleRes = titleRes;
+        this.type = type;
+        this.hasSwitch = hasSwitch;
+        this.checked = checked;
     }
 
     public int getTitleRes() {
@@ -35,11 +43,18 @@ public class SettingItem {
         this.hasSwitch = hasSwitch;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     public enum Type {
         LANGUAGE,
         NOTIFICATION,
-        PRIVACY,
-        TERM_OF_USE,
+        REPORT_BUGS,
         SHARE,
         RATE,
         SHOW_COMPLETED_TASK,

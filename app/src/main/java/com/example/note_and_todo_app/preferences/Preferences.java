@@ -4,10 +4,11 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 import androidx.preference.PreferenceManager;
-
 public class Preferences {
     private final String prefNewUser = "new_user_pref";
     private final String prefLanguage = "language_pref";
+    private final String prefShowDoneTask = "show_done_task_pref";
+    private final String prefShowNotification = "show_notification_pref";
 
     private final SharedPreferences mPref;
 
@@ -24,6 +25,15 @@ public class Preferences {
         editor.apply();
     }
 
+    public boolean isShowNotification() {
+        return mPref.getBoolean(prefShowNotification, false);
+    }
+    public void setIsShowNotification(boolean value) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putBoolean(prefShowNotification, value);
+        editor.apply();
+    }
+
     public String getLanguage() {
         return mPref.getString(prefLanguage, "en");
     }
@@ -32,7 +42,6 @@ public class Preferences {
         editor.putString(prefLanguage, value);
         editor.apply();
     }
-
     private static Preferences INSTANCE;
     public static Preferences initPref(Context context) {
         if (INSTANCE == null) {

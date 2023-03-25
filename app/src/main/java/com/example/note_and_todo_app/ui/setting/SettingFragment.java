@@ -8,7 +8,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.example.note_and_todo_app.databinding.FragmentSettingBinding;
+import com.example.note_and_todo_app.preferences.Preferences;
+import com.example.note_and_todo_app.ui.main.MainActivity;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class SettingFragment extends Fragment implements SettingAdapter.SettingListener {
 
@@ -39,7 +43,6 @@ public class SettingFragment extends Fragment implements SettingAdapter.SettingL
     public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupView();
-        setupToolBar();
     }
 
     private void setupView() {
@@ -47,22 +50,20 @@ public class SettingFragment extends Fragment implements SettingAdapter.SettingL
         adapter.updateData(viewModel.getSettingItems());
     }
 
-    private void setupToolBar() {
-
-    }
-
     @Override
     public void onClick(SettingItem item) {
+        MainActivity activity = (MainActivity) getActivity();
         switch (item.getType()) {
             case LANGUAGE:
                 break;
-            case PRIVACY:
-                break;
-            case TERM_OF_USE:
-                break;
             case SHARE:
+                if (activity != null) activity.shareApp();
                 break;
             case RATE:
+                if (activity != null) activity.rateApp();
+                break;
+            case REPORT_BUGS:
+                if (activity != null) activity.reportBugs();
                 break;
             default:
                 break;
@@ -70,7 +71,24 @@ public class SettingFragment extends Fragment implements SettingAdapter.SettingL
     }
 
     @Override
-    public void onStateChanged(SettingItem item, boolean checked) {
-
+    public void onStateChanged(SettingItem item, boolean checked, int position) {
+        if (Objects.requireNonNull(item.getType()) == SettingItem.Type.NOTIFICATION) {
+            Objects.requireNonNull(Preferences.getPreference()).setIsShowNotification(checked);
+            MainActivity activity = (MainActivity) getActivity();
+            MainActivity.isShowNotification.observe(getViewLifecycleOwner(), b -> {
+                if (!b) {
+                    item.setChecked(false);
+                    adapter.updateData(item, position);
+                    MainActivity.isShowNotification.postValue(true);
+                }
+            });
+            if (activity != null) {
+                if (checked) {
+                    activity.startAppService();
+                } else {
+                    activity.stopAppService();
+                }
+            }
+        }
     }
 }

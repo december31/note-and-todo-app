@@ -17,6 +17,10 @@
         <variable
             name="isShowTasksCount"
             type="Boolean" />
+
+        <variable
+            name="isMissed"
+            type="Boolean" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,7 +50,7 @@
             <ImageView
                 android:id="@+id/new_task_button"
                 android:src="@drawable/ic_plus"
-                android:visibility="@{isShowRV || !isShowTasksCount ? View.VISIBLE : View.GONE}"
+                android:visibility="@{isMissed ? View.GONE : isShowRV || !isShowTasksCount ? View.VISIBLE : View.GONE}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,7 +66,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 app:cardCornerRadius="30dp"
-                android:visibility="@{isShowTasksCount ? View.VISIBLE : View.GONE}"
+                android:visibility="@{isMissed ? View.VISIBLE : isShowTasksCount ? View.VISIBLE : View.GONE}"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentTop="true"
                 tools:ignore="RelativeOverlap">
