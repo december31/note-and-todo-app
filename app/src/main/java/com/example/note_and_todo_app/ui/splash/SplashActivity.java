@@ -20,13 +20,10 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import org.jetbrains.annotations.NotNull;
 
-@SuppressWarnings("deprecation")
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
     private ActivitySplashBinding binding;
-
-    private InterstitialAd mInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +36,6 @@ public class SplashActivity extends AppCompatActivity {
         hideSystemUI();
         configInterAds();
     }
-
     private void hideSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), binding.getRoot());
@@ -62,24 +58,7 @@ public class SplashActivity extends AppCompatActivity {
             @Override
             public void onAdLoaded(@NonNull @NotNull InterstitialAd interstitialAd) {
                 startMainActivity();
-
-                mInterstitialAd = interstitialAd;
-                mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                    @Override
-                    public void onAdDismissedFullScreenContent() {
-                        // Called when ad is dismissed.
-                        // Set the ad reference to null, so you don't show the ad a second time.
-                        mInterstitialAd = null;
-                        finish();
-                    }
-
-                    @Override
-                    public void onAdFailedToShowFullScreenContent(@NotNull AdError adError) {
-                        // Called when ad fails to show.
-                        mInterstitialAd = null;
-                    }
-                });
-                mInterstitialAd.show(SplashActivity.this);
+                interstitialAd.show(SplashActivity.this);
             }
         });
     }
