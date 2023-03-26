@@ -28,6 +28,8 @@ import com.example.note_and_todo_app.ui.task.category.TaskCategoryFragment;
 import com.example.note_and_todo_app.utils.Constants;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+
 public class TaskListFragment extends Fragment implements TaskListener {
     private FragmentTaskListBinding binding;
     private final TaskListViewModel viewModel = new TaskListViewModel(getContext());
@@ -94,6 +96,7 @@ public class TaskListFragment extends Fragment implements TaskListener {
                 adapter.updateItems(tasks);
                 binding.setIsTaskEmpty(false);
             } else {
+                adapter.updateItems(Collections.emptyList());
                 binding.setIsTaskEmpty(true);
             }
         });

@@ -2,6 +2,8 @@ package com.example.note_and_todo_app.ui.splash;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +24,8 @@ import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.Executors;
+
 @SuppressLint("CustomSplashScreen")
 public class SplashActivity extends AppCompatActivity {
 
@@ -36,14 +40,20 @@ public class SplashActivity extends AppCompatActivity {
         }
         setContentView(binding.getRoot());
         hideSystemUI();
-        configInterAds();
         Preferences.initPref(getApplicationContext());
+        beginSplash();
     }
+
     private void hideSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), binding.getRoot());
         controller.hide(WindowInsetsCompat.Type.systemBars());
         controller.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);
+    }
+
+    private void beginSplash() {
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.postDelayed(this::configInterAds, 1000);
     }
 
     void configInterAds() {
