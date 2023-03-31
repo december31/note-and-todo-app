@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -21,7 +22,7 @@ public class PrivacyFragment extends Fragment {
 
         @SuppressLint({"MissingInflatedId", "LocalSuppress"})
 
-        Button privacyBack = view.findViewById(R.id.privacyback);
+        ImageView privacyBack = view.findViewById(R.id.privacyback);
         privacyBack.setOnClickListener((new View.OnClickListener() {
                     @Override
                     public void onClick(View view)

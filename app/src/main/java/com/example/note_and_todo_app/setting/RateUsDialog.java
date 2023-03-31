@@ -26,7 +26,6 @@ public class RateUsDialog extends Dialog {
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.rate_us_dialog_layout);
-
         final AppCompatButton rateNowBtn = findViewById(R.id.rateNowBtn);
         final AppCompatButton laterBtn = findViewById(R.id.laterBtn);
         final RatingBar ratingBar = findViewById(R.id.ratingBar);

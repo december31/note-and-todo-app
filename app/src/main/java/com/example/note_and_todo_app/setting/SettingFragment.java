@@ -107,49 +107,6 @@ public class SettingFragment extends Fragment {
 
 
 
-// openmoent
-
-//        list=view.findViewById(R.id.list);
-//        button =view.findViewById(R.id.button);
-//        button.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view){
-//                additem(view);
-//            }
-
-
-//            private void additem(View view) {
-//                EditText input = view.findViewById(R.id.edit_text);
-//                String itemText = input.getText().toString();
-//
-//                if(!(itemText.equals(""))){
-//                    itemsAdapter.add(itemText);
-//                    input.setText("");
-//                }
-//        //gg
-//                else{
-//                    Toast.makeText(context.getApplicationContext(),"Please enter text..", Toast.LENGTH_LONG).show();                }
-//            }
-     //   });
-//        items = new ArrayList<>();
-//        itemsAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1);
-//        itemsAdapter.addAll(items);
-//        list.setAdapter(itemsAdapter);
-//        list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            @Override
-//            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                // String position;
-//               // int position;
-//                return remove(i);
-//            }
-
-        //});
-
-
-
-
-
-        // show rating dialog
 
 
         view.findViewById(R.id.textView9).setOnClickListener(v->{
@@ -193,25 +150,5 @@ public class SettingFragment extends Fragment {
 
         return view;
     }
-// open
 
-//     private boolean remove(int position){
-//       // Context context = getApplicationContext();
-//        Toast.makeText(context, " Item Removed", Toast.LENGTH_LONG).show();
-//        items.remove(position);
-//        itemsAdapter.notifyDataSetChanged();
-//         return true;
-//     }
-//    private void additem(View view) {
-//        EditText input = view.findViewById(R.id.edit_text);
-//        String itemText = input.getText().toString();
-//
-//        if(!(itemText.equals(""))){
-//            itemsAdapter.add(itemText);
-//            input.setText("");
-//        }
-//        //gg
-//        else{
-//            Toast.makeText(context.getApplicationContext(),"Please enter text..", Toast.LENGTH_LONG).show();                }
-//    }
 }
