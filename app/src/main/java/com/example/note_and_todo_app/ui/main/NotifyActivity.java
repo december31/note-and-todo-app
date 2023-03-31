@@ -112,7 +112,8 @@ public class NotifyActivity extends AppCompatActivity implements TaskListener {
         if (tasksWithTitle.getCalendar() == null) {
             new CreateTaskDialog(dialogResult).show(getSupportFragmentManager(), "create task");
         } else {
-            new CreateTaskDialog(dialogResult, tasksWithTitle.getCalendar()).show(getSupportFragmentManager(), "create task");
+            new CreateTaskDialog(dialogResult, tasksWithTitle.getCalendar()).
+                    show(getSupportFragmentManager(), "create task");
         }
     }
 
