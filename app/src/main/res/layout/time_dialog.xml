@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog"
+        android:paddingHorizontal="16sp">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15sp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/text_dialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Custom time"
+                android:textStyle="bold"
+                android:textColor="#3C3D51"
+                android:layout_marginEnd="20dp"
+                android:textSize="19sp" />
+            <Switch
+                android:id="@+id/swTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/text_dialog"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/close_time"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_close"
+                android:layout_alignParentEnd="true"
+                 />
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/dateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start"
+                android:orientation="vertical">
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/numberPickerHour"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:np_dividerDistance="300dp"
+                    app:np_height="160dp"
+                    app:np_itemSpacing="-6dp"
+                    app:np_max="23"
+                    app:np_min="0"
+                    app:np_selectedTextColor="#333333"
+                    app:np_selectedTextSize="30sp"
+                    app:np_textColor="@color/black"
+                    app:np_textSize="15sp"
+                    android:layout_gravity="center"
+                    app:np_value="3"
+                    app:np_width="64dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="HOUR"
+                    android:textStyle="bold"
+                    android:textColor="#555555" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/numberPickerMin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:np_dividerDistance="300dp"
+                    app:np_height="160dp"
+                    app:np_itemSpacing="-6dp"
+                    app:np_max="59"
+                    app:np_min="0"
+                    app:np_selectedTextColor="#333333"
+                    app:np_selectedTextSize="30sp"
+                    app:np_textColor="@color/black"
+                    app:np_textSize="15sp"
+                    android:layout_gravity="center"
+                    app:np_value="3"
+                    android:textStyle="bold"
+                    app:np_width="64dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:textStyle="bold"
+                    android:text="MIN"
+                    android:textColor="#555555" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/linearSec"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.shawnlin.numberpicker.NumberPicker
+                    android:id="@+id/numberPickerSec"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    app:np_dividerDistance="300dp"
+                    app:np_height="160dp"
+                    android:layout_gravity="center"
+                    app:np_itemSpacing="-6dp"
+                    app:np_max="59"
+                    app:np_min="0"
+                    app:np_selectedTextColor="#333333"
+                    app:np_selectedTextSize="30sp"
+                    app:np_textColor="@color/black"
+                    app:np_textSize="15sp"
+                    app:np_value="3"
+                    app:np_width="64dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="20dp"
+                    android:text="SEC"
+                    android:textStyle="bold"
+                    android:textColor="#555555" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginVertical="16dp"
+            android:background="@drawable/border_button"
+            android:textStyle="bold"
+            android:paddingVertical="10dp"
+            android:text="@string/save"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/dateTime" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

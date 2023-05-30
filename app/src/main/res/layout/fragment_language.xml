@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/settingLanguageToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="#3399FF"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/action_back_btn"
+                android:layout_width="50dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="9dp"
+                android:padding="16dp"
+                app:tint="@color/white"
+                android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:gravity="center_vertical"
+                android:textColor="#FFFFFF"
+                android:text="@string/language"
+                android:textFontWeight="600"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/chose_btn"
+                app:layout_constraintStart_toEndOf="@+id/action_back_btn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_goneMarginStart="16dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/chose_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:padding="16dp"
+                android:src="@drawable/ic_check"
+                app:tint="@color/white"
+                android:scaleX="0.75"
+                android:scaleY="0.75"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_language"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settingLanguageToolbar"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_language"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

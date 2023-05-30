@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
+import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.databinding.FragmentSettingBinding;
 import com.example.note_and_todo_app.preferences.Preferences;
 import com.example.note_and_todo_app.ui.main.MainActivity;
@@ -55,6 +58,7 @@ public class SettingFragment extends Fragment implements SettingAdapter.SettingL
         MainActivity activity = (MainActivity) getActivity();
         switch (item.getType()) {
             case LANGUAGE:
+                Navigation.findNavController(getView()).navigate(R.id.fragment_language);
                 break;
             case SHARE:
                 if (activity != null) activity.shareApp();

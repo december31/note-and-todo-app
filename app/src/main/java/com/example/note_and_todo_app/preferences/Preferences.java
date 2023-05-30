@@ -9,7 +9,11 @@ public class Preferences {
     private final String prefLanguage = "language_pref";
     private final String prefShowDoneTask = "show_done_task_pref";
     private final String prefShowNotification = "show_notification_pref";
+    private final String prefTimeAlarm = "prefTimeAlarm";
+    private final String prefHourAlarm = "prefHourAlarm";
+    private final String prefMinAlarm = "prefMinAlarm";
 
+    private final String prefOnAlarm = "prefOnAlarm";
     private final SharedPreferences mPref;
 
     private Preferences(Context context) {
@@ -25,6 +29,14 @@ public class Preferences {
         editor.apply();
     }
 
+    public boolean isOnAlarm() {
+        return mPref.getBoolean(prefOnAlarm, false);
+    }
+    public void setIsOnAlarm(boolean value) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putBoolean(prefOnAlarm, value);
+        editor.apply();
+    }
     public boolean isShowNotification() {
         return mPref.getBoolean(prefShowNotification, false);
     }
@@ -33,6 +45,35 @@ public class Preferences {
         editor.putBoolean(prefShowNotification, value);
         editor.apply();
     }
+
+    public Integer getTimeAlarm() {
+        return mPref.getInt(prefTimeAlarm, 0);
+    }
+    public void setTimeAlarm(Integer value) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putInt(prefTimeAlarm, value);
+        editor.apply();
+    }
+    public Integer getHourAlarm() {
+        return mPref.getInt(prefHourAlarm, 0);
+    }
+    public void setHourAlarm(Integer value) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putInt(prefHourAlarm, value);
+        editor.apply();
+    }
+
+
+    public Integer getMinAlarm() {
+        return mPref.getInt(prefMinAlarm, 0);
+    }
+    public void setMinAlarm(Integer value) {
+        SharedPreferences.Editor editor = mPref.edit();
+        editor.putInt(prefMinAlarm, value);
+        editor.apply();
+    }
+
+    ///
 
     public String getLanguage() {
         return mPref.getString(prefLanguage, "en");

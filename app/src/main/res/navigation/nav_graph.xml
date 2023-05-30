@@ -44,4 +44,9 @@
         android:name="com.example.note_and_todo_app.ui.task.all.AllTaskFragment"
         tools:layout="@layout/fragment_task_list">
     </fragment>
+    <fragment
+        android:id="@+id/fragment_language"
+        android:name="com.example.note_and_todo_app.ui.language.LanguageFragment"
+        tools:layout="@layout/fragment_language">
+    </fragment>
 </navigation>

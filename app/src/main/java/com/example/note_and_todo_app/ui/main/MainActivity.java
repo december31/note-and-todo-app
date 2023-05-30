@@ -29,6 +29,7 @@ import com.example.note_and_todo_app.database.task.TaskCategory;
 import com.example.note_and_todo_app.database.task.TaskDao;
 import com.example.note_and_todo_app.databinding.ActivityMainBinding;
 import com.example.note_and_todo_app.services.TodoListServices;
+import com.example.note_and_todo_app.ui.language.LanguageFragment;
 import com.example.note_and_todo_app.utils.Constants;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
@@ -239,4 +240,5 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_SUBJECT, "Hey, i found a bug on your todo list");
         startActivity(intent);
     }
+
 }

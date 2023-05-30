@@ -18,6 +18,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -36,6 +37,7 @@ import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.Database;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
+import com.example.note_and_todo_app.ui.note.dialog.TimeDialog;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -57,6 +59,8 @@ public class NoteDetailFragment extends Fragment {
     private static final int REQUEST_CODE_SELECT_IMAGE = 2;
     ImageView imageNote;
     ImageView deleteImageNote;
+
+    ImageView imageClock;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -113,9 +117,17 @@ public class NoteDetailFragment extends Fragment {
                 deleteImageNote.setVisibility(View.GONE);
             }
         });
+
+        imageClock.setOnClickListener(v -> openDialog());
+
         return view;
     }
-
+    private void openDialog(){
+        FragmentManager fm = getFragmentManager();
+        TimeDialog timeDialog = new TimeDialog();
+        assert fm != null;
+        timeDialog.show(fm,null);
+    }
 
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -166,6 +178,7 @@ public class NoteDetailFragment extends Fragment {
         textInfo = view.findViewById(R.id.typingText);
         imageNote = view.findViewById(R.id.imageNote);
         deleteImageNote = view.findViewById(R.id.deleteImageNote);
+        imageClock = view.findViewById(R.id.ic_clock);
     }
 
     private void setData() throws FileNotFoundException {

@@ -87,4 +87,7 @@ dependencies {
 
     // in app review
     implementation 'com.google.android.play:review:2.0.1'
+
+    //number-picker
+    implementation 'io.github.ShawnLin013:number-picker:2.4.13'
 }

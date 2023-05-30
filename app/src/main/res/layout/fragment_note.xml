@@ -15,7 +15,7 @@
           android:layout_height="55dp"
           android:background="@drawable/bg_gray_rounded"
           android:paddingHorizontal="1dp"
-          app:defaultQueryHint="Tìm kiếm ghi chú"
+          app:defaultQueryHint="@string/search_note"
           app:iconifiedByDefault="false"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintStart_toStartOf="parent"

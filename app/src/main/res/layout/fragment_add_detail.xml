@@ -33,9 +33,9 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="80dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true">
+            android:layout_alignParentEnd="true">
             <ImageView
                 android:id="@+id/menuNote"
                 android:layout_width="27dp"
@@ -57,8 +57,18 @@
                 android:alpha="0.6"
                 android:layout_marginTop="1.5dp"
                 android:src="@drawable/ic_image"
+                android:layout_toEndOf="@id/ic_clock"
                 android:contentDescription="@string/app_name"
-                android:layout_alignParentStart="true"/>
+                />
+
+            <ImageView
+                android:id="@+id/ic_clock"
+                android:layout_width="27dp"
+                android:layout_height="40dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="18dp"
+                android:src="@drawable/ic_clock" />
         </RelativeLayout>
 
     </RelativeLayout>
@@ -67,7 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="@null"
-        android:hint="Tiêu đề"
+        android:hint="@string/title"
         android:textColorHint="@color/dark_grey"
         android:textSize="30dp"
         android:layout_marginTop="10dp"/>
@@ -113,7 +123,7 @@
             android:layout_height="match_parent"
             android:inputType="textMultiLine"
             android:gravity="top"
-            android:hint="Bắt đầu soạn thảo"
+            android:hint="@string/start_editing"
             android:textColorHint="@color/dark_grey"
             android:background="@null"/>
     </androidx.core.widget.NestedScrollView>
