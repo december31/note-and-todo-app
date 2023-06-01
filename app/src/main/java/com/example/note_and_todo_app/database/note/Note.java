@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
 
 
 import java.util.Date;
@@ -37,6 +38,12 @@ public class Note {
 		this.date = date;
 		this.imagePath = imagePath;
 	}
+	@Ignore
+	public Note(Long id,Long time, Boolean isTime) {
+		this.id = id;
+		this.timeSet = time;
+		this.isTime = isTime;
+	}
 
 	public Long getId() {
 		return id;
@@ -60,6 +67,16 @@ public class Note {
 	@ColumnInfo(name = "image_path")
 	public String imagePath;
 
+	@ColumnInfo(name = "time")
+	public Long timeSet = 0L;
+
+	@ColumnInfo(name = "isTime")
+	public Boolean isTime = false;
+
+	@TypeConverter
+	public static Date time(Long value) {
+		return value == null ? null : new Date(value);
+	}
 	public String getTitle() {
 		return title;
 	}
@@ -91,4 +108,17 @@ public class Note {
 	public void setImagePath(String imagePath) {
 		this.imagePath = imagePath;
 	}
+
+	public Long getTime() {
+		return timeSet;
+	}
+
+	public void setTime(Boolean time) {
+		isTime = time;
+	}
+
+	public void setTime(Long time) {
+		this.timeSet = time;
+	}
+
 }

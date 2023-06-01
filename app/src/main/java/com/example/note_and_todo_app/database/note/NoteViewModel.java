@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import java.util.Date;
 import java.util.List;
 
 public class NoteViewModel extends AndroidViewModel {
@@ -34,4 +35,10 @@ public class NoteViewModel extends AndroidViewModel {
         noteRepository.delete(note);
     }
     public void deleteAll(){noteRepository.deleteAll();}
+
+    public Long getTimeNote(Long id){return noteRepository.getTimeNote(id);}
+    public Boolean  getIsTimeNote(Long id){
+        return noteRepository.getIsTimeNote(id);
+    }
+    public List<Note> getAllTime(){return  noteRepository.getAllTime();}
 }

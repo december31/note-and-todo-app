@@ -47,7 +47,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 public class NoteDetailFragment extends Fragment {
-    Note update;
+    public Note update;
     Note add;
     Note note;
     NoteViewModel noteViewModel;
@@ -124,7 +124,7 @@ public class NoteDetailFragment extends Fragment {
     }
     private void openDialog(){
         FragmentManager fm = getFragmentManager();
-        TimeDialog timeDialog = new TimeDialog();
+        TimeDialog timeDialog = new TimeDialog(update.getId());
         assert fm != null;
         timeDialog.show(fm,null);
     }

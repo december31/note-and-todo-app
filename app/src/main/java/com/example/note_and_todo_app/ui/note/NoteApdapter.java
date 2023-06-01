@@ -22,10 +22,12 @@ import androidx.recyclerview.widget.ListAdapter;
 import com.example.note_and_todo_app.R;
 import com.example.note_and_todo_app.database.note.Note;
 import com.example.note_and_todo_app.database.note.NoteViewModel;
+import com.example.note_and_todo_app.preferences.Preferences;
 import com.example.note_and_todo_app.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NoteApdapter extends ListAdapter<Note,ViewHolder> implements Filterable {
 
@@ -63,6 +65,11 @@ public class NoteApdapter extends ListAdapter<Note,ViewHolder> implements Filter
         Note listData = items.get(position);
         if(listData == null){
             return;
+        }
+        if(items.size() != 0){
+            Objects.requireNonNull(Preferences.getPreference()).setIsOnAlarm(true);
+        }else {
+            Objects.requireNonNull(Preferences.getPreference()).setIsOnAlarm(false);
         }
         holder.title.setText(listData.getTitle());
         holder.info.setText(listData.getInfo());

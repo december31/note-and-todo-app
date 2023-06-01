@@ -8,6 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -25,6 +26,12 @@ public interface NoteDao {
     @Query("DELETE  FROM note")
     void deleteAll();
 
+    @Query("SELECT time FROM note WHERE id = :noteID")
+    Long getTimeNote(long noteID);
+    @Query("SELECT isTime FROM note WHERE id = :noteID")
+    Boolean getIsTimeNote(long noteID);
+    @Query("SELECT * FROM note")
+    List<Note> getAllTime();
     @Insert
     void insertAll(Note... users);
     @Insert

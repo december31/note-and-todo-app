@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import com.example.note_and_todo_app.database.Database;
 
+import java.util.Date;
 import java.util.List;
 
 public class NoteRepository {
@@ -44,4 +45,9 @@ public class NoteRepository {
         noteDao.deleteAll();
     }
 
+    Long getTimeNote(Long id){return noteDao.getTimeNote(id);}
+    Boolean getIsTimeNote(Long id){
+        return noteDao.getIsTimeNote(id);
+    }
+    List<Note> getAllTime(){return  noteDao.getAllTime();}
 }
