@@ -122,18 +122,19 @@ public class NoteDetailFragment extends Fragment {
 
         return view;
     }
-    private void openDialog(){
+
+    private void openDialog() {
         FragmentManager fm = getFragmentManager();
         TimeDialog timeDialog = new TimeDialog();
         assert fm != null;
-        timeDialog.show(fm,null);
+        timeDialog.show(fm, null);
     }
 
     private void selectImage() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
-        }
+//        if (intent.resolveActivity(requireActivity().getPackageManager()) != null) {
+//        }
+        startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
     }
 
     @Override
@@ -151,7 +152,7 @@ public class NoteDetailFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE ) {
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE) {
             if (data != null) {
                 Uri selectImgUri = data.getData();
                 if (selectImgUri != null) {
@@ -187,10 +188,10 @@ public class NoteDetailFragment extends Fragment {
         textInfo.setText(update.getInfo());
         selectedImagePath = update.getImagePath();
         imageNote.setImageBitmap(BitmapFactory.decodeFile(update.getImagePath()));
-        if(Objects.equals(selectedImagePath, "")){
+        if (Objects.equals(selectedImagePath, "")) {
             imageNote.setVisibility(View.GONE);
             deleteImageNote.setVisibility(View.GONE);
-        }else {
+        } else {
             imageNote.setVisibility(View.VISIBLE);
             deleteImageNote.setVisibility(View.VISIBLE);
         }
@@ -203,9 +204,9 @@ public class NoteDetailFragment extends Fragment {
         String info = String.valueOf(textInfo.getText());
 
         if (update != null) {
-            note = new Note(update.getId(), title, info, date,selectedImagePath);
+            note = new Note(update.getId(), title, info, date, selectedImagePath);
         } else {
-            note = new Note(add.getId(), title, info, date,selectedImagePath);
+            note = new Note(add.getId(), title, info, date, selectedImagePath);
         }
         if (info.isEmpty() && title.isEmpty()) {
             noteViewModel.delete(note);
@@ -224,27 +225,29 @@ public class NoteDetailFragment extends Fragment {
         EditText editText = getView().findViewById(R.id.typingText);
         EditText title = getView().findViewById(R.id.titleNoteAdd);
         btnCheck.setVisibility(View.GONE);
-        focusChange(editText,menu,btnCheck);
-        focusChange(title,menu,btnCheck);
+        focusChange(editText, menu, btnCheck);
+        focusChange(title, menu, btnCheck);
         btnCheck.setOnClickListener(v -> {
             menu.setVisibility(View.VISIBLE);
             btnCheck.setVisibility(View.GONE);
-            ((MainActivity)requireActivity()).closeKeyboard();
+            ((MainActivity) requireActivity()).closeKeyboard();
             editText.clearFocus();
 
         });
         menu.setOnClickListener(v -> deleteNote(getContext()));
 
     }
-    private  void focusChange(EditText editText,ImageView menu,ImageView btnCheck){
+
+    private void focusChange(EditText editText, ImageView menu, ImageView btnCheck) {
         editText.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus){
+            if (hasFocus) {
                 menu.setVisibility(View.GONE);
                 btnCheck.setVisibility(View.VISIBLE);
             }
 
         });
     }
+
     private void deleteNote(Context context) {
         new AlertDialog.Builder(context)
                 .setTitle("Delete Note")
@@ -266,6 +269,7 @@ public class NoteDetailFragment extends Fragment {
                 .show();
 
     }
+
     private void setupUi(View view) {
         TextView textDate = (view).findViewById(R.id.dateAddNote);
         Calendar calendar = Calendar.getInstance();
@@ -273,7 +277,6 @@ public class NoteDetailFragment extends Fragment {
         String dateTime = simpleDateFormat.format(calendar.getTime());
         textDate.setText(dateTime);
     }
-
 
 
     private String getPathFromUri(Uri contentUri) {

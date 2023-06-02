@@ -58,7 +58,7 @@ public class SettingFragment extends Fragment implements SettingAdapter.SettingL
         MainActivity activity = (MainActivity) getActivity();
         switch (item.getType()) {
             case LANGUAGE:
-                Navigation.findNavController(getView()).navigate(R.id.fragment_language);
+                Navigation.findNavController(binding.getRoot()).navigate(R.id.fragment_language);
                 break;
             case SHARE:
                 if (activity != null) activity.shareApp();

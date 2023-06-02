@@ -4,18 +4,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.note_and_todo_app.ui.language.LanguageFragment;
 
-public class Language{
-    String codeLanguage;
-    String nameLanguage;
-    String image;
-    public Language(){
+public class Language {
+    private String codeLanguage;
+    private int nameLanguageRes;
+    private int imageRes;
+    private Boolean isSelected = false;
+
+    public Language() {
 
     }
 
-    public Language(String codeLanguage, String nameLanguage, String image) {
+    public Language(String codeLanguage, int nameLanguageRes, int imageRes, Boolean isSelected) {
         this.codeLanguage = codeLanguage;
-        this.nameLanguage = nameLanguage;
-        this.image = image;
+        this.nameLanguageRes = nameLanguageRes;
+        this.imageRes = imageRes;
+        this.isSelected = isSelected;
+    }
+
+    public Language(String codeLanguage, int nameLanguageRes, int imageRes) {
+        this.codeLanguage = codeLanguage;
+        this.nameLanguageRes = nameLanguageRes;
+        this.imageRes = imageRes;
     }
 
     public String getCodeLanguage() {
@@ -26,19 +35,27 @@ public class Language{
         this.codeLanguage = codeLanguage;
     }
 
-    public String getNameLanguage() {
-        return nameLanguage;
+    public int getNameLanguageRes() {
+        return nameLanguageRes;
     }
 
-    public void setNameLanguage(String nameLanguage) {
-        this.nameLanguage = nameLanguage;
+    public void setNameLanguageRes(int nameLanguageRes) {
+        this.nameLanguageRes = nameLanguageRes;
     }
 
-    public String getImage() {
-        return image;
+    public int getImageRes() {
+        return imageRes;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageRes(int imageRes) {
+        this.imageRes = imageRes;
+    }
+
+    public Boolean getSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(Boolean selected) {
+        isSelected = selected;
     }
 }

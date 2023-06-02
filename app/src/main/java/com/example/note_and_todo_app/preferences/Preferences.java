@@ -78,7 +78,7 @@ public class Preferences {
     public String getLanguage() {
         return mPref.getString(prefLanguage, "en");
     }
-    public void SetLanguage(String value) {
+    public void setLanguage(String value) {
         SharedPreferences.Editor editor = mPref.edit();
         editor.putString(prefLanguage, value);
         editor.apply();

@@ -35,8 +35,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/checkbox"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:src="@drawable/ic_radio_unchecked"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

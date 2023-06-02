@@ -67,7 +67,7 @@ public class SettingAdapter extends RecyclerView.Adapter<SettingAdapter.SettingV
             binding.setData(item);
             binding.title.setText(item.getTitleRes());
             if (item.getType() == SettingItem.Type.LANGUAGE) {
-                binding.textRight.setText(R.string.english);
+                binding.textRight.setText(item.getRightTextRes());
             } else if (item.getType() == SettingItem.Type.CATEGORY) {
                 binding.title.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
                 binding.title.setTypeface(null, Typeface.BOLD);

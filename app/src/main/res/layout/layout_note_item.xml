@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:text="Title"
+                android:text="@string/title"
                 android:textSize="22dp"
                 android:textStyle="bold" />
 
@@ -34,7 +34,7 @@
                 android:layout_width="250dp"
                 android:layout_height="20dp"
                 android:layout_marginTop="3dp"
-                android:text="information"
+                android:text="@string/information"
                 android:textSize="15dp" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:alpha="0.5"
-                android:text="datetime" />
+                android:text="@string/datetime" />
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 

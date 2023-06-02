@@ -6,6 +6,7 @@ public class SettingItem {
     private boolean hasSwitch;
 
     private boolean checked = true;
+    private int rightTextRes = -1;
 
     public SettingItem(int titleRes, Type type, boolean hasSwitch) {
         this.titleRes = titleRes;
@@ -17,6 +18,14 @@ public class SettingItem {
         this.type = type;
         this.hasSwitch = hasSwitch;
         this.checked = checked;
+    }
+
+    public int getRightTextRes() {
+        return rightTextRes;
+    }
+
+    public void setRightTextRes(int rightTextRes) {
+        this.rightTextRes = rightTextRes;
     }
 
     public int getTitleRes() {

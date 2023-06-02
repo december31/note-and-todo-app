@@ -12,6 +12,17 @@
         <action
             android:id="@+id/action_fragment_nav_splash_to_activity_main"
             app:destination="@id/activity_main" />
+        <action
+            android:id="@+id/action_fragment_nav_splash_to_first_language"
+            app:destination="@id/first_language"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/first_language"
+        android:name="com.example.note_and_todo_app.ui.language.LanguageFragment">
+        <action
+            android:id="@+id/action_first_language_to_activity_main"
+            app:destination="@id/activity_main"/>
     </fragment>
 
     <activity

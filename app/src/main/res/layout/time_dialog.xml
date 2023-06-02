@@ -27,7 +27,7 @@
                 android:id="@+id/text_dialog"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Custom time"
+                android:text="@string/custom_time"
                 android:textStyle="bold"
                 android:textColor="#3C3D51"
                 android:layout_marginEnd="20dp"
@@ -87,7 +87,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:text="HOUR"
+                    android:text="@string/hour"
+                    android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textColor="#555555" />
             </androidx.appcompat.widget.LinearLayoutCompat>
@@ -123,7 +124,8 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
                     android:textStyle="bold"
-                    android:text="MIN"
+                    android:text="@string/min"
+                    android:textAllCaps="true"
                     android:textColor="#555555" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -157,7 +159,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="20dp"
-                    android:text="SEC"
+                    android:text="@string/sec"
+                    android:textAllCaps="true"
                     android:textStyle="bold"
                     android:textColor="#555555" />
             </androidx.appcompat.widget.LinearLayoutCompat>
